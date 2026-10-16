@@ -1,0 +1,35 @@
+.button {
+  text-transform: none;
+  border-color: rgba(255, 255, 255, 0.4);
+  color: inherit;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.button:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.icon {
+  font-size: 16px;
+}
+
+.loader {
+  color: inherit;
+}

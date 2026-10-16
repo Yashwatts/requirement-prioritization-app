@@ -1,0 +1,52 @@
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #F8F9FA;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  font-family: "Open Sans", sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  color: #757575;
+}
+
+.card {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.cardTitle {
+  font-family: "Open Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 8px;
+}
+
+.cardBody {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #757575;
+}

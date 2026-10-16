@@ -1,0 +1,20 @@
+services:
+  requirement-prioritization-app-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: requirement-prioritization-app-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      - requirement-prioritization-app-network
+    volumes:
+      - .:/app
+
+networks:
+  requirement-prioritization-app-network:
+    external: true
