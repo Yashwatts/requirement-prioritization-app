@@ -1,7 +1,10 @@
 "use client";
 
 import { startTransition, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Box, CircularProgress } from "@mui/material";
 
+import { useAuth } from "@/auth/auth-provider";
 import { GoogleLoginButton } from "@/components/google-login-button/google-login-button";
 import { NetworkBackground } from "@/components/network-background/network-background";
 import { LanguageSelector } from "./language-selector";
@@ -12,6 +15,8 @@ import {
 import styles from "./page.module.css";
 
 export default function LoginPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [locale, setLocale] = useState<LoginLocale>("en-US");
 
   useEffect(() => {
@@ -22,6 +27,37 @@ export default function LoginPage() {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace("/dashboard");
+    }
+  }, [loading, user, router]);
+
+  if (loading) {
+    return (
+      <main className={styles.main}>
+        <NetworkBackground />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            width: "100vw",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          <CircularProgress sx={{ color: "#3b82f6" }} />
+        </Box>
+      </main>
+    );
+  }
+
+  if (user) {
+    return null;
+  }
 
   const translation = loginTranslations[locale];
 
@@ -54,11 +90,11 @@ export default function LoginPage() {
           </div>
         </div>
 
-          <LanguageSelector
-            locale={locale}
-            onLocaleChange={handleLocaleChange}
-            language={translation.language}
-          />
+        <LanguageSelector
+          locale={locale}
+          onLocaleChange={handleLocaleChange}
+          language={translation.language}
+        />
       </div>
     </main>
   );

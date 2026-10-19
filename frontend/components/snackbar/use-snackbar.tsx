@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext } from "react";
-
 import { SnackbarContext } from "./snackbar-provider";
 
 export const useSnackbar = () => {

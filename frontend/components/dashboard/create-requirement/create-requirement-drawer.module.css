@@ -1,0 +1,187 @@
+.drawer :global(.MuiDrawer-paper) {
+  width: 610px;
+  max-width: 100vw;
+  background: #ffffff;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+}
+.minimized :global(.MuiDrawer-paper) {
+  position: fixed !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto;
+  bottom: 0 !important;
+  width: 400px;
+  height: 51px;
+  max-height: 51px;
+  overflow: hidden !important;
+}
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #424242;
+}
+.minimized .container {
+  min-height: 51px;
+  height: 51px;
+}
+.minimized .scrollContent,
+.minimized .footer {
+  display: none;
+}
+.header {
+  min-height: 52px;
+  padding: 8px 16px 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f7f9fc;
+}
+.headerTitle {
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  line-height: 32px !important;
+}
+.headerActions {
+  display: flex;
+  align-items: center;
+}
+.headerActions button {
+  width: 36px !important;
+  height: 36px !important;
+  padding: 8px !important;
+  color: #424242 !important;
+}
+.headerActions svg {
+  width: 20px;
+  height: 20px;
+}
+.scrollContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 14px 24px 24px;
+}
+.formContent {
+  width: 100%;
+  gap: 16px !important;
+}
+.formContent :global(.MuiFormControl-root),
+.formContent :global(.MuiTextField-root) {
+  min-width: 0;
+}
+.formContent :global(.MuiOutlinedInput-root) {
+  min-height: 40px;
+  border-radius: 8px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+}
+.formContent :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: #9e9e9e;
+}
+.formContent :global(.MuiInputLabel-root) {
+  color: #9e9e9e;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+}
+.formContent :global(.MuiFormHelperText-root) {
+  margin: 0 12px;
+  color: #9e9e9e;
+  font-family: "Open Sans", sans-serif;
+  font-size: 11px;
+  line-height: 16px;
+}
+.formContent :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
+  border-color: #e53935 !important;
+}
+.formContent :global(.Mui-error .MuiInputLabel-root),
+.formContent :global(.Mui-error .MuiFormHelperText-root) {
+  color: #e53935 !important;
+}
+.twoColumns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+.field {
+  width: 100%;
+}
+.checkboxField {
+  min-height: 40px;
+  margin: 0 !important;
+  color: #9e9e9e;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+}
+.checkboxField :global(.MuiCheckbox-root) {
+  padding: 8px;
+}
+.sectionTitle {
+  margin-top: 8px !important;
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 24px !important;
+}
+.editor {
+  overflow: hidden;
+  border: 1px solid #9e9e9e;
+  border-radius: 8px;
+}
+.editorBody {
+  min-height: 160px;
+  padding: 12px;
+  outline: none;
+  color: #616161;
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+}
+.editorToolbar {
+  min-height: 40px;
+  margin: 0 12px 10px;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+}
+.editorToolbar button {
+  min-width: 28px;
+  padding: 4px !important;
+  color: #424242 !important;
+}
+.editorToolbar svg {
+  width: 18px;
+  height: 18px;
+}
+.alert {
+  margin-bottom: 16px;
+}
+.footer {
+  min-height: 68px;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+.submitButton {
+  min-width: 79px !important;
+  height: 36px !important;
+  padding: 8px 14px !important;
+  color: #01579b !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 19px !important;
+  text-transform: uppercase !important;
+}
+@media (max-width: 700px) {
+  .drawer :global(.MuiDrawer-paper) {
+    width: 100%;
+  }
+}

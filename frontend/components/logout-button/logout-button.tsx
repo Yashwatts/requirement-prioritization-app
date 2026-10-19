@@ -24,7 +24,6 @@ export const LogoutButton = () => {
       await authenticationService.signOut();
       showSnackbar("Signed out successfully.", "success");
       router.replace("/login");
-      router.refresh();
     } catch {
       showSnackbar("Failed to sign out. Please try again.", "error");
     } finally {

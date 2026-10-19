@@ -1,21 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 
 import { useSnackbar } from "@/components/snackbar/use-snackbar";
 import { authenticationService } from "@/auth/authentication-service";
-import { authenticationSession } from "@/auth/authentication-session";
 import {
   getFirebaseAuthErrorMessage,
   isFirebaseAuthCancellation,
 } from "@/auth/firebase-error";
 import styles from "./google-login-button.module.css";
-
-interface GoogleLoginButtonProps {
-  label?: string;
-}
+import { GoogleLoginButtonProps } from "@/@types/google-login-button.types";
 
 export const GoogleLoginButton = ({
   label = "Continue with Google",
@@ -24,13 +20,6 @@ export const GoogleLoginButton = ({
   const { showSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const session = authenticationSession.getSession();
-    if (!session) {
-      authenticationSession.clearSession();
-    }
-  }, []);
-
   const handleLogin = async () => {
     if (loading) {
       return;
@@ -38,17 +27,12 @@ export const GoogleLoginButton = ({
 
     try {
       setLoading(true);
-
       await authenticationService.signInWithGoogle();
-
       showSnackbar("Signed in successfully.", "success");
-
       router.replace("/dashboard");
-      router.refresh();
     } catch (error) {
       const message = getFirebaseAuthErrorMessage(error);
       const isCancellation = isFirebaseAuthCancellation(error);
-
       showSnackbar(message, isCancellation ? "info" : "error");
     } finally {
       setLoading(false);
@@ -56,7 +40,7 @@ export const GoogleLoginButton = ({
   };
 
   return (
-    <button
+    <Button
       type="button"
       disabled={loading}
       onClick={handleLogin}
@@ -99,9 +83,9 @@ export const GoogleLoginButton = ({
               fill="#EA4335"
             />
           </svg>
-          <span className={styles.text}>{label}</span>
+          <Typography className={styles.text}>{label}</Typography>
         </>
       )}
-    </button>
+    </Button>
   );
 };

@@ -1,33 +1,17 @@
 "use client";
 
 import { Alert, AlertColor, Snackbar } from "@mui/material";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import styles from "./snackbar-provider.module.css";
-
-interface SnackbarContextValue {
-  showSnackbar: (message: string, severity?: AlertColor) => void;
-  closeSnackbar: () => void;
-}
-
-interface SnackbarState {
-  open: boolean;
-  message: string;
-  severity: AlertColor;
-}
-
-interface SnackbarProviderProps {
-  children: ReactNode;
-}
+import {
+  SnackbarContextValue,
+  SnackbarProviderProps,
+  SnackbarState,
+} from "@/@types/snackbar.types";
 
 export const SnackbarContext = createContext<SnackbarContextValue | null>(null);
 
-const AUTO_HIDE_DURATION = 4000;
+const AUTO_HIDE_DURATION = Number(process.env.SNACKBAR_HIDE_DURATION);
 
 export const SnackbarProvider = ({ children }: SnackbarProviderProps) => {
   const [snackbar, setSnackbar] = useState<SnackbarState>({

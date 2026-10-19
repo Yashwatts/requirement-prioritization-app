@@ -1,4 +1,3 @@
-export interface AuthenticatedUser {
-  email: string;
-  name: string;
-}
+import type { User } from "firebase/auth";
+
+export type AuthenticatedUser = User;

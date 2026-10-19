@@ -1,6 +1,9 @@
 import { Open_Sans } from "next/font/google";
+import { StoreProvider } from "@/store/store-provider";
 import { SnackbarProvider } from "@/components/snackbar/snackbar-provider";
+import { AuthProvider } from "@/auth/auth-provider";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "./globals.css";
 
 const openSans = Open_Sans({
@@ -15,11 +18,19 @@ export const metadata: Metadata = {
   description: "Requirement Prioritization Application",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <html lang="en" className={openSans.variable}>
       <body className={openSans.className}>
-        <SnackbarProvider>{children}</SnackbarProvider>
+        <StoreProvider>
+          <SnackbarProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </SnackbarProvider>
+        </StoreProvider>
       </body>
     </html>
   );
