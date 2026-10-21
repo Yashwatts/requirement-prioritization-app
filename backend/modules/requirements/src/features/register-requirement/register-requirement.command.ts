@@ -9,7 +9,7 @@ import {
   RequirementType,
   StudyModality,
   UserImpactLevel,
-} from '../../domain/types';
+} from '../../domain/requirement/types';
 
 export class RegisterRequirementCommand implements ICommand {
   constructor(

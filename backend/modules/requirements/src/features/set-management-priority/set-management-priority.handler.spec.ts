@@ -1,8 +1,8 @@
 import { SetManagementPriorityHandler } from './set-management-priority.handler';
 import { SetManagementPriorityCommand } from './set-management-priority.command';
-import { IRequirementRepository } from '../../domain/requirement.repository.interface';
-import { RequirementDomain } from '../../domain/entity.domain';
-import { RequirementNotFoundException } from '../../domain/exceptions';
+import { IRequirementRepository } from '../../domain/requirement/requirement.repository.interface';
+import { RequirementDomain } from '../../domain/requirement/entity.domain';
+import { RequirementNotFoundException } from '../../domain/requirement/exceptions';
 import {
   BenefitedInstitution,
   ComplexityEffort,
@@ -13,7 +13,7 @@ import {
   RequirementType,
   StudyModality,
   UserImpactLevel,
-} from '../../domain/types';
+} from '../../domain/requirement/types';
 
 describe('SetManagementPriorityHandler', () => {
   let handler: SetManagementPriorityHandler;

@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { ManagementPriority } from '../../domain/types';
+import { ManagementPriority } from '../../domain/requirement/types';
 
 export class SetManagementPriorityCommand implements ICommand {
   constructor(

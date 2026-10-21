@@ -3,9 +3,9 @@ import { Inject } from '@nestjs/common';
 import {
   IRequirementRepository,
   REQUIREMENT_REPOSITORY_TOKEN,
-} from '../../domain/requirement.repository.interface';
-import { RequirementDomain } from '../../domain/entity.domain';
-import { RequirementNotFoundException } from '../../domain/exceptions';
+} from '../../domain/requirement/requirement.repository.interface';
+import { RequirementDomain } from '../../domain/requirement/entity.domain';
+import { RequirementNotFoundException } from '../../domain/requirement/exceptions';
 import { GetRequirementQuery } from './get-requirement.query';
 import { RequirementDetailViewModel } from './get-requirement.view-model';
 

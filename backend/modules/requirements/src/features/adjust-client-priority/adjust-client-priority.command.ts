@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { ClientPriority } from '../../domain/types';
+import { ClientPriority } from '../../domain/requirement/types';
 
 export class AdjustClientPriorityCommand implements ICommand {
   constructor(

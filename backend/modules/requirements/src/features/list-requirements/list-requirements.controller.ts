@@ -5,7 +5,7 @@ import {
   DomainArea,
   ManagementPriority,
   RequirementState,
-} from '../../domain/types';
+} from '../../domain/requirement/types';
 import { ListRequirementsQuery } from './list-requirements.query';
 import { ListRequirementsViewModel } from './list-requirements.view-model';
 

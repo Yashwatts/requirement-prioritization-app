@@ -3,8 +3,8 @@ import { Inject } from '@nestjs/common';
 import {
   IRequirementRepository,
   REQUIREMENT_REPOSITORY_TOKEN,
-} from '../../domain/requirement.repository.interface';
-import { RequirementNotFoundException } from '../../domain/exceptions';
+} from '../../domain/requirement/requirement.repository.interface';
+import { RequirementNotFoundException } from '../../domain/requirement/exceptions';
 import { AdjustClientPriorityCommand } from './adjust-client-priority.command';
 
 @CommandHandler(AdjustClientPriorityCommand)

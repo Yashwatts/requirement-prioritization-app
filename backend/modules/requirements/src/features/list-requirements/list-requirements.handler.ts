@@ -3,13 +3,13 @@ import { Inject } from '@nestjs/common';
 import {
   IRequirementRepository,
   REQUIREMENT_REPOSITORY_TOKEN,
-} from '../../domain/requirement.repository.interface';
+} from '../../domain/requirement/requirement.repository.interface';
 import { ListRequirementsQuery } from './list-requirements.query';
 import {
   ListRequirementsViewModel,
   RequirementListItemViewModel,
 } from './list-requirements.view-model';
-import { RequirementDomain } from '../../domain/entity.domain';
+import { RequirementDomain } from '../../domain/requirement/entity.domain';
 
 @QueryHandler(ListRequirementsQuery)
 export class ListRequirementsHandler implements IQueryHandler<

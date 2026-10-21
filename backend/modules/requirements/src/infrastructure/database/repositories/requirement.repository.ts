@@ -1,11 +1,11 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { RequirementDomain } from '../../../domain/entity.domain';
+import { RequirementDomain } from '../../../domain/requirement/entity.domain';
 import {
   FindRequirementsCriteria,
   IRequirementRepository,
   PaginatedResult,
-} from '../../../domain/requirement.repository.interface';
+} from '../../../domain/requirement/requirement.repository.interface';
 import { RequirementOrmEntity } from '../entities/requirement.orm-entity';
 import { RequirementMapper } from '../mappers/requirement.mapper';
 

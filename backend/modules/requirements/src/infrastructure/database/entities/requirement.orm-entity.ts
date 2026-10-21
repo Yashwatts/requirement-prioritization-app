@@ -10,7 +10,7 @@ import {
   RequirementType,
   StudyModality,
   UserImpactLevel,
-} from '../../../domain/types';
+} from '../../../domain/requirement/types';
 
 /**
  * Pure Database Entity for MikroORM (Infrastructure Layer).

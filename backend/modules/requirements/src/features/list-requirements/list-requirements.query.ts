@@ -4,7 +4,7 @@ import {
   DomainArea,
   ManagementPriority,
   RequirementState,
-} from '../../domain/types';
+} from '../../domain/requirement/types';
 
 export class ListRequirementsQuery implements IQuery {
   constructor(

@@ -1,10 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { RequirementDomain } from '../../domain/entity.domain';
+import { RequirementDomain } from '../../domain/requirement/entity.domain';
 import {
   IRequirementRepository,
   REQUIREMENT_REPOSITORY_TOKEN,
-} from '../../domain/requirement.repository.interface';
+} from '../../domain/requirement/requirement.repository.interface';
 import { RegisterRequirementCommand } from './register-requirement.command';
 
 @CommandHandler(RegisterRequirementCommand)

@@ -1,6 +1,6 @@
 import { RegisterRequirementHandler } from './register-requirement.handler';
 import { RegisterRequirementCommand } from './register-requirement.command';
-import { IRequirementRepository } from '../../domain/requirement.repository.interface';
+import { IRequirementRepository } from '../../domain/requirement/requirement.repository.interface';
 import {
   BenefitedInstitution,
   ComplexityEffort,
@@ -9,7 +9,7 @@ import {
   RequirementType,
   StudyModality,
   UserImpactLevel,
-} from '../../domain/types';
+} from '../../domain/requirement/types';
 
 describe('RegisterRequirementHandler', () => {
   let handler: RegisterRequirementHandler;
