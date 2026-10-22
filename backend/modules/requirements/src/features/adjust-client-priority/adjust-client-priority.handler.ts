@@ -1,31 +1,40 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
-import {
-  IRequirementRepository,
-  REQUIREMENT_REPOSITORY_TOKEN,
-} from '../../domain/requirement/requirement.repository.interface';
-import { RequirementNotFoundException } from '../../domain/requirement/exceptions';
-import { AdjustClientPriorityCommand } from './adjust-client-priority.command';
+import { Injectable } from '@nestjs/common';
+import { Transactional } from '@mikro-orm/core';
 
-@CommandHandler(AdjustClientPriorityCommand)
-export class AdjustClientPriorityHandler implements ICommandHandler<
-  AdjustClientPriorityCommand,
-  void
-> {
+import { AdjustClientPriorityCommand } from './adjust-client-priority.command';
+import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';
+import { RequirementOutboxMessageRepository } from '../../infrastructure/repositories/requirement-outbox-message.repository';
+import { RequirementNotFound } from '../../domain/requirement/exceptions/exceptions';
+
+@Injectable()
+export class AdjustClientPriorityHandler {
   constructor(
-    @Inject(REQUIREMENT_REPOSITORY_TOKEN)
-    private readonly requirementRepository: IRequirementRepository,
+    private readonly requirementRepository: RequirementRepository,
+    private readonly outboxMessageRepository: RequirementOutboxMessageRepository,
   ) {}
 
-  async execute(command: AdjustClientPriorityCommand): Promise<void> {
-    const requirement = await this.requirementRepository.findById(
-      command.requirementId,
+  @Transactional()
+  async handle(command: AdjustClientPriorityCommand): Promise<void> {
+    const isNumericId =
+      !isNaN(Number(command.requirementId)) &&
+      Number.isInteger(Number(command.requirementId));
+
+    const requirement = await this.requirementRepository.findOne(
+      isNumericId
+        ? { id: Number(command.requirementId) }
+        : { uuid: command.requirementId },
     );
+
     if (!requirement) {
-      throw new RequirementNotFoundException(command.requirementId);
+      throw new RequirementNotFound();
     }
 
-    requirement.adjustClientPriority(command.newClientPriority);
+    requirement.adjustClientPriority(command.payload.client_priority);
+
     await this.requirementRepository.save(requirement);
+
+    await this.outboxMessageRepository.storeOutboxMessages(
+      requirement.getMessages(),
+    );
   }
 }

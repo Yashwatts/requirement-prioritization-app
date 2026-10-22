@@ -2,16 +2,160 @@
   "namespaces": [
     "requirements"
   ],
-  "name": "public",
+  "name": "requirements",
   "tables": [
     {
       "columns": {
         "id": {
           "name": "id",
+          "type": "int4",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "uuid": {
+          "name": "uuid",
           "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": true,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "gen_random_uuid()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "abbreviation": {
+          "name": "abbreviation",
+          "type": "varchar(50)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 50,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(250)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 250,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "translations": {
+          "name": "translations",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(250)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 250,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        }
+      },
+      "name": "domains",
+      "schema": "requirements",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "domains_pkey",
+          "unique": true,
+          "primary": true
+        },
+        {
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "constraint": true,
+          "keyName": "domains_uuid_unique",
+          "unique": true,
+          "primary": false
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int4",
+          "unsigned": true,
+          "autoincrement": true,
           "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "domain_uuid": {
+          "name": "domain_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
           "unique": false,
           "length": null,
@@ -22,11 +166,351 @@
           "enumItems": [],
           "mappedType": "uuid"
         },
+        "impact_number_users_level": {
+          "name": "impact_number_users_level",
+          "type": "int2",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 16,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "smallint"
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        }
+      },
+      "name": "impact_users_domains",
+      "schema": "requirements",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "impact_users_domains_pkey",
+          "unique": true,
+          "primary": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "fk_impact_users_domains_domain": {
+          "columnNames": [
+            "domain_uuid"
+          ],
+          "constraintName": "fk_impact_users_domains_domain",
+          "localTableName": "requirements.impact_users_domains",
+          "referencedTableName": "requirements.domains",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "updateRule": "cascade",
+          "deleteRule": "cascade"
+        }
+      },
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int4",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": true,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "gen_random_uuid()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(250)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 250,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        }
+      },
+      "name": "institutions",
+      "schema": "requirements",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "institutions_pkey",
+          "unique": true,
+          "primary": true
+        },
+        {
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "constraint": true,
+          "keyName": "institutions_uuid_unique",
+          "unique": true,
+          "primary": false
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int4",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "message_id": {
+          "name": "message_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": true,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "gen_random_uuid()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 255,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "body": {
+          "name": "body",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(50)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 50,
+          "precision": null,
+          "scale": null,
+          "default": "'PENDING'",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "sent_at": {
+          "name": "sent_at",
+          "type": "timestamp(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "outbox_message",
+      "schema": "requirements",
+      "indexes": [
+        {
+          "columnNames": [
+            "message_id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "keyName": "outbox_message_message_id_unique",
+          "unique": true,
+          "primary": false
+        },
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "outbox_message_pkey",
+          "unique": true,
+          "primary": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int4",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": true,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "gen_random_uuid()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
         "code": {
           "name": "code",
           "type": "int4",
-          "unsigned": false,
-          "autoincrement": false,
+          "unsigned": true,
+          "autoincrement": true,
           "primary": false,
           "nullable": false,
           "unique": true,
@@ -38,81 +522,21 @@
           "enumItems": [],
           "mappedType": "integer"
         },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": 255,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "string"
-        },
-        "description": {
-          "name": "description",
-          "type": "varchar(500)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": 500,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "string"
-        },
-        "requesting_institution": {
-          "name": "requesting_institution",
-          "type": "requirements.requesting_institution",
+        "status": {
+          "name": "status",
+          "type": "int2",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "unique": false,
           "length": null,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [
-            "FUNIBER",
-            "UNEATLANTICO",
-            "UNIC",
-            "UNINCOL",
-            "UNIB",
-            "UNINI-MX",
-            "UNIROMANA",
-            "UDAS",
-            "Grupo Funiber",
-            "Proyectos Europeos"
-          ],
-          "mappedType": "unknown",
-          "nativeEnumName": "requirements.requesting_institution"
-        },
-        "requested_by": {
-          "name": "requested_by",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": 255,
-          "precision": null,
-          "scale": null,
-          "default": null,
+          "precision": 16,
+          "scale": 0,
+          "default": "1",
           "comment": null,
           "enumItems": [],
-          "mappedType": "string"
+          "mappedType": "smallint"
         },
         "benefited_institutions": {
           "name": "benefited_institutions",
@@ -130,6 +554,310 @@
           "enumItems": [],
           "mappedType": "json"
         },
+        "requesting_institution_id": {
+          "name": "requesting_institution_id",
+          "type": "int4",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(250)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 250,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "domains_collaborators": {
+          "name": "domains_collaborators",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'[]'",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "domain_in_charge_id": {
+          "name": "domain_in_charge_id",
+          "type": "int4",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "followers_domains": {
+          "name": "followers_domains",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'[]'",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "obligation": {
+          "name": "obligation",
+          "type": "bool",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "boolean"
+        },
+        "exist_solution_alternative": {
+          "name": "exist_solution_alternative",
+          "type": "bool",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "boolean"
+        },
+        "impact_number_users_id": {
+          "name": "impact_number_users_id",
+          "type": "int4",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "study_modality": {
+          "name": "study_modality",
+          "type": "int2",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 16,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "smallint"
+        },
+        "impact": {
+          "name": "impact",
+          "type": "int4",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "client_priority": {
+          "name": "client_priority",
+          "type": "int2",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 16,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "smallint"
+        },
+        "management_priority": {
+          "name": "management_priority",
+          "type": "int2",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": 16,
+          "scale": 0,
+          "default": "1",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "smallint"
+        },
+        "requested_by": {
+          "name": "requested_by",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'[]'",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "complexity_and_effort": {
+          "name": "complexity_and_effort",
+          "type": "int2",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 16,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "smallint"
+        },
+        "development_time_in_sprints": {
+          "name": "development_time_in_sprints",
+          "type": "int4",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "timestamp(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "end_date": {
+          "name": "end_date",
+          "type": "timestamp(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "type": {
+          "name": "type",
+          "type": "int2",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 16,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "smallint"
+        },
         "total_benefited_institutions": {
           "name": "total_benefited_institutions",
           "type": "int4",
@@ -146,302 +874,9 @@
           "enumItems": [],
           "mappedType": "integer"
         },
-        "is_obligatory": {
-          "name": "is_obligatory",
-          "type": "bool",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": "false",
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "boolean"
-        },
-        "has_alternative_solution": {
-          "name": "has_alternative_solution",
-          "type": "bool",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": "false",
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "boolean"
-        },
-        "study_modalities": {
-          "name": "study_modalities",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": "'[]'",
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "json"
-        },
-        "impact_users": {
-          "name": "impact_users",
-          "type": "requirements.user_impact_level",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [
-            "Low",
-            "Medium",
-            "High",
-            "Very High"
-          ],
-          "mappedType": "unknown",
-          "nativeEnumName": "requirements.user_impact_level"
-        },
-        "impact": {
-          "name": "impact",
-          "type": "float8",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": 53,
-          "scale": null,
-          "default": "0",
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "double"
-        },
-        "complexity_effort": {
-          "name": "complexity_effort",
-          "type": "requirements.complexity_effort",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL"
-          ],
-          "mappedType": "unknown",
-          "nativeEnumName": "requirements.complexity_effort"
-        },
-        "client_priority": {
-          "name": "client_priority",
-          "type": "requirements.client_priority",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [
-            "Low",
-            "Medium",
-            "High"
-          ],
-          "mappedType": "unknown",
-          "nativeEnumName": "requirements.client_priority"
-        },
-        "management_priority": {
-          "name": "management_priority",
-          "type": "requirements.management_priority",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": "'Under'",
-          "comment": null,
-          "enumItems": [
-            "Under",
-            "Medium",
-            "High",
-            "Discarded"
-          ],
-          "mappedType": "unknown",
-          "nativeEnumName": "requirements.management_priority"
-        },
-        "domain": {
-          "name": "domain",
-          "type": "requirements.domain_area",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [
-            "Financiero",
-            "Reincorporaciones",
-            "Ventas",
-            "Marketing Digital",
-            "Administración Académica",
-            "Logística",
-            "Maquetación",
-            "Presencia Web",
-            "Envíos Masivos",
-            "Docencia Académica",
-            "Catálogo Formativo",
-            "Planificación Educativa",
-            "Gestión Docente",
-            "Acción Docente",
-            "Calidad Universitaria",
-            "Reportería",
-            "ESEC",
-            "Proyectos Europeos"
-          ],
-          "mappedType": "unknown",
-          "nativeEnumName": "requirements.domain_area"
-        },
-        "collaborator_domains": {
-          "name": "collaborator_domains",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": "'[]'",
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "json"
-        },
-        "follower_domains": {
-          "name": "follower_domains",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": "'[]'",
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "json"
-        },
-        "state": {
-          "name": "state",
-          "type": "requirements.requirement_state",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": "'Registered'",
-          "comment": null,
-          "enumItems": [
-            "Registered",
-            "Flow"
-          ],
-          "mappedType": "unknown",
-          "nativeEnumName": "requirements.requirement_state"
-        },
-        "start_date": {
-          "name": "start_date",
-          "type": "date",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "unique": false,
-          "length": 0,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "date"
-        },
-        "finish_date": {
-          "name": "finish_date",
-          "type": "date",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "unique": false,
-          "length": 0,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [],
-          "mappedType": "date"
-        },
-        "type": {
-          "name": "type",
-          "type": "requirements.requirement_type",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "unique": false,
-          "length": null,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "enumItems": [
-            "Internal",
-            "External",
-            "Client"
-          ],
-          "mappedType": "unknown",
-          "nativeEnumName": "requirements.requirement_type"
-        },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(6)",
+          "type": "timestamp(6)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -457,7 +892,7 @@
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(6)",
+          "type": "timestamp(6)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -480,29 +915,9 @@
             "code"
           ],
           "composite": false,
-          "constraint": false,
-          "keyName": "requirements_code_idx",
-          "unique": false,
-          "primary": false
-        },
-        {
-          "columnNames": [
-            "code"
-          ],
-          "composite": false,
           "constraint": true,
-          "keyName": "requirements_code_key",
+          "keyName": "requirements_code_unique",
           "unique": true,
-          "primary": false
-        },
-        {
-          "columnNames": [
-            "domain"
-          ],
-          "composite": false,
-          "constraint": false,
-          "keyName": "requirements_domain_idx",
-          "unique": false,
           "primary": false
         },
         {
@@ -517,234 +932,60 @@
         },
         {
           "columnNames": [
-            "state"
+            "uuid"
           ],
           "composite": false,
-          "constraint": false,
-          "keyName": "requirements_state_idx",
-          "unique": false,
+          "constraint": true,
+          "keyName": "requirements_uuid_unique",
+          "unique": true,
           "primary": false
         }
       ],
       "checks": [],
-      "foreignKeys": {},
-      "nativeEnums": {
-        "requirements.client_priority": {
-          "name": "client_priority",
-          "schema": "requirements",
-          "items": [
-            "Low",
-            "Medium",
-            "High"
-          ]
+      "foreignKeys": {
+        "fk_requirements_domain_in_charge": {
+          "columnNames": [
+            "domain_in_charge_id"
+          ],
+          "constraintName": "fk_requirements_domain_in_charge",
+          "localTableName": "requirements.requirements",
+          "referencedTableName": "requirements.domains",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "updateRule": "cascade",
+          "deleteRule": "restrict"
         },
-        "requirements.complexity_effort": {
-          "name": "complexity_effort",
-          "schema": "requirements",
-          "items": [
-            "XS",
-            "S",
-            "M",
-            "L",
-            "XL"
-          ]
+        "fk_requirements_impact_users": {
+          "columnNames": [
+            "impact_number_users_id"
+          ],
+          "constraintName": "fk_requirements_impact_users",
+          "localTableName": "requirements.requirements",
+          "referencedTableName": "requirements.impact_users_domains",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "updateRule": "cascade",
+          "deleteRule": "restrict"
         },
-        "requirements.domain_area": {
-          "name": "domain_area",
-          "schema": "requirements",
-          "items": [
-            "Financiero",
-            "Reincorporaciones",
-            "Ventas",
-            "Marketing Digital",
-            "Administración Académica",
-            "Logística",
-            "Maquetación",
-            "Presencia Web",
-            "Envíos Masivos",
-            "Docencia Académica",
-            "Catálogo Formativo",
-            "Planificación Educativa",
-            "Gestión Docente",
-            "Acción Docente",
-            "Calidad Universitaria",
-            "Reportería",
-            "ESEC",
-            "Proyectos Europeos"
-          ]
-        },
-        "requirements.management_priority": {
-          "name": "management_priority",
-          "schema": "requirements",
-          "items": [
-            "Under",
-            "Medium",
-            "High",
-            "Discarded"
-          ]
-        },
-        "requirements.requesting_institution": {
-          "name": "requesting_institution",
-          "schema": "requirements",
-          "items": [
-            "FUNIBER",
-            "UNEATLANTICO",
-            "UNIC",
-            "UNINCOL",
-            "UNIB",
-            "UNINI-MX",
-            "UNIROMANA",
-            "UDAS",
-            "Grupo Funiber",
-            "Proyectos Europeos"
-          ]
-        },
-        "requirements.requirement_state": {
-          "name": "requirement_state",
-          "schema": "requirements",
-          "items": [
-            "Registered",
-            "Flow"
-          ]
-        },
-        "requirements.requirement_type": {
-          "name": "requirement_type",
-          "schema": "requirements",
-          "items": [
-            "Internal",
-            "External",
-            "Client"
-          ]
-        },
-        "requirements.study_modality": {
-          "name": "study_modality",
-          "schema": "requirements",
-          "items": [
-            "Virtual",
-            "Presencial",
-            "Virtual/Presencial"
-          ]
-        },
-        "requirements.user_impact_level": {
-          "name": "user_impact_level",
-          "schema": "requirements",
-          "items": [
-            "Low",
-            "Medium",
-            "High",
-            "Very High"
-          ]
+        "fk_requirements_requesting_institution": {
+          "columnNames": [
+            "requesting_institution_id"
+          ],
+          "constraintName": "fk_requirements_requesting_institution",
+          "localTableName": "requirements.requirements",
+          "referencedTableName": "requirements.institutions",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "updateRule": "cascade",
+          "deleteRule": "restrict"
         }
       },
+      "nativeEnums": {},
       "comment": null
     }
   ],
-  "nativeEnums": {
-    "requirements.client_priority": {
-      "name": "client_priority",
-      "schema": "requirements",
-      "items": [
-        "Low",
-        "Medium",
-        "High"
-      ]
-    },
-    "requirements.complexity_effort": {
-      "name": "complexity_effort",
-      "schema": "requirements",
-      "items": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL"
-      ]
-    },
-    "requirements.domain_area": {
-      "name": "domain_area",
-      "schema": "requirements",
-      "items": [
-        "Financiero",
-        "Reincorporaciones",
-        "Ventas",
-        "Marketing Digital",
-        "Administración Académica",
-        "Logística",
-        "Maquetación",
-        "Presencia Web",
-        "Envíos Masivos",
-        "Docencia Académica",
-        "Catálogo Formativo",
-        "Planificación Educativa",
-        "Gestión Docente",
-        "Acción Docente",
-        "Calidad Universitaria",
-        "Reportería",
-        "ESEC",
-        "Proyectos Europeos"
-      ]
-    },
-    "requirements.management_priority": {
-      "name": "management_priority",
-      "schema": "requirements",
-      "items": [
-        "Under",
-        "Medium",
-        "High",
-        "Discarded"
-      ]
-    },
-    "requirements.requesting_institution": {
-      "name": "requesting_institution",
-      "schema": "requirements",
-      "items": [
-        "FUNIBER",
-        "UNEATLANTICO",
-        "UNIC",
-        "UNINCOL",
-        "UNIB",
-        "UNINI-MX",
-        "UNIROMANA",
-        "UDAS",
-        "Grupo Funiber",
-        "Proyectos Europeos"
-      ]
-    },
-    "requirements.requirement_state": {
-      "name": "requirement_state",
-      "schema": "requirements",
-      "items": [
-        "Registered",
-        "Flow"
-      ]
-    },
-    "requirements.requirement_type": {
-      "name": "requirement_type",
-      "schema": "requirements",
-      "items": [
-        "Internal",
-        "External",
-        "Client"
-      ]
-    },
-    "requirements.study_modality": {
-      "name": "study_modality",
-      "schema": "requirements",
-      "items": [
-        "Virtual",
-        "Presencial",
-        "Virtual/Presencial"
-      ]
-    },
-    "requirements.user_impact_level": {
-      "name": "user_impact_level",
-      "schema": "requirements",
-      "items": [
-        "Low",
-        "Medium",
-        "High",
-        "Very High"
-      ]
-    }
-  }
+  "nativeEnums": {}
 }

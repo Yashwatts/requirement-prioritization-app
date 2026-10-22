@@ -1,9 +1,8 @@
-import { ICommand } from '@nestjs/cqrs';
-import { ManagementPriority } from '../../domain/requirement/types';
+import { SetManagementPriorityValidator } from './set-management-priority.validator';
 
-export class SetManagementPriorityCommand implements ICommand {
+export class SetManagementPriorityCommand {
   constructor(
     public readonly requirementId: string,
-    public readonly newManagementPriority: ManagementPriority,
+    public readonly payload: SetManagementPriorityValidator,
   ) {}
 }

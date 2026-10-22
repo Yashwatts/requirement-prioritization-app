@@ -1,28 +1,23 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Param,
-  ParseUUIDPipe,
-  Patch,
-} from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { Body, Controller, Param, Patch } from '@nestjs/common';
 import { SetManagementPriorityCommand } from './set-management-priority.command';
-import { SetManagementPriorityDto } from './set-management-priority.dto';
+import { SetManagementPriorityHandler } from './set-management-priority.handler';
+import { SetManagementPriorityValidator } from './set-management-priority.validator';
 
 @Controller('requirements')
 export class SetManagementPriorityController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly handler: SetManagementPriorityHandler) {}
 
   @Patch(':id/management-priority')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async setManagementPriority(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto: SetManagementPriorityDto,
-  ): Promise<void> {
-    await this.commandBus.execute<SetManagementPriorityCommand, void>(
-      new SetManagementPriorityCommand(id, dto.managementPriority),
-    );
+  async handle(
+    @Param('id') requirementId: string,
+    @Body() body: SetManagementPriorityValidator,
+  ) {
+    const command = new SetManagementPriorityCommand(requirementId, body);
+
+    await this.handler.handle(command);
+
+    return {
+      message: 'Management priority set successfully',
+    };
   }
 }

@@ -1,5 +1,3 @@
-import { IQuery } from '@nestjs/cqrs';
-
-export class GetRequirementQuery implements IQuery {
+export class GetRequirementQuery {
   constructor(public readonly id: string) {}
 }

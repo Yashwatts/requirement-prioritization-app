@@ -1,28 +1,24 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Param,
-  ParseUUIDPipe,
-  Patch,
-} from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { Body, Controller, Param, Patch } from '@nestjs/common';
+
+import { AdjustClientPriorityHandler } from './adjust-client-priority.handler';
 import { AdjustClientPriorityCommand } from './adjust-client-priority.command';
-import { AdjustClientPriorityDto } from './adjust-client-priority.dto';
+import { AdjustClientPriorityValidator } from './adjust-client-priority.validator';
 
 @Controller('requirements')
 export class AdjustClientPriorityController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly handler: AdjustClientPriorityHandler) {}
 
   @Patch(':id/client-priority')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async adjustClientPriority(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto: AdjustClientPriorityDto,
-  ): Promise<void> {
-    await this.commandBus.execute<AdjustClientPriorityCommand, void>(
-      new AdjustClientPriorityCommand(id, dto.clientPriority),
-    );
+  async handle(
+    @Param('id') requirementId: string,
+    @Body() body: AdjustClientPriorityValidator,
+  ) {
+    const command = new AdjustClientPriorityCommand(requirementId, body);
+
+    await this.handler.handle(command);
+
+    return {
+      message: 'Client priority adjusted successfully',
+    };
   }
 }

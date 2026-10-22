@@ -21,7 +21,8 @@
     "mikro-orm": "mikro-orm",
     "migration:create": "npm run mikro-orm -- migration:create",
     "migration:run": "npm run mikro-orm -- migration:up",
-    "migration:rollback": "npm run mikro-orm -- migration:down"
+    "migration:rollback": "npm run mikro-orm -- migration:down",
+    "seeder:run": "npm run mikro-orm -- seeder:run --contextName=requirements"
   },
   "dependencies": {
     "@mikro-orm/core": "^6.6.17",
@@ -34,6 +35,8 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/cqrs": "^11.0.3",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/schedule": "^12.0.2",
+    "amqplib": "^2.2.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "firebase-admin": "^13.10.0",
@@ -48,11 +51,13 @@
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
+    "@types/amqplib": "^0.10.8",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
     "@types/supertest": "^7.0.0",
     "@types/uuid": "^10.0.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -98,7 +103,7 @@
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
-      "./modules/shared/database/config/orm.config.ts"
+      "./modules/shared/infrastructure/database/config/orm.config.ts"
     ]
   }
 }

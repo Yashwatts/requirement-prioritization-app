@@ -1,44 +1,24 @@
 import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { RequirementOrmEntity } from './infrastructure/database/entities/requirement.orm-entity';
-import { RequirementRepository } from './infrastructure/database/repositories/requirement.repository';
-import { REQUIREMENT_REPOSITORY_TOKEN } from './domain/requirement/requirement.repository.interface';
-import { RegisterRequirementController } from './features/register-requirement/register-requirement.controller';
-import { RegisterRequirementHandler } from './features/register-requirement/register-requirement.handler';
-import { ListRequirementsController } from './features/list-requirements/list-requirements.controller';
-import { ListRequirementsHandler } from './features/list-requirements/list-requirements.handler';
-import { GetRequirementController } from './features/get-requirement/get-requirement.controller';
-import { GetRequirementHandler } from './features/get-requirement/get-requirement.handler';
-import { AdjustClientPriorityController } from './features/adjust-client-priority/adjust-client-priority.controller';
-import { AdjustClientPriorityHandler } from './features/adjust-client-priority/adjust-client-priority.handler';
-import { SetManagementPriorityController } from './features/set-management-priority/set-management-priority.controller';
-import { SetManagementPriorityHandler } from './features/set-management-priority/set-management-priority.handler';
 
-const CommandHandlers = [
-  RegisterRequirementHandler,
-  AdjustClientPriorityHandler,
-  SetManagementPriorityHandler,
-];
-
-const QueryHandlers = [ListRequirementsHandler, GetRequirementHandler];
+import { RegisterRequirementModule } from './features/register-requirement/register-requirement.module';
+import { AdjustClientPriorityModule } from './features/adjust-client-priority/adjust-client-priority.module';
+import { SetManagementPriorityModule } from './features/set-management-priority/set-management-priority.module';
+import { ListRequirementsModule } from './features/list-requirements/list-requirements.module';
+import { GetRequirementModule } from './features/get-requirement/get-requirement.module';
+import { UpdateRequirementModule } from './features/update-requirement/update-requirement.module';
+import { ReferenceDataModule } from './features/reference-data/reference-data.module';
+import { RequirementsMessageDestinationModule } from './infrastructure/message-bus/requirements-message-destination.module';
 
 @Module({
-  imports: [CqrsModule, MikroOrmModule.forFeature([RequirementOrmEntity])],
-  controllers: [
-    RegisterRequirementController,
-    ListRequirementsController,
-    GetRequirementController,
-    AdjustClientPriorityController,
-    SetManagementPriorityController,
-  ],
-  providers: [
-    ...CommandHandlers,
-    ...QueryHandlers,
-    {
-      provide: REQUIREMENT_REPOSITORY_TOKEN,
-      useClass: RequirementRepository,
-    },
+  imports: [
+    RequirementsMessageDestinationModule,
+    RegisterRequirementModule,
+    AdjustClientPriorityModule,
+    SetManagementPriorityModule,
+    ListRequirementsModule,
+    GetRequirementModule,
+    UpdateRequirementModule,
+    ReferenceDataModule,
   ],
 })
 export class RequirementsModule {}

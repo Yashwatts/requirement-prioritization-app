@@ -1,5 +1,5 @@
 export enum RequirementType {
-  INTERNAL = 'Internal',
-  EXTERNAL = 'External',
-  CLIENT = 'Client',
+  INTERNAL = 1,
+  EXTERNAL = 2,
+  CLIENT = 3,
 }

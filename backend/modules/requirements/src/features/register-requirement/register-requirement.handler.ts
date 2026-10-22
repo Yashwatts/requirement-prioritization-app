@@ -1,49 +1,89 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
-import { RequirementDomain } from '../../domain/requirement/entity.domain';
-import {
-  IRequirementRepository,
-  REQUIREMENT_REPOSITORY_TOKEN,
-} from '../../domain/requirement/requirement.repository.interface';
-import { RegisterRequirementCommand } from './register-requirement.command';
+import { Injectable } from '@nestjs/common';
+import { Transactional } from '@mikro-orm/core';
 
-@CommandHandler(RegisterRequirementCommand)
-export class RegisterRequirementHandler implements ICommandHandler<
-  RegisterRequirementCommand,
-  void
-> {
+import { Requirement } from '../../domain/requirement/requirement';
+import { InvalidRequirement } from '../../domain/requirement/exceptions/exceptions';
+
+import { RegisterRequirementCommand } from './register-requirement.command';
+import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';
+import { RequirementOutboxMessageRepository } from '../../infrastructure/repositories/requirement-outbox-message.repository';
+import { ImpactUsersDomainRepository } from '../../infrastructure/repositories/impact-users-domain.repository';
+
+@Injectable()
+export class RegisterRequirementHandler {
   constructor(
-    @Inject(REQUIREMENT_REPOSITORY_TOKEN)
-    private readonly requirementRepository: IRequirementRepository,
+    private readonly requirementRepository: RequirementRepository,
+    private readonly outboxMessageRepository: RequirementOutboxMessageRepository,
+    private readonly impactUsersDomainRepository: ImpactUsersDomainRepository,
   ) {}
 
-  async execute(command: RegisterRequirementCommand): Promise<void> {
-    const nextCode = await this.requirementRepository.getNextSequenceCode();
+  @Transactional()
+  async handle(command: RegisterRequirementCommand): Promise<void> {
+    const {
+      name,
+      description,
+      requesting_institution_id,
+      requested_by,
+      benefited_institutions,
+      study_modality,
+      impact_number_users_id,
+      obligation,
+      exist_solution_alternative,
+      complexity_and_effort,
+      client_priority,
+      management_priority,
+      domain_in_charge_id,
+      domains_collaborators,
+      followers_domains,
+      development_time_in_sprints,
+      start_date,
+      end_date,
+      type,
+    } = command.payload;
 
-    const requirement = RequirementDomain.create({
-      code: nextCode,
-      name: command.name,
-      description: command.description,
-      requestingInstitution: command.requestingInstitution,
-      requestedBy: command.requestedBy,
-      benefitedInstitutions: command.benefitedInstitutions,
-      isObligatory: command.isObligatory,
-      hasAlternativeSolution: command.hasAlternativeSolution,
-      studyModalities: command.studyModalities,
-      impactUsers: command.impactUsers,
-      complexityEffort: command.complexityEffort,
-      collaboratorDomains: command.collaboratorDomains,
-      followerDomains: command.followerDomains,
-      startDate: command.startDate,
-      finishDate: command.finishDate,
-      type: command.type,
-      domain: command.domain,
-      clientPriorityOverride: command.clientPriorityOverride,
-      managementPriority: command.managementPriority,
-      impactUsersNumericContribution: command.impactUsersNumericContribution,
-      impact: command.impactOverride,
+    let impactUsersValue = command.payload.impact_users_value;
+
+    if (impactUsersValue === undefined || impactUsersValue === null) {
+      const impactTier = await this.impactUsersDomainRepository.findOne({
+        id: impact_number_users_id,
+      });
+
+      if (!impactTier) {
+        throw new InvalidRequirement(
+          `Impact users tier with id ${impact_number_users_id} not found.`,
+        );
+      }
+
+      impactUsersValue = impactTier.impact_number_users_level;
+    }
+
+    const requirement = Requirement.create({
+      name,
+      description,
+      requesting_institution_id,
+      requested_by,
+      benefited_institutions,
+      study_modality,
+      impact_number_users_id,
+      impact_users_value: impactUsersValue,
+      obligation,
+      exist_solution_alternative,
+      complexity_and_effort,
+      client_priority,
+      management_priority,
+      domain_in_charge_id,
+      domains_collaborators,
+      followers_domains,
+      development_time_in_sprints,
+      start_date: start_date ? new Date(start_date) : undefined,
+      end_date: end_date ? new Date(end_date) : undefined,
+      type,
     });
 
     await this.requirementRepository.save(requirement);
+
+    await this.outboxMessageRepository.storeOutboxMessages(
+      requirement.getMessages(),
+    );
   }
 }

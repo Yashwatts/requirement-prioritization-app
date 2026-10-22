@@ -15,7 +15,7 @@ export class RequirementClientPriorityUpdatedEvent extends Event<RequirementClie
         requirement,
         previous_priority,
       },
-      process.env.APP_NAME!,
+      process.env.APP_NAME ?? 'requirement-prioritization-app',
     );
   }
 
@@ -25,6 +25,7 @@ export class RequirementClientPriorityUpdatedEvent extends Event<RequirementClie
     return {
       requirement: {
         id: requirement.id,
+        uuid: requirement.uuid,
         code: requirement.code,
         name: requirement.name,
         client_priority: requirement.client_priority,

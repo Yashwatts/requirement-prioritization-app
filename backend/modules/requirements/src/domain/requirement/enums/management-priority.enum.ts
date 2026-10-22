@@ -1,6 +1,6 @@
 export enum ManagementPriority {
-  UNDER = 'Under',
-  MEDIUM = 'Medium',
-  HIGH = 'High',
-  DISCARDED = 'Discarded',
+  UNDER = 1,
+  MEDIUM = 2,
+  HIGH = 3,
+  DISCARDED = 4,
 }

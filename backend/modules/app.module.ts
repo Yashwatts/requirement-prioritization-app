@@ -4,11 +4,16 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { RequirementsModule } from './requirements/src/requirements.module';
 import { AppController } from './app.controller';
 import { AppHandler } from './app.handler';
+import ormConfig from './shared/infrastructure/database/config/orm.config';
+import { OutboxProducerModule } from './shared/infrastructure/message-bus/outbox-producer.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MikroOrmModule.forRoot(),
+    MikroOrmModule.forRootAsync({
+      useFactory: () => ormConfig('requirements'),
+    }),
+    OutboxProducerModule,
     RequirementsModule,
   ],
   controllers: [AppController],

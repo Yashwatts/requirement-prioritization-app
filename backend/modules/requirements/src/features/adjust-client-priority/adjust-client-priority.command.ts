@@ -1,9 +1,8 @@
-import { ICommand } from '@nestjs/cqrs';
-import { ClientPriority } from '../../domain/requirement/types';
+import { AdjustClientPriorityValidator } from './adjust-client-priority.validator';
 
-export class AdjustClientPriorityCommand implements ICommand {
+export class AdjustClientPriorityCommand {
   constructor(
     public readonly requirementId: string,
-    public readonly newClientPriority: ClientPriority,
+    public readonly payload: AdjustClientPriorityValidator,
   ) {}
 }

@@ -1,6 +1,6 @@
 export enum UserImpactLevel {
-  LOW = 'Low',
-  MEDIUM = 'Medium',
-  HIGH = 'High',
-  VERY_HIGH = 'Very High',
+  LOW = 1,
+  MEDIUM = 2,
+  HIGH = 3,
+  VERY_HIGH = 4,
 }

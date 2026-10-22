@@ -1,27 +1,15 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  ParseUUIDPipe,
-} from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
+import { Controller, Get, Param } from '@nestjs/common';
+import { GetRequirementHandler } from './get-requirement.handler';
 import { GetRequirementQuery } from './get-requirement.query';
-import { RequirementDetailViewModel } from './get-requirement.view-model';
+import { EnrichedRequirement } from '../../domain/requirement/interfaces/requirement';
 
 @Controller('requirements')
 export class GetRequirementController {
-  constructor(private readonly queryBus: QueryBus) {}
+  constructor(private readonly handler: GetRequirementHandler) {}
 
   @Get(':id')
-  @HttpCode(HttpStatus.OK)
-  async getRequirement(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<RequirementDetailViewModel> {
-    return this.queryBus.execute<
-      GetRequirementQuery,
-      RequirementDetailViewModel
-    >(new GetRequirementQuery(id));
+  async handle(@Param('id') id: string): Promise<EnrichedRequirement> {
+    const query = new GetRequirementQuery(id);
+    return this.handler.handle(query);
   }
 }

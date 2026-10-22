@@ -23,12 +23,17 @@ export default (contextName: string): Options => {
       `dist/${moduleName}/src/infrastructure/database/**/*.entity.js`,
       'dist/shared/**/*.entity.js',
     ],
+    entitiesTs: [
+      `modules/${moduleName}/src/infrastructure/database/**/*.entity.ts`,
+      'modules/shared/**/*.entity.ts',
+    ],
     migrations: {
-      path: `dist/${moduleName}/src/infrastructure/database/migrations`,
+      path: `modules/${moduleName}/src/infrastructure/database/migrations`,
       tableName: 'migrations',
     },
     seeder: {
       path: `dist/${moduleName}/src/infrastructure/database/seeders`,
+      pathTs: `modules/${moduleName}/src/infrastructure/database/seeders`,
       defaultSeeder: 'DatabaseSeeder',
     },
     extensions: [SeedManager],

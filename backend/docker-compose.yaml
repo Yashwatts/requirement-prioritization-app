@@ -12,12 +12,18 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres -d requirement_prioritization_app']
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U postgres -d requirement_prioritization_app',
+        ]
       interval: 5s
       timeout: 5s
       retries: 10
     networks:
-      - requirement-prioritization-app-network
+      requirement-prioritization-app-network:
+        aliases:
+          - postgres
 
   pgadmin:
     image: dpage/pgadmin4
@@ -36,6 +42,28 @@ services:
     networks:
       - requirement-prioritization-app-network
 
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: requirement-prioritization-app-rabbitmq
+    restart: always
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ['CMD', 'rabbitmq-diagnostics', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      requirement-prioritization-app-network:
+        aliases:
+          - rabbitmq
+
   requirement-prioritization-app-backend:
     build:
       context: .
@@ -48,6 +76,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     volumes:
       - .:/app
     env_file:
@@ -58,6 +88,7 @@ services:
 volumes:
   postgres_data: {}
   pgadmin_data: {}
+  rabbitmq_data: {}
 
 networks:
   requirement-prioritization-app-network:
