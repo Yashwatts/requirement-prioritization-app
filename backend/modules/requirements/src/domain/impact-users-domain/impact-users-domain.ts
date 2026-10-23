@@ -29,6 +29,10 @@ export class ImpactUsersDomain {
     impact_number_users_level: number,
     quantity: ImpactQuantity,
   ): ImpactUsersDomain {
-    return new ImpactUsersDomain(domain_uuid, impact_number_users_level, quantity);
+    return new ImpactUsersDomain(
+      domain_uuid,
+      impact_number_users_level,
+      quantity,
+    );
   }
 }

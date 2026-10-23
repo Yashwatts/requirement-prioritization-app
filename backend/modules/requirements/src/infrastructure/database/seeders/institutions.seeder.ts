@@ -17,8 +17,19 @@ export class InstitutionsSeeder extends Seeder {
       'Proyectos Europeos',
     ];
 
-    const institutions = institutionNames.map((name) => Institution.create(name));
+    const existingInstitutions = await entityManager.find(Institution, {
+      name: { $in: institutionNames },
+    });
+    const existingNames = new Set(
+      existingInstitutions.map((inst) => inst.name),
+    );
 
-    await entityManager.persist(institutions).flush();
+    const newInstitutions = institutionNames
+      .filter((name) => !existingNames.has(name))
+      .map((name) => Institution.create(name));
+
+    if (newInstitutions.length > 0) {
+      await entityManager.persist(newInstitutions).flush();
+    }
   }
 }

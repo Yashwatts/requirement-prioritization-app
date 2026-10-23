@@ -7,7 +7,7 @@ interface RequirementClientPriorityUpdatedPayload {
 }
 
 export class RequirementClientPriorityUpdatedEvent extends Event<RequirementClientPriorityUpdatedPayload> {
-  type = 'requirement-prioritization.requirement_client_priority_updated';
+  type = process.env.RABBITMQ_ROUTING_KEY_REQUIREMENT_CLIENT_PRIORITY_UPDATED!;
 
   constructor(requirement: Requirement, previous_priority: string) {
     super(
@@ -15,7 +15,7 @@ export class RequirementClientPriorityUpdatedEvent extends Event<RequirementClie
         requirement,
         previous_priority,
       },
-      process.env.APP_NAME ?? 'requirement-prioritization-app',
+      process.env.APP_NAME!,
     );
   }
 

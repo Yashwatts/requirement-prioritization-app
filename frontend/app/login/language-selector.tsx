@@ -1,10 +1,9 @@
 "use client";
 
+import { MouseEvent, useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { MouseEvent, useState } from "react";
+import { Box, Menu, MenuItem } from "@mui/material";
 
 import type { LoginLocale } from "./login-translations";
 import styles from "./page.module.css";
@@ -38,7 +37,8 @@ export const LanguageSelector = ({
 
   return (
     <>
-      <button
+      <Box
+        component="button"
         type="button"
         className={styles.translationContainer}
         id="login-language-button"
@@ -47,13 +47,13 @@ export const LanguageSelector = ({
         aria-haspopup="true"
         onClick={handleOpen}
       >
-        <span>{language}</span>
+        <Box component="span">{language}</Box>
         {isOpen ? (
           <ArrowDropUpIcon className={styles.arrowIcon} />
         ) : (
           <ArrowDropDownIcon className={styles.arrowIcon} />
         )}
-      </button>
+      </Box>
 
       <Menu
         id="login-language-menu"

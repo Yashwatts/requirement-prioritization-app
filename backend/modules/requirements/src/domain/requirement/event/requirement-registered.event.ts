@@ -6,10 +6,10 @@ interface RequirementRegisteredPayload {
 }
 
 export class RequirementRegisteredEvent extends Event<RequirementRegisteredPayload> {
-  type = 'requirement-prioritization.requirement_registered';
+  type = process.env.RABBITMQ_ROUTING_KEY_REQUIREMENT_REGISTERED!;
 
   constructor(requirement: Requirement) {
-    super({ requirement }, process.env.APP_NAME ?? 'requirement-prioritization-app');
+    super({ requirement }, process.env.APP_NAME!);
   }
 
   getBody(): Record<string, unknown> {

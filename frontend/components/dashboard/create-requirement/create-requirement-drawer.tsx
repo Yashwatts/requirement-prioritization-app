@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import { useEffect, useMemo, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Alert,
   Box,
   Button,
   Checkbox,
@@ -18,6 +16,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Skeleton,
   Stack,
   TextField,
   Typography,
@@ -37,63 +36,53 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LinkIcon from "@mui/icons-material/Link";
 import CodeIcon from "@mui/icons-material/Code";
 
-import { api } from "@/config/api";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useSnackbar } from "@/components/snackbar/use-snackbar";
+import {
+  createRequirement,
+  fetchReferenceData,
+  fetchRequirements,
+} from "@/features/requirements/requirement.action";
+import {
+  mapClientPriorityToNumber,
+  mapComplexityToNumber,
+  mapImpactLevelToNumber,
+  mapManagementPriorityToNumber,
+  mapTypeToNumber,
+} from "@/features/requirements/mappers/requirement.mapper";
 import type {
   BenefitedInstitution,
   ClientPriority,
   ComplexityEffort,
+  CreateRequirementPayload,
   DomainArea,
   ManagementPriority,
   RequestingInstitution,
   RequirementType,
   StudyModality,
   UserImpactLevel,
-} from "@/features/requirements/requirement.types";
+} from "@/@types/requirement.types";
+import {
+  requirementFormSchema,
+  type RequirementFormValues,
+} from "@/schemas/requirement.schema";
 import styles from "./create-requirement-drawer.module.css";
 
-const institutions: RequestingInstitution[] = [
-  "FUNIBER", "UNEATLANTICO", "UNIC", "UNINCOL", "UNIB", "UNINI-MX",
-  "UNIROMANA", "UDAS", "Grupo Funiber", "Proyectos Europeos",
-];
-const benefitedInstitutions: BenefitedInstitution[] = institutions.filter(
-  (institution): institution is BenefitedInstitution => institution !== "Grupo Funiber",
-);
-const domains: DomainArea[] = [
-  "Financiero", "Reincorporaciones", "Ventas", "Marketing Digital", "Administración Académica",
-  "Logística", "Maquetación", "Presencia Web", "Envíos Masivos", "Docencia Académica",
-  "Catálogo Formativo", "Planificación Educativa", "Gestión Docente", "Acción Docente",
-  "Calidad Universitaria", "Reportería", "ESEC", "Proyectos Europeos",
-];
 const requirementTypes: RequirementType[] = ["Internal", "External", "Client"];
-const modalities: StudyModality[] = ["Virtual", "Presencial", "Virtual/Presencial"];
+const modalities: StudyModality[] = [
+  "Virtual",
+  "Presencial",
+  "Virtual/Presencial",
+];
 const impacts: UserImpactLevel[] = ["Low", "Medium", "High", "Very High"];
 const complexities: ComplexityEffort[] = ["XS", "S", "M", "L", "XL"];
 const priorities: ClientPriority[] = ["Low", "Medium", "High"];
-const managementPriorities: ManagementPriority[] = ["Under", "Medium", "High", "Discarded"];
-
-const requirementFormSchema = z.object({
-  name: z.string().trim().min(1, "Required").max(255),
-  requestedBy: z.string().trim().min(1, "Required").max(255),
-  requestingInstitution: z.string().min(1, "Required"),
-  type: z.string().min(1, "Required"),
-  domain: z.string().min(1, "Required"),
-  collaboratorDomains: z.array(z.string()),
-  followerDomains: z.array(z.string()),
-  benefitedInstitutions: z.array(z.string()).min(1, "Required"),
-  studyModalities: z.array(z.string()).min(1, "Required"),
-  isObligatory: z.boolean(),
-  hasAlternativeSolution: z.boolean(),
-  impactUsers: z.string().min(1, "Required"),
-  impact: z.string().optional(),
-  complexityEffort: z.string().min(1, "Required"),
-  clientPriorityOverride: z.string().min(1, "Required"),
-  managementPriority: z.string().min(1, "Required"),
-  startDate: z.string().optional(),
-  finishDate: z.string().optional(),
-  description: z.string().trim().min(1, "Required").max(500),
-});
-
-type RequirementFormValues = z.infer<typeof requirementFormSchema>;
+const managementPriorities: ManagementPriority[] = [
+  "Under",
+  "Medium",
+  "High",
+  "Discarded",
+];
 
 const defaultValues: RequirementFormValues = {
   name: "",
@@ -111,7 +100,7 @@ const defaultValues: RequirementFormValues = {
   impact: "",
   complexityEffort: "",
   clientPriorityOverride: "",
-  managementPriority: "",
+  managementPriority: "Under",
   startDate: "",
   finishDate: "",
   description: "",
@@ -129,6 +118,8 @@ interface SelectFieldProps {
   options: readonly string[];
   multiple?: boolean;
   optional?: boolean;
+  onOpen?: () => void;
+  isLoading?: boolean;
 }
 
 export const CreateRequirementDrawer = ({
@@ -136,8 +127,41 @@ export const CreateRequirementDrawer = ({
   onClose,
   onCreated,
 }: CreateRequirementDrawerProps) => {
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { showSnackbar } = useSnackbar();
+
+  const {
+    institutions: apiInstitutions,
+    domains: apiDomains,
+    referenceDataStatus,
+  } = useAppSelector((state) => state.requirements);
+
   const [minimized, setMinimized] = useState(false);
+
+  // Trigger reference data fetch only when a dropdown is opened
+  const handleReferenceDataOpen = () => {
+    if (referenceDataStatus === "idle") {
+      dispatch(fetchReferenceData());
+    }
+  };
+
+  // Dynamically populated from backend reference data with NO fallback hardcoded values
+  const institutionOptions = useMemo(() => {
+    return apiInstitutions?.map((i) => i.name) ?? [];
+  }, [apiInstitutions]);
+
+  const benefitedInstitutionOptions = useMemo(() => {
+    return institutionOptions.filter(
+      (institution) => institution !== "Grupo Funiber",
+    );
+  }, [institutionOptions]);
+
+  const domainOptions = useMemo(() => {
+    return apiDomains?.map((d) => d.name) ?? [];
+  }, [apiDomains]);
+
+  const isReferenceDataLoading = referenceDataStatus === "loading";
+
   const {
     control,
     register,
@@ -151,41 +175,156 @@ export const CreateRequirementDrawer = ({
     mode: "onSubmit",
   });
 
+  // Watch fields contributing to impact calculation
+  const benefitedInstitutions = useWatch({
+    control,
+    name: "benefitedInstitutions",
+  });
+  const isObligatory = useWatch({ control, name: "isObligatory" });
+  const hasAlternativeSolution = useWatch({
+    control,
+    name: "hasAlternativeSolution",
+  });
+  const impactUsers = useWatch({ control, name: "impactUsers" });
+
+  // Auto-calculate impact according to SRS formula:
+  // Impact = Total Benefited Institutions + Obligation (8) + No Alternative Solution (8) + Impact User Level (1-4)
+  useEffect(() => {
+    if (!impactUsers) return;
+
+    const benefitedCount = Array.isArray(benefitedInstitutions)
+      ? benefitedInstitutions.length
+      : 0;
+    const obligationVal = isObligatory ? 8 : 0;
+    const alternativeSolutionVal = hasAlternativeSolution ? 0 : 8;
+    const userImpactVal =
+      impactUsers === "Low"
+        ? 1
+        : impactUsers === "Medium"
+          ? 2
+          : impactUsers === "High"
+            ? 3
+            : impactUsers === "Very High"
+              ? 4
+              : 1;
+
+    const calculatedImpact =
+      benefitedCount + obligationVal + alternativeSolutionVal + userImpactVal;
+
+    setValue("impact", String(calculatedImpact), { shouldValidate: true });
+
+    // Suggest default client priority based on SRS tiers
+    const suggestedPriority: ClientPriority =
+      calculatedImpact <= 10
+        ? "Low"
+        : calculatedImpact <= 20
+          ? "Medium"
+          : "High";
+    setValue("clientPriorityOverride", suggestedPriority, {
+      shouldValidate: true,
+    });
+  }, [
+    benefitedInstitutions,
+    isObligatory,
+    hasAlternativeSolution,
+    impactUsers,
+    setValue,
+  ]);
+
   const close = () => {
     reset(defaultValues);
-    setSubmitError(null);
     setMinimized(false);
     onClose();
   };
 
   const onSubmit = async (values: RequirementFormValues) => {
-    setSubmitError(null);
-    try {
-      await api.post("/requirements", {
-        ...values,
-        impact: values.impact ? Number(values.impact) : undefined,
-        requestingInstitution: values.requestingInstitution as RequestingInstitution,
-        type: values.type as RequirementType,
-        domain: values.domain as DomainArea,
-        collaboratorDomains: values.collaboratorDomains as DomainArea[],
-        followerDomains: values.followerDomains as DomainArea[],
-        benefitedInstitutions: values.benefitedInstitutions as BenefitedInstitution[],
-        studyModalities: values.studyModalities as StudyModality[],
-        impactUsers: values.impactUsers as UserImpactLevel,
-        complexityEffort: values.complexityEffort as ComplexityEffort,
-        clientPriorityOverride: values.clientPriorityOverride as ClientPriority,
-        managementPriority: values.managementPriority as ManagementPriority,
-        startDate: values.startDate || undefined,
-        finishDate: values.finishDate || undefined,
-      });
+    // Resolve requesting institution ID from backend reference data
+    const resolvedInstitution = apiInstitutions?.find(
+      (inst) => inst.name === values.requestingInstitution,
+    );
+    const requestingInstitutionId = resolvedInstitution?.id ?? 1;
+
+    // Resolve domain in charge ID from backend reference data
+    const resolvedDomain = apiDomains?.find(
+      (d) => d.name === values.domain,
+    );
+    const domainInChargeId = resolvedDomain?.id ?? 1;
+
+    // Resolve study modality ID (Virtual: 1, Presencial: 2, Virtual/Presencial: 3)
+    const hasVirtual = values.studyModalities.includes("Virtual");
+    const hasPresencial = values.studyModalities.includes("Presencial");
+    const hasBoth =
+      values.studyModalities.includes("Virtual/Presencial") ||
+      (hasVirtual && hasPresencial);
+    const studyModality = hasBoth ? 3 : hasPresencial ? 2 : 1;
+
+    // Format requested_by array from string (split by comma if multiple)
+    const requestedByList = values.requestedBy
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+
+    const payload: CreateRequirementPayload = {
+      name: values.name,
+      description: values.description,
+      requesting_institution_id: requestingInstitutionId,
+      requested_by: requestedByList,
+      benefited_institutions: values.benefitedInstitutions,
+      study_modality: studyModality,
+      impact_number_users_id: mapImpactLevelToNumber(
+        values.impactUsers as UserImpactLevel,
+      ),
+      obligation: values.isObligatory,
+      exist_solution_alternative: values.hasAlternativeSolution,
+      complexity_and_effort: mapComplexityToNumber(
+        values.complexityEffort as ComplexityEffort,
+      ),
+      client_priority: values.clientPriorityOverride
+        ? mapClientPriorityToNumber(
+            values.clientPriorityOverride as ClientPriority,
+          )
+        : undefined,
+      management_priority: values.managementPriority
+        ? mapManagementPriorityToNumber(
+            values.managementPriority as ManagementPriority,
+          )
+        : 1,
+      domain_in_charge_id: domainInChargeId,
+      domains_collaborators: values.collaboratorDomains,
+      followers_domains: values.followerDomains,
+      start_date: values.startDate || undefined,
+      end_date: values.finishDate || undefined,
+      type: mapTypeToNumber(values.type as RequirementType),
+    };
+
+    const actionResult = await dispatch(createRequirement(payload));
+
+    if (createRequirement.fulfilled.match(actionResult)) {
+      showSnackbar("Requirement registered successfully.", "success");
+      dispatch(fetchRequirements());
       onCreated();
       close();
-    } catch {
-      setSubmitError("Unable to create requirement. Please try again.");
+    } else {
+      const errorMsg =
+        (actionResult.payload as string) ||
+        "Unable to create requirement. Please check your inputs.";
+      showSnackbar(errorMsg, "error");
     }
   };
 
-  const selectField = ({ name, label, options, multiple = false, optional = false }: SelectFieldProps) => (
+  const onInvalid = () => {
+    showSnackbar("Please fill all required fields correctly.", "warning");
+  };
+
+  const selectField = ({
+    name,
+    label,
+    options,
+    multiple = false,
+    optional = false,
+    onOpen,
+    isLoading = false,
+  }: SelectFieldProps) => (
     <Controller
       key={name}
       name={name}
@@ -197,10 +336,48 @@ export const CreateRequirementDrawer = ({
             {...field}
             multiple={multiple}
             label={label}
+            onOpen={onOpen}
             IconComponent={ArrowDropDownIcon}
-            renderValue={multiple ? (selected) => (selected as string[]).join(", ") : undefined}
+            renderValue={
+              multiple
+                ? (selected) => (selected as string[]).join(", ")
+                : undefined
+            }
           >
-            {options.map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
+            {isLoading ? (
+              <Stack spacing={1} sx={{ p: 1, minWidth: 200 }}>
+                <Skeleton
+                  variant="rectangular"
+                  height={32}
+                  animation="wave"
+                  sx={{ borderRadius: 1, bgcolor: "rgba(0, 0, 0, 0.04)" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  height={32}
+                  animation="wave"
+                  sx={{ borderRadius: 1, bgcolor: "rgba(0, 0, 0, 0.04)" }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  height={32}
+                  animation="wave"
+                  sx={{ borderRadius: 1, bgcolor: "rgba(0, 0, 0, 0.04)" }}
+                />
+              </Stack>
+            ) : options.length > 0 ? (
+              options.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled value="">
+                <Typography variant="body2" color="text.secondary">
+                  No options available
+                </Typography>
+              </MenuItem>
+            )}
           </Select>
           {(errors[name]?.message || optional) && (
             <FormHelperText>
@@ -225,9 +402,15 @@ export const CreateRequirementDrawer = ({
       }}
       className={`${styles.drawer} ${minimized ? styles.minimized : ""}`}
     >
-      <Box className={styles.container} component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        className={styles.container}
+        component="form"
+        onSubmit={handleSubmit(onSubmit, onInvalid)}
+      >
         <Box className={styles.header}>
-          <Typography className={styles.headerTitle}>New requirement</Typography>
+          <Typography className={styles.headerTitle}>
+            New requirement
+          </Typography>
           <Box className={styles.headerActions}>
             <IconButton
               aria-label={minimized ? "Open in full" : "Minimize"}
@@ -236,47 +419,192 @@ export const CreateRequirementDrawer = ({
             >
               {minimized ? <OpenInFullIcon /> : <MinimizeIcon />}
             </IconButton>
-            <IconButton aria-label="Close" size="small" onClick={close}><CloseIcon /></IconButton>
+            <IconButton aria-label="Close" size="small" onClick={close}>
+              <CloseIcon />
+            </IconButton>
           </Box>
         </Box>
         <Box className={styles.scrollContent}>
-          {submitError && <Alert severity="error" className={styles.alert}>{submitError}</Alert>}
           <Stack className={styles.formContent} spacing={2}>
-            <TextField label="Name" {...register("name")} error={Boolean(errors.name)} helperText={errors.name?.message} />
-            <TextField label="Requested by" {...register("requestedBy")} error={Boolean(errors.requestedBy)} helperText={errors.requestedBy?.message} />
+            <TextField
+              label="Name"
+              {...register("name")}
+              error={Boolean(errors.name)}
+              helperText={errors.name?.message}
+            />
+            <TextField
+              label="Requested by"
+              {...register("requestedBy")}
+              error={Boolean(errors.requestedBy)}
+              helperText={errors.requestedBy?.message}
+            />
             <Box className={styles.twoColumns}>
-              {selectField({ name: "requestingInstitution", label: "Requesting institution", options: institutions })}
-              {selectField({ name: "type", label: "Type", options: requirementTypes })}
+              {selectField({
+                name: "requestingInstitution",
+                label: "Requesting institution",
+                options: institutionOptions,
+                onOpen: handleReferenceDataOpen,
+                isLoading: isReferenceDataLoading,
+              })}
+              {selectField({
+                name: "type",
+                label: "Type",
+                options: requirementTypes,
+              })}
             </Box>
-            {selectField({ name: "domain", label: "Domain", options: domains })}
+            {selectField({
+              name: "domain",
+              label: "Domain",
+              options: domainOptions,
+              onOpen: handleReferenceDataOpen,
+              isLoading: isReferenceDataLoading,
+            })}
             <Box className={styles.twoColumns}>
-              {selectField({ name: "collaboratorDomains", label: "Collaborator domains", options: domains, multiple: true, optional: true })}
-              {selectField({ name: "followerDomains", label: "Follower domains", options: domains, multiple: true, optional: true })}
+              {selectField({
+                name: "collaboratorDomains",
+                label: "Collaborator domains",
+                options: domainOptions,
+                multiple: true,
+                optional: true,
+                onOpen: handleReferenceDataOpen,
+                isLoading: isReferenceDataLoading,
+              })}
+              {selectField({
+                name: "followerDomains",
+                label: "Follower domains",
+                options: domainOptions,
+                multiple: true,
+                optional: true,
+                onOpen: handleReferenceDataOpen,
+                isLoading: isReferenceDataLoading,
+              })}
             </Box>
 
-            <Typography className={styles.sectionTitle}>Beneficiaries and Scope</Typography>
-            {selectField({ name: "benefitedInstitutions", label: "Benefited institutions", options: benefitedInstitutions, multiple: true })}
+            <Typography className={styles.sectionTitle}>
+              Beneficiaries and Scope
+            </Typography>
+            {selectField({
+              name: "benefitedInstitutions",
+              label: "Benefited institutions",
+              options: benefitedInstitutionOptions,
+              multiple: true,
+              onOpen: handleReferenceDataOpen,
+              isLoading: isReferenceDataLoading,
+            })}
             <Box className={styles.twoColumns}>
-              {selectField({ name: "studyModalities", label: "Study modality", options: modalities, multiple: true })}
-              <Controller name="isObligatory" control={control} render={({ field }) => <FormControlLabel className={styles.checkboxField} control={<Checkbox checked={field.value} onChange={field.onChange} />} label="Mandatory" />} />
+              {selectField({
+                name: "studyModalities",
+                label: "Study modality",
+                options: modalities,
+                multiple: true,
+              })}
+              <Controller
+                name="isObligatory"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    className={styles.checkboxField}
+                    control={
+                      <Checkbox
+                        checked={field.value}
+                        onChange={field.onChange}
+                      />
+                    }
+                    label="Mandatory"
+                  />
+                )}
+              />
             </Box>
-            <Controller name="hasAlternativeSolution" control={control} render={({ field }) => <FormControlLabel className={styles.checkboxField} control={<Checkbox checked={field.value} onChange={field.onChange} />} label="Alternative solution exists" />} />
+            <Controller
+              name="hasAlternativeSolution"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  className={styles.checkboxField}
+                  control={
+                    <Checkbox
+                      checked={field.value}
+                      onChange={field.onChange}
+                    />
+                  }
+                  label="Alternative solution exists"
+                />
+              )}
+            />
 
-            <Typography className={styles.sectionTitle}>Impact and Feasibility</Typography>
+            <Typography className={styles.sectionTitle}>
+              Impact and Feasibility
+            </Typography>
             <Box className={styles.twoColumns}>
-              {selectField({ name: "impactUsers", label: "User impact", options: impacts })}
-              <TextField label="Impact" placeholder="-" type="number" {...register("impact")} slotProps={{ input: { endAdornment: <InfoOutlinedIcon fontSize="small" /> } }} />
+              {selectField({
+                name: "impactUsers",
+                label: "User impact",
+                options: impacts,
+              })}
+              <TextField
+                label="Impact"
+                placeholder="-"
+                type="text"
+                slotProps={{
+                  input: {
+                    readOnly: true,
+                    endAdornment: <InfoOutlinedIcon fontSize="small" />,
+                  },
+                }}
+                {...register("impact")}
+                helperText="Auto-calculated (SRS formula)"
+              />
             </Box>
             <Box className={styles.twoColumns}>
-              {selectField({ name: "complexityEffort", label: "Complexity and effort", options: complexities })}
-              {selectField({ name: "clientPriorityOverride", label: "Client priority", options: priorities })}
+              {selectField({
+                name: "complexityEffort",
+                label: "Complexity and effort",
+                options: complexities,
+              })}
+              {selectField({
+                name: "clientPriorityOverride",
+                label: "Client priority",
+                options: priorities,
+              })}
             </Box>
-            {selectField({ name: "managementPriority", label: "Status", options: managementPriorities })}
+            {selectField({
+              name: "managementPriority",
+              label: "Status",
+              options: managementPriorities,
+            })}
 
             <Typography className={styles.sectionTitle}>Timeline</Typography>
             <Box className={styles.twoColumns}>
-              <TextField label="Start date" type="date" slotProps={{ inputLabel: { shrink: true }, input: { endAdornment: <CalendarTodayOutlinedIcon fontSize="small" /> } }} {...register("startDate")} helperText="Optional" />
-              <TextField label="Finish date" type="date" slotProps={{ inputLabel: { shrink: true }, input: { endAdornment: <CalendarTodayOutlinedIcon fontSize="small" /> } }} {...register("finishDate")} helperText="Optional" />
+              <TextField
+                label="Start date"
+                type="date"
+                slotProps={{
+                  inputLabel: { shrink: true },
+                  input: {
+                    endAdornment: (
+                      <CalendarTodayOutlinedIcon fontSize="small" />
+                    ),
+                  },
+                }}
+                {...register("startDate")}
+                error={Boolean(errors.startDate)}
+                helperText={errors.startDate?.message ?? "Optional"}
+              />
+              <TextField
+                label="Finish date"
+                type="date"
+                slotProps={{
+                  inputLabel: { shrink: true },
+                  input: {
+                    endAdornment: (
+                      <CalendarTodayOutlinedIcon fontSize="small" />
+                    ),
+                  },
+                }}
+                {...register("finishDate")}
+                error={Boolean(errors.finishDate)}
+                helperText={errors.finishDate?.message ?? "Optional"}
+              />
             </Box>
 
             <Typography className={styles.sectionTitle}>Description</Typography>
@@ -288,21 +616,59 @@ export const CreateRequirementDrawer = ({
                 role="textbox"
                 aria-label="Description"
                 onInput={(event) =>
-                  setValue("description", event.currentTarget.textContent ?? "", {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  })
+                  setValue(
+                    "description",
+                    event.currentTarget.textContent ?? "",
+                    {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    },
+                  )
                 }
               />
               <Box className={styles.editorToolbar}>
-                <Button size="small"><FormatSizeIcon /></Button><Button size="small"><FormatBoldIcon /></Button><Button size="small"><FormatItalicIcon /></Button><Button size="small"><FormatUnderlinedIcon /></Button><Button size="small"><FormatListNumberedIcon /></Button><Button size="small"><FormatListBulletedIcon /></Button><Button size="small"><LinkIcon /></Button><Button size="small"><CodeIcon /></Button>
+                <Button size="small">
+                  <FormatSizeIcon />
+                </Button>
+                <Button size="small">
+                  <FormatBoldIcon />
+                </Button>
+                <Button size="small">
+                  <FormatItalicIcon />
+                </Button>
+                <Button size="small">
+                  <FormatUnderlinedIcon />
+                </Button>
+                <Button size="small">
+                  <FormatListNumberedIcon />
+                </Button>
+                <Button size="small">
+                  <FormatListBulletedIcon />
+                </Button>
+                <Button size="small">
+                  <LinkIcon />
+                </Button>
+                <Button size="small">
+                  <CodeIcon />
+                </Button>
               </Box>
             </Box>
+            {errors.description && (
+              <Typography color="error" variant="caption" sx={{ ml: 1.5 }}>
+                {errors.description.message}
+              </Typography>
+            )}
           </Stack>
         </Box>
         <Divider />
         <Box className={styles.footer}>
-          <Button type="submit" disabled={isSubmitting} className={styles.submitButton}>Create</Button>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className={styles.submitButton}
+          >
+            Create
+          </Button>
         </Box>
       </Box>
     </Drawer>

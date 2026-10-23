@@ -8,7 +8,7 @@ export class UpdateRequirementCommand extends Command<{
   type = 'requirements.update_requirement';
 
   constructor(id: string, data: UpdateRequirementValidator) {
-    super({ id, data }, process.env.APP_NAME ?? 'requirement-prioritization-app');
+    super({ id, data }, process.env.APP_NAME!);
   }
 
   getBody(): Record<string, unknown> {

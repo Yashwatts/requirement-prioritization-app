@@ -24,7 +24,7 @@ import { useSnackbar } from "@/components/snackbar/use-snackbar";
 import styles from "./topbar.module.css";
 
 interface TopbarProps {
-  user: User;
+  user: User | null;
   onMenuClick: () => void;
 }
 
@@ -32,7 +32,7 @@ export const Topbar = ({ user, onMenuClick }: TopbarProps) => {
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
-  const displayName = user.displayName || "Nombre Apellido";
+  const displayName = user?.displayName || user?.email || "User";
 
   const logout = async () => {
     setAnchorElement(null);
@@ -80,8 +80,10 @@ export const Topbar = ({ user, onMenuClick }: TopbarProps) => {
       >
         <Box className={styles.profileDetails}>
           <Typography>{displayName}</Typography>
-          <Tooltip title={user.email || "No email available"} placement="left">
-            <Typography className={styles.profileEmail}>{user.email}</Typography>
+          <Tooltip title={user?.email || "No email available"} placement="left">
+            <Typography className={styles.profileEmail}>
+              {user?.email}
+            </Typography>
           </Tooltip>
         </Box>
         <Divider />

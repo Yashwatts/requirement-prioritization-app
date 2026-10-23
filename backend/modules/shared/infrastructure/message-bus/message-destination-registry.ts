@@ -1,18 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
-
-export interface MessageDestination {
-  exchange: string;
-  routingKey: string;
-}
+import { MessageDestination } from './interfaces/message-destination.interface';
 
 @Injectable()
 export class MessageDestinationRegistry {
   static instance: MessageDestinationRegistry;
 
   private readonly logger = new Logger(MessageDestinationRegistry.name);
-
   private readonly instanceId = Math.random().toString(36).substring(7);
-
   private readonly mappings = new Map<string, MessageDestination>();
 
   constructor() {

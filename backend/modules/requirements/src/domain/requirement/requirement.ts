@@ -1,19 +1,15 @@
 import { randomUUID } from 'node:crypto';
-
 import { Command } from '@modules/shared/domain/common/command';
 import { Event } from '@modules/shared/domain/common/event';
-
 import { ClientPriority } from './enums/client-priority.enum';
 import { ComplexityEffort } from './enums/complexity-effort.enum';
 import { ManagementPriority } from './enums/management-priority.enum';
 import { RequirementState } from './enums/requirement-state.enum';
 import { RequirementType } from './enums/requirement-type.enum';
 import { StudyModality } from './enums/study-modality.enum';
-
 import { RequirementRegisteredEvent } from './event/requirement-registered.event';
 import { RequirementClientPriorityUpdatedEvent } from './event/requirement-client-priority-updated.event';
 import { RequirementManagementPriorityUpdatedEvent } from './event/requirement-management-priority-updated.event';
-
 import {
   CreateRequirementInterface,
   UpdateRequirementInterface,
@@ -218,7 +214,8 @@ export class Requirement {
     if (params.status !== undefined) {
       this.status = params.status;
     }
-    this.development_time_in_sprints = params.development_time_in_sprints ?? null;
+    this.development_time_in_sprints =
+      params.development_time_in_sprints ?? null;
     this.start_date = params.start_date ?? null;
     this.end_date = params.end_date ?? null;
     this.type = params.type;

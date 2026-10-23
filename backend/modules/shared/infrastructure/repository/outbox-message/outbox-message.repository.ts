@@ -1,7 +1,9 @@
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-
-import { OutboxMessage, OutboxStatus } from '@modules/shared/domain/outbox-message/outbox-message.entity';
+import {
+  OutboxMessage,
+  OutboxStatus,
+} from '@modules/shared/domain/outbox-message/outbox-message.entity';
 import { MessageDestinationRegistry } from '@modules/shared/infrastructure/message-bus/message-destination-registry';
 import { Event } from '@modules/shared/domain/common/event';
 import { Command } from '@modules/shared/domain/common/command';

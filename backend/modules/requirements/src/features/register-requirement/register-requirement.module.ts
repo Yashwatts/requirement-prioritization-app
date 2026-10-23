@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-
 import { MessageDestinationRegistry } from '@modules/shared/infrastructure/message-bus/message-destination-registry';
-
 import { RegisterRequirementController } from './register-requirement.controller';
 import { RegisterRequirementHandler } from './register-requirement.handler';
 import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';

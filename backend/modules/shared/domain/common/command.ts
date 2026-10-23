@@ -14,7 +14,6 @@ export abstract class Command<TPayload = unknown> {
   }
 
   abstract type: string;
-
   abstract getBody(): Record<string, unknown>;
 
   getId(): string {

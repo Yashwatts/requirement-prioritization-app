@@ -3,16 +3,16 @@ import { UpdateRequirementHandler } from './update-requirement.handler';
 import { UpdateRequirementValidator } from './update-requirement.validator';
 import { UpdateRequirementCommand } from './update-requirement.command';
 
-@Controller('requirements')
+@Controller('requirements/:id')
 export class UpdateRequirementController {
   constructor(private readonly handler: UpdateRequirementHandler) {}
 
-  @Put(':id')
+  @Put()
   async handle(
     @Param('id') id: string,
-    @Body() body: UpdateRequirementValidator,
+    @Body() validator: UpdateRequirementValidator,
   ) {
-    const command = new UpdateRequirementCommand(id, body);
+    const command = new UpdateRequirementCommand(id, validator);
     await this.handler.handle(command);
     return { message: 'Requirement updated successfully' };
   }

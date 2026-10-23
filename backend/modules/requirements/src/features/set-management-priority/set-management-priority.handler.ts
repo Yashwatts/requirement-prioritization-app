@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Transactional } from '@mikro-orm/core';
-
 import { SetManagementPriorityCommand } from './set-management-priority.command';
 import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';
 import { RequirementOutboxMessageRepository } from '../../infrastructure/repositories/requirement-outbox-message.repository';
@@ -30,9 +29,7 @@ export class SetManagementPriorityHandler {
     }
 
     requirement.setManagementPriority(command.payload.management_priority);
-
     await this.requirementRepository.save(requirement);
-
     await this.outboxMessageRepository.storeOutboxMessages(
       requirement.getMessages(),
     );

@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-
 import { AdjustClientPriorityController } from './adjust-client-priority.controller';
 import { AdjustClientPriorityHandler } from './adjust-client-priority.handler';
 import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';

@@ -18,6 +18,7 @@ export class UpdateRequirementHandler {
   @Transactional()
   async handle(command: UpdateRequirementCommand): Promise<void> {
     const { id, data } = command.payload;
+    const { start_date, end_date, ...requirementAttributes } = data;
     const isNumeric = /^\d+$/.test(id);
 
     const requirement = isNumeric
@@ -30,16 +31,16 @@ export class UpdateRequirementHandler {
       throw new RequirementNotFound();
     }
 
-    let impactUsersValue = data.impact_users_value;
+    let impactUsersValue = requirementAttributes.impact_users_value;
 
     if (impactUsersValue === undefined || impactUsersValue === null) {
       const impactTier = await this.impactUsersDomainRepository.findOne({
-        id: data.impact_number_users_id,
+        id: requirementAttributes.impact_number_users_id,
       });
 
       if (!impactTier) {
         throw new InvalidRequirement(
-          `Impact users tier with id ${data.impact_number_users_id} not found.`,
+          `Impact users tier with id ${requirementAttributes.impact_number_users_id} not found.`,
         );
       }
 
@@ -47,27 +48,10 @@ export class UpdateRequirementHandler {
     }
 
     requirement.update({
-      name: data.name,
-      description: data.description,
-      requesting_institution_id: data.requesting_institution_id,
-      requested_by: data.requested_by,
-      benefited_institutions: data.benefited_institutions,
-      study_modality: data.study_modality,
-      impact_number_users_id: data.impact_number_users_id,
+      ...requirementAttributes,
       impact_users_value: impactUsersValue,
-      obligation: data.obligation,
-      exist_solution_alternative: data.exist_solution_alternative,
-      complexity_and_effort: data.complexity_and_effort,
-      client_priority: data.client_priority,
-      management_priority: data.management_priority,
-      domain_in_charge_id: data.domain_in_charge_id,
-      domains_collaborators: data.domains_collaborators,
-      followers_domains: data.followers_domains,
-      status: data.status,
-      development_time_in_sprints: data.development_time_in_sprints,
-      start_date: data.start_date ? new Date(data.start_date) : undefined,
-      end_date: data.end_date ? new Date(data.end_date) : undefined,
-      type: data.type,
+      start_date: start_date ? new Date(start_date) : undefined,
+      end_date: end_date ? new Date(end_date) : undefined,
     });
 
     await this.requirementRepository.save(requirement);

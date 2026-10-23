@@ -5,6 +5,7 @@ export const InstitutionEntity = new EntitySchema<Institution>({
   class: Institution,
   tableName: 'institutions',
   schema: process.env.DB_REQUIREMENTS_SCHEMA,
+
   properties: {
     id: {
       type: 'integer',

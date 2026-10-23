@@ -5,6 +5,7 @@ export const DomainEntity = new EntitySchema<DomainArea>({
   class: DomainArea,
   tableName: 'domains',
   schema: process.env.DB_REQUIREMENTS_SCHEMA,
+
   properties: {
     id: {
       type: 'integer',

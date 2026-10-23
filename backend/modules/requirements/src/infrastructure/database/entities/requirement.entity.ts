@@ -1,12 +1,9 @@
 import { EntitySchema } from '@mikro-orm/core';
-
 import { Requirement } from '@modules/requirements/src/domain/requirement/requirement';
 
 export const RequirementEntity = new EntitySchema<Requirement>({
   class: Requirement,
-
   tableName: 'requirements',
-
   schema: process.env.DB_REQUIREMENTS_SCHEMA,
 
   properties: {

@@ -509,8 +509,8 @@
         "code": {
           "name": "code",
           "type": "int4",
-          "unsigned": true,
-          "autoincrement": true,
+          "unsigned": false,
+          "autoincrement": false,
           "primary": false,
           "nullable": false,
           "unique": true,

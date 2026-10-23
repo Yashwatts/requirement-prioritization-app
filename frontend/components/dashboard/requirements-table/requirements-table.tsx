@@ -17,7 +17,6 @@ import ViewQuiltOutlinedIcon from "@mui/icons-material/ViewQuiltOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import {
   Box,
-  CircularProgress,
   Button,
   Checkbox,
   Chip,
@@ -26,6 +25,8 @@ import {
   MenuItem,
   Paper,
   Select,
+  Skeleton,
+  Stack,
   TextField,
   Tooltip,
   Typography,
@@ -33,6 +34,7 @@ import {
 import MaterialReactTable, { type MRT_ColumnDef } from "material-react-table";
 
 import styles from "./requirements-table.module.css";
+import { useSnackbar } from "@/components/snackbar/use-snackbar";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchRequirements } from "@/features/requirements/requirement.action";
 import {
@@ -43,7 +45,7 @@ import {
   setSortOrder,
   toggleSortOrder,
 } from "@/features/requirements/requirement.slice";
-import type { RequirementListItem } from "@/features/requirements/requirement.types";
+import type { RequirementListItem } from "@/@types/requirement.types";
 
 const EmptyState = () => (
   <Box className={styles.emptyState}>
@@ -105,6 +107,15 @@ export const RequirementsTable = ({
     status,
     error,
   } = useAppSelector((state) => state.requirements);
+
+  const { showSnackbar } = useSnackbar();
+
+  // Show error via snackbar
+  useEffect(() => {
+    if (status === "failed" && error) {
+      showSnackbar(error, "error");
+    }
+  }, [status, error, showSnackbar]);
 
   // Local state for debounced search input
   const [searchInput, setSearchInput] = useState(search);
@@ -317,7 +328,8 @@ export const RequirementsTable = ({
               },
             }}
             state={{
-              isLoading: status === "loading",
+              isLoading: false,
+              showSkeletons: status === "loading",
               showAlertBanner: status === "failed",
             }}
             muiTableProps={{ className: styles.table, stickyHeader: true }}
@@ -333,7 +345,17 @@ export const RequirementsTable = ({
                   {error ?? "Unable to load requirements."}
                 </Typography>
               ) : status === "loading" ? (
-                <CircularProgress size={24} />
+                <Stack spacing={1} sx={{ width: "100%", p: 2 }}>
+                  {[...Array(6)].map((_, i) => (
+                    <Skeleton
+                      key={i}
+                      variant="rectangular"
+                      height={40}
+                      animation="wave"
+                      sx={{ borderRadius: 1, bgcolor: "rgba(0, 0, 0, 0.04)" }}
+                    />
+                  ))}
+                </Stack>
               ) : (
                 <EmptyState />
               )

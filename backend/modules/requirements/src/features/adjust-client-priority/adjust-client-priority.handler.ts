@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Transactional } from '@mikro-orm/core';
-
 import { AdjustClientPriorityCommand } from './adjust-client-priority.command';
 import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';
 import { RequirementOutboxMessageRepository } from '../../infrastructure/repositories/requirement-outbox-message.repository';

@@ -40,7 +40,9 @@ export class OutboxRelayService
 
     this.timer = setInterval(() => {
       this.relay().catch((err) => {
-        this.logger.error(`Error during outbox relay: ${(err as Error).message}`);
+        this.logger.error(
+          `Error during outbox relay: ${(err as Error).message}`,
+        );
       });
     }, POLL_INTERVAL_MS);
 
@@ -60,12 +62,10 @@ export class OutboxRelayService
     if (this.isProcessing) {
       return;
     }
-
     this.isProcessing = true;
 
     try {
       const fork = this.em.fork();
-
       const pendingMessages = await fork.find(
         OutboxMessage,
         { status: OutboxStatus.PENDING },
@@ -105,8 +105,7 @@ export class OutboxRelayService
     try {
       const body = message.getBody();
       const destination = body[EXCHANGE_HEADER] as
-        | { exchange: string; routingKey: string }
-        | undefined;
+        { exchange: string; routingKey: string } | undefined;
 
       if (!destination?.exchange || !destination?.routingKey) {
         this.logger.warn(
@@ -117,14 +116,16 @@ export class OutboxRelayService
         return;
       }
 
-      const { [EXCHANGE_HEADER]: _dest, ...payload } = body;
+      const payload = Object.fromEntries(
+        Object.entries(body).filter(([key]) => key !== EXCHANGE_HEADER),
+      );
 
       await this.rabbitmq.assertExchange(destination.exchange, 'topic');
 
       await this.rabbitmq.publish(
         destination.exchange,
         destination.routingKey,
-        payload as Record<string, unknown>,
+        payload,
         message.message_id,
         message.type,
       );

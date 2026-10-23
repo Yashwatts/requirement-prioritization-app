@@ -1,11 +1,12 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { ProblemDetailsExceptionFilter } from './shared/infrastructure/http/filters/problem-details-exception.filter';
-import { ProblemDetailsMapper } from './shared/infrastructure/http/problem-details/problem-details-mapper';
+import { ProblemDetailsExceptionFilter } from './shared/infrastructure/http/exceptions/problem-details-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -14,8 +15,7 @@ async function bootstrap() {
     }),
   );
 
-  const problemDetailsMapper = new ProblemDetailsMapper();
-  app.useGlobalFilters(new ProblemDetailsExceptionFilter(problemDetailsMapper));
+  app.useGlobalFilters(new ProblemDetailsExceptionFilter());
 
   app.enableCors({
     origin: process.env.FRONTEND_URL,

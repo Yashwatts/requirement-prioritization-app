@@ -5,6 +5,7 @@ export const ImpactUsersDomainEntity = new EntitySchema<ImpactUsersDomain>({
   class: ImpactUsersDomain,
   tableName: 'impact_users_domains',
   schema: process.env.DB_REQUIREMENTS_SCHEMA,
+
   properties: {
     id: {
       type: 'integer',

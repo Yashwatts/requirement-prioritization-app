@@ -11,7 +11,8 @@ import {
 
 export const SnackbarContext = createContext<SnackbarContextValue | null>(null);
 
-const AUTO_HIDE_DURATION = Number(process.env.SNACKBAR_HIDE_DURATION);
+const AUTO_HIDE_DURATION =
+  Number(process.env.SNACKBAR_HIDE_DURATION) || 4000;
 
 export const SnackbarProvider = ({ children }: SnackbarProviderProps) => {
   const [snackbar, setSnackbar] = useState<SnackbarState>({

@@ -7,10 +7,7 @@ import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
 
 @Global()
 @Module({
-  imports: [
-    MikroOrmModule.forFeature([OutboxMessage]),
-    RabbitmqModule,
-  ],
+  imports: [MikroOrmModule.forFeature([OutboxMessage]), RabbitmqModule],
   providers: [MessageDestinationRegistry, OutboxRelayService],
   exports: [MessageDestinationRegistry],
 })

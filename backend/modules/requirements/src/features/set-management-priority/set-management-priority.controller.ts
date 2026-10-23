@@ -3,19 +3,17 @@ import { SetManagementPriorityCommand } from './set-management-priority.command'
 import { SetManagementPriorityHandler } from './set-management-priority.handler';
 import { SetManagementPriorityValidator } from './set-management-priority.validator';
 
-@Controller('requirements')
+@Controller('requirements/:id/management-priority')
 export class SetManagementPriorityController {
   constructor(private readonly handler: SetManagementPriorityHandler) {}
 
-  @Patch(':id/management-priority')
+  @Patch()
   async handle(
     @Param('id') requirementId: string,
-    @Body() body: SetManagementPriorityValidator,
+    @Body() validator: SetManagementPriorityValidator,
   ) {
-    const command = new SetManagementPriorityCommand(requirementId, body);
-
+    const command = new SetManagementPriorityCommand(requirementId, validator);
     await this.handler.handle(command);
-
     return {
       message: 'Management priority set successfully',
     };

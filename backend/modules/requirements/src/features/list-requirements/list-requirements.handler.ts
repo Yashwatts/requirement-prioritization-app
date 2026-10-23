@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { FindOptions } from '@mikro-orm/core';
-
 import { Requirement } from '../../domain/requirement/requirement';
 import { ListRequirementsQuery } from './list-requirements.query';
 import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';

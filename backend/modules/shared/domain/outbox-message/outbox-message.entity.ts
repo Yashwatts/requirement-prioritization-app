@@ -1,10 +1,6 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-
-export enum OutboxStatus {
-  PENDING = 'PENDING',
-  SENT = 'SENT',
-  FAILED = 'FAILED',
-}
+import { OutboxStatus } from './enums/outbox-status.enum';
+export { OutboxStatus };
 
 @Entity({
   tableName: 'outbox_message',
@@ -36,7 +32,7 @@ export class OutboxMessage {
     length: 50,
     default: OutboxStatus.PENDING,
   })
-  status: string = OutboxStatus.PENDING;
+  status: OutboxStatus = OutboxStatus.PENDING;
 
   @Property({
     type: 'timestamp',
