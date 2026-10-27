@@ -5,8 +5,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
-  padding: 16px;
+  background-color: #eff5ff;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .container {
@@ -29,8 +30,8 @@
   align-items: center;
   gap: 10px;
   border-radius: 30px;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.04);
+  background: #ffffff;
+  box-shadow: none;
   box-sizing: border-box;
 }
 
@@ -41,62 +42,46 @@
   align-items: flex-start;
   justify-content: center;
   flex-shrink: 0;
-}
-
-.iconHeader {
-  display: flex;
-  padding-bottom: 24px;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 8px;
 }
 
 .iconWrapper {
   width: 50px;
   height: 50px;
-  border-radius: 10px;
-  background: #E8F0FE;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.iconSvg {
-  width: 33px;
-  background-image: url("/login-background/login-logo-isolated.svg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 34px 34px;
-  height: 34px;
-  flex-shrink: 0;
+.iconImg {
+  width: 50px;
+  height: 50px;
+  display: block;
 }
 
 .title {
   width: 352px;
-  color: #212121;
-  font-family: "Open Sans", sans-serif;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 32px;
-  margin: 0;
+  color: #212121 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 22px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .subtext {
   width: 352px;
-  color: #757575;
-  font-family: "Open Sans", sans-serif;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
-  margin: 4px 0 0 0;
-}
-
-.translationContainer span {
-  flex-shrink: 0;
-  white-space: nowrap;
+  color: #757575 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .rightSection {
@@ -107,32 +92,34 @@
   align-items: center;
   gap: 16px;
   flex-shrink: 0;
-  border-radius: 0 5px 5px 0;
-  background: #FFF;
+  background: transparent;
 }
 
 .loginText {
   width: 300px;
-  color: #212121;
-  font-family: "Open Sans", sans-serif;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-  text-align: left;
+  color: #212121 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 18px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 24px !important;
+  text-align: left !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .translationContainer {
   border: 0;
   background: transparent;
-  display: flex;
-  width: 174px;
-  padding: 8px 12px;
-  margin-left: 16px;
+  display: inline-flex;
+  padding: 0;
+  margin-left: 28px;
+  margin-top: 10px;
+  height: 36px;
+  box-sizing: border-box;
   justify-content: flex-start;
   align-items: center;
-  gap: 8px;
-  margin-top: 3px;
+  gap: 4px;
   color: #424242;
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
@@ -144,13 +131,14 @@
 }
 
 .translationContainer:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: transparent;
+  opacity: 0.85;
 }
 
 .arrowIcon {
   width: 20px;
   height: 20px;
-  color: #757575;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .languageMenuPaper {
@@ -171,14 +159,14 @@
 }
 
 .languageMenuItem.Mui-selected {
-  background-color: #F4F2F8;
+  background-color: #f4f2f8;
 }
 
 .languageMenuItem.Mui-selected:hover {
-  background-color: #F4F2F8;
+  background-color: #f4f2f8;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 850px) {
   .main {
     padding: 24px 16px;
   }
@@ -205,5 +193,6 @@
 
   .translationContainer {
     align-self: center;
+    margin-left: 0;
   }
 }

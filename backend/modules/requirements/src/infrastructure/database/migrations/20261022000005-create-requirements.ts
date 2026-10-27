@@ -22,7 +22,6 @@ export class CreateRequirements20261022000005 extends RequirementsMigration {
         "study_modality"               smallint     not null,
         "impact"                       integer      not null,
         "client_priority"              smallint     not null,
-        "management_priority"          smallint     null      default 1,
         "requested_by"                 jsonb        not null  default '[]'::jsonb,
         "description"                  text         not null,
         "complexity_and_effort"        smallint     not null,

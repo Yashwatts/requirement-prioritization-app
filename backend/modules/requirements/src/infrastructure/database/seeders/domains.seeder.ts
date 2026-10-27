@@ -1,6 +1,6 @@
 import { Seeder } from '@mikro-orm/seeder';
 import { EntityManager } from '@mikro-orm/postgresql';
-import { DomainArea } from '@modules/requirements/src/domain/domain-area/domain-area';
+import { Domain } from '@modules/requirements/src/domain/requirement/domain/domain';
 
 export const DOMAINS_DATA = [
   { name: 'Financiero', abbreviation: 'FIN', email: 'financiero@funiber.org' },
@@ -77,16 +77,14 @@ export const DOMAINS_DATA = [
 
 export class DomainsSeeder extends Seeder {
   async run(entityManager: EntityManager): Promise<void> {
-    const existingDomains = await entityManager.find(DomainArea, {
+    const existingDomains = await entityManager.find(Domain, {
       name: { $in: DOMAINS_DATA.map((item) => item.name) },
     });
-    const existingNames = new Set(existingDomains.map((d) => d.name));
+    const existingNames = new Set(existingDomains.map((domain) => domain.name));
 
     const newDomains = DOMAINS_DATA.filter(
       (item) => !existingNames.has(item.name),
-    ).map((item) =>
-      DomainArea.create(item.name, item.abbreviation, item.email),
-    );
+    ).map((item) => Domain.create(item.name, item.abbreviation, item.email));
 
     if (newDomains.length > 0) {
       await entityManager.persist(newDomains).flush();

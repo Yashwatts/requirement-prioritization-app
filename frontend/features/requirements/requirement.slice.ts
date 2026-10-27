@@ -1,11 +1,12 @@
 import { DomainItem } from "@/@types/domain-item.types";
-import { ImpactUsersDomainItem } from "@/@types/impact-users-domain-item.types";
+import { ImpactUsersItem } from "@/@types/impact-users.types";
 import { InstitutionItem } from "@/@types/institution-item.types";
 import { RequirementListItem, SortOrder } from "@/@types/requirement.types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
-  createRequirement,
-  fetchReferenceData,
+  fetchDomains,
+  fetchImpactUsers,
+  fetchInstitutions,
   fetchRequirements,
 } from "./requirement.action";
 
@@ -23,16 +24,16 @@ export interface RequirementsState {
   sortOrder: SortOrder;
 
   institutions: InstitutionItem[];
+  institutionsStatus: AsyncStatus;
+
   domains: DomainItem[];
-  impactLevels: ImpactUsersDomainItem[];
-  referenceDataStatus: AsyncStatus;
+  domainsStatus: AsyncStatus;
+
+  impactUsers: ImpactUsersItem[];
+  impactUsersStatus: AsyncStatus;
 
   status: AsyncStatus;
   error: string | null;
-
-  actionStatus: AsyncStatus;
-  actionError: string | null;
-  actionSuccess: string | null;
 }
 
 const initialState: RequirementsState = {
@@ -40,22 +41,22 @@ const initialState: RequirementsState = {
   total: 0,
   totalPages: 0,
   page: 1,
-  limit: 16,
+  limit: 10,
   search: "",
   sortBy: undefined,
   sortOrder: "ASC",
 
   institutions: [],
+  institutionsStatus: "idle",
+
   domains: [],
-  impactLevels: [],
-  referenceDataStatus: "idle",
+  domainsStatus: "idle",
+
+  impactUsers: [],
+  impactUsersStatus: "idle",
 
   status: "idle",
   error: null,
-
-  actionStatus: "idle",
-  actionError: null,
-  actionSuccess: null,
 };
 
 export const requirementSlice = createSlice({
@@ -85,11 +86,6 @@ export const requirementSlice = createSlice({
       state.sortOrder = state.sortOrder === "ASC" ? "DESC" : "ASC";
       state.page = 1;
     },
-    resetActionStatus: (state) => {
-      state.actionStatus = "idle";
-      state.actionError = null;
-      state.actionSuccess = null;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -111,33 +107,39 @@ export const requirementSlice = createSlice({
       });
 
     builder
-      .addCase(createRequirement.pending, (state) => {
-        state.actionStatus = "loading";
-        state.actionError = null;
-        state.actionSuccess = null;
+      .addCase(fetchInstitutions.pending, (state) => {
+        state.institutionsStatus = "loading";
       })
-      .addCase(createRequirement.fulfilled, (state, action) => {
-        state.actionStatus = "succeeded";
-        state.actionSuccess =
-          action.payload.message ?? "Requirement registered successfully.";
+      .addCase(fetchInstitutions.fulfilled, (state, action) => {
+        state.institutionsStatus = "succeeded";
+        state.institutions = action.payload;
       })
-      .addCase(createRequirement.rejected, (state, action) => {
-        state.actionStatus = "failed";
-        state.actionError = action.payload ?? "Failed to create requirement.";
+      .addCase(fetchInstitutions.rejected, (state) => {
+        state.institutionsStatus = "failed";
       });
 
     builder
-      .addCase(fetchReferenceData.pending, (state) => {
-        state.referenceDataStatus = "loading";
+      .addCase(fetchDomains.pending, (state) => {
+        state.domainsStatus = "loading";
       })
-      .addCase(fetchReferenceData.fulfilled, (state, action) => {
-        state.referenceDataStatus = "succeeded";
-        state.domains = action.payload.domains;
-        state.institutions = action.payload.institutions;
-        state.impactLevels = action.payload.impactLevels;
+      .addCase(fetchDomains.fulfilled, (state, action) => {
+        state.domainsStatus = "succeeded";
+        state.domains = action.payload;
       })
-      .addCase(fetchReferenceData.rejected, (state) => {
-        state.referenceDataStatus = "failed";
+      .addCase(fetchDomains.rejected, (state) => {
+        state.domainsStatus = "failed";
+      });
+
+    builder
+      .addCase(fetchImpactUsers.pending, (state) => {
+        state.impactUsersStatus = "loading";
+      })
+      .addCase(fetchImpactUsers.fulfilled, (state, action) => {
+        state.impactUsersStatus = "succeeded";
+        state.impactUsers = action.payload;
+      })
+      .addCase(fetchImpactUsers.rejected, (state) => {
+        state.impactUsersStatus = "failed";
       });
   },
 });
@@ -149,7 +151,6 @@ export const {
   setSortBy,
   setSortOrder,
   toggleSortOrder,
-  resetActionStatus,
 } = requirementSlice.actions;
 
 export default requirementSlice.reducer;

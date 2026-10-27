@@ -1,8 +1,8 @@
 import { EntitySchema } from '@mikro-orm/core';
-import { DomainArea } from '@modules/requirements/src/domain/domain-area/domain-area';
+import { Domain } from '@modules/requirements/src/domain/requirement/domain/domain';
 
-export const DomainEntity = new EntitySchema<DomainArea>({
-  class: DomainArea,
+export const DomainEntity = new EntitySchema<Domain>({
+  class: Domain,
   tableName: 'domains',
   schema: process.env.DB_REQUIREMENTS_SCHEMA,
 

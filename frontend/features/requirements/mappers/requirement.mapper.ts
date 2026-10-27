@@ -1,13 +1,12 @@
 import {
-  BackendEnrichedRequirement,
   BenefitedInstitution,
   ClientPriority,
   ComplexityEffort,
-  DomainArea,
-  ManagementPriority,
+  Domain,
   RequestingInstitution,
+  RequirementDetail,
   RequirementListItem,
-  RequirementState,
+  RequirementStatus,
   RequirementType,
   StudyModality,
   UserImpactLevel,
@@ -42,42 +41,7 @@ export function mapClientPriorityToNumber(
   }
 }
 
-export function mapNumberToManagementPriority(
-  num?: number | null,
-): ManagementPriority {
-  switch (num) {
-    case 1:
-      return "Under";
-    case 2:
-      return "Medium";
-    case 3:
-      return "High";
-    case 4:
-      return "Discarded";
-    default:
-      return "Under";
-  }
-}
-
-export function mapManagementPriorityToNumber(
-  priority?: ManagementPriority | number,
-): number {
-  if (typeof priority === "number") return priority;
-  switch (priority) {
-    case "Under":
-      return 1;
-    case "Medium":
-      return 2;
-    case "High":
-      return 3;
-    case "Discarded":
-      return 4;
-    default:
-      return 1;
-  }
-}
-
-export function mapNumberToState(num: number): RequirementState {
+export function mapNumberToStatus(num: number): RequirementStatus {
   switch (num) {
     case 1:
       return "Registered";
@@ -87,10 +51,11 @@ export function mapNumberToState(num: number): RequirementState {
       return "Registered";
   }
 }
+export const mapNumberToState = mapNumberToStatus;
 
-export function mapStateToNumber(state: RequirementState | number): number {
-  if (typeof state === "number") return state;
-  switch (state) {
+export function mapStatusToNumber(status: RequirementStatus | number): number {
+  if (typeof status === "number") return status;
+  switch (status) {
     case "Registered":
       return 1;
     case "Flow":
@@ -99,6 +64,7 @@ export function mapStateToNumber(state: RequirementState | number): number {
       return 1;
   }
 }
+export const mapStateToNumber = mapStatusToNumber;
 
 export function mapNumberToComplexity(num: number): ComplexityEffort {
   switch (num) {
@@ -207,25 +173,28 @@ export function mapNumberToImpactLevel(num: number): UserImpactLevel {
 }
 
 export function mapImpactLevelToNumber(
-  level: UserImpactLevel | number,
+  level: UserImpactLevel | string | number,
 ): number {
   if (typeof level === "number") return level;
-  switch (level) {
-    case "Low":
-      return 1;
-    case "Medium":
-      return 2;
-    case "High":
-      return 3;
-    case "Very High":
-      return 4;
-    default:
-      return 1;
+  if (!level) return 1;
+  const str = String(level).trim().toLowerCase();
+  if (str.startsWith("very high") || str.startsWith("very_high") || str.includes("very high")) {
+    return 4;
   }
+  if (str.startsWith("high") || str.includes("high")) {
+    return 3;
+  }
+  if (str.startsWith("medium") || str.includes("medium")) {
+    return 2;
+  }
+  if (str.startsWith("low") || str.includes("low")) {
+    return 1;
+  }
+  return 1;
 }
 
 export function mapBackendToListItem(
-  row: BackendEnrichedRequirement,
+  row: RequirementDetail,
 ): RequirementListItem {
   const requestingInstitution = (row.requesting_institution_name ??
     row.requesting_institution?.name ??
@@ -233,7 +202,7 @@ export function mapBackendToListItem(
 
   const domain = (row.domain_in_charge_name ??
     row.domain_in_charge?.name ??
-    "Financiero") as DomainArea;
+    "Financiero") as Domain;
 
   const requestedByList = Array.isArray(row.requested_by)
     ? row.requested_by
@@ -243,8 +212,8 @@ export function mapBackendToListItem(
 
   const requestedBy = requestedByList.join(", ");
 
-  const collaboratorDomains = (row.domains_collaborators ?? []) as DomainArea[];
-  const followerDomains = (row.followers_domains ?? []) as DomainArea[];
+  const collaboratorDomains = (row.domains_collaborators ?? []) as Domain[];
+  const followerDomains = (row.followers_domains ?? []) as Domain[];
   const benefitedInstitutions = (row.benefited_institutions ??
     []) as BenefitedInstitution[];
 
@@ -263,7 +232,7 @@ export function mapBackendToListItem(
     : null;
 
   return {
-    id: row.uuid || String(row.id),
+    id: row.uuid ? row.uuid : String(row.id),
     numericId: row.id,
     code: row.code,
     name: row.name,
@@ -290,9 +259,9 @@ export function mapBackendToListItem(
     complexityEffortId: row.complexity_and_effort,
     clientPriority: mapNumberToClientPriority(row.client_priority),
     clientPriorityId: row.client_priority,
-    managementPriority: mapNumberToManagementPriority(row.management_priority),
-    managementPriorityId: row.management_priority ?? 1,
-    state: mapNumberToState(row.status),
+    status: mapNumberToStatus(row.status),
+    statusId: row.status,
+    state: mapNumberToStatus(row.status),
     stateId: row.status,
     type: mapNumberToType(row.type),
     typeId: row.type,

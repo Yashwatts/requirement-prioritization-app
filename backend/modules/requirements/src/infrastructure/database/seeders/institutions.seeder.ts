@@ -1,6 +1,6 @@
 import { Seeder } from '@mikro-orm/seeder';
 import { EntityManager } from '@mikro-orm/postgresql';
-import { Institution } from '@modules/requirements/src/domain/institution/institution';
+import { Institution } from '@modules/requirements/src/domain/requirement/institution/institution';
 
 export class InstitutionsSeeder extends Seeder {
   async run(entityManager: EntityManager): Promise<void> {

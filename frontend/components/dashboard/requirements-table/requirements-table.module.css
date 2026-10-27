@@ -103,10 +103,10 @@
   height: 20px;
 }
 .tableFrame {
-  min-height: 638px;
-  overflow: hidden;
+  width: 100%;
   border: 1px solid #e0e0e0 !important;
   border-radius: 8px !important;
+  background: #ffffff;
 }
 .mrtPaper {
   width: 100%;
@@ -116,17 +116,36 @@
 }
 .tableContainer {
   width: 100% !important;
-  min-height: 582px !important;
-  overflow: hidden !important;
+  height: 582px !important;
+  max-height: 582px !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+.tableContainer::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.tableContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.tableContainer::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+.tableContainer::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 .table {
-  width: 100%;
-  min-width: 0;
-  table-layout: fixed;
+  width: max-content !important;
+  min-width: 100% !important;
 }
 .table :global(.MuiTableCell-head) {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 4 !important;
   height: 56px !important;
-  padding: 8px 12px !important;
+  padding: 8px 14px !important;
   background: #eeeeee !important;
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
@@ -144,6 +163,20 @@
   justify-content: flex-start !important;
   white-space: nowrap !important;
 }
+.table :global(.MuiTableSortLabel-root) {
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+.table :global(.MuiTableSortLabel-icon) {
+  opacity: 0.6 !important;
+  color: #424242 !important;
+}
+.table :global(.MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-icon) {
+  opacity: 1 !important;
+  color: #01579b !important;
+}
 .table :global(.MuiTableCell-body) {
   height: 52px !important;
   padding: 10px 16px !important;
@@ -156,40 +189,49 @@
 .table :global(.MuiTableRow-root:nth-of-type(even)) {
   background: #f7f9fc !important;
 }
-.checkCell {
-  width: 64px;
-  padding: 0 !important;
-  text-align: center;
+.stickyActionsHeadCell {
+  position: sticky !important;
+  top: 0 !important;
+  right: 0 !important;
+  z-index: 6 !important;
+  background-color: #eeeeee !important;
+  border-left: 1px solid #d0d0d0 !important;
+  box-shadow: -4px 0 8px -3px rgba(0, 0, 0, 0.08) !important;
+  text-align: center !important;
+  min-width: 100px !important;
+  width: 100px !important;
 }
-.table th:nth-child(2), .table td:nth-child(2) { width: 200px; }
-.table th:nth-child(3), .table td:nth-child(3) { width: 257px; }
-.table th:nth-child(4), .table td:nth-child(4) { width: 197px; }
-.table th:nth-child(5), .table td:nth-child(5) { width: 172px; }
-.table th:nth-child(6), .table td:nth-child(6),
-.table th:nth-child(7), .table td:nth-child(7) { width: 188px; }
-.table th:nth-child(8), .table td:nth-child(8) { width: 187px; }
-.actionsCell {
-  width: 121px;
+.stickyActionsBodyCell {
+  position: sticky !important;
+  right: 0 !important;
+  z-index: 2 !important;
+  background-color: #ffffff !important;
+  border-left: 1px solid #e0e0e0 !important;
+  box-shadow: -4px 0 8px -3px rgba(0, 0, 0, 0.08) !important;
+  text-align: center !important;
   padding: 0 8px !important;
-  text-align: center;
+  min-width: 100px !important;
+  width: 100px !important;
 }
-.headerButton {
-  width: 100%;
-  height: 40px !important;
-  gap: 4px;
-  padding: 0 !important;
-  color: #424242 !important;
-  font-family: inherit !important;
-  font-size: inherit !important;
-  font-weight: inherit !important;
-  text-transform: none !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  white-space: nowrap !important;
+.table :global(.MuiTableRow-root:nth-of-type(even)) .stickyActionsBodyCell {
+  background-color: #f7f9fc !important;
 }
-.headerButton svg {
-  width: 20px;
-  height: 20px;
+.rowActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.rowActions :global(.MuiIconButton-root) {
+  padding: 6px !important;
+  color: #757575 !important;
+}
+.rowActions :global(.MuiIconButton-root:hover) {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  color: #01579b !important;
+}
+.rowActions :global(.MuiSvgIcon-root) {
+  font-size: 18px !important;
 }
 .chip {
   height: 20px !important;
@@ -198,11 +240,6 @@
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 11px !important;
-}
-.emptyStateCell {
-  height: 254px !important;
-  padding: 0 !important;
-  border-bottom: 0 !important;
 }
 .emptyState {
   width: 100%;
@@ -242,7 +279,7 @@
 .pagination {
   width: 100%;
   min-height: 48px;
-  padding-top: 4px;
+  padding: 4px 16px 4px 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -250,6 +287,7 @@
   color: #616161;
   font-family: "Open Sans", sans-serif;
   font-size: 11px;
+  border-top: 1px solid #e0e0e0;
 }
 .pagination :global(.MuiSelect-select) {
   padding: 6px 28px 6px 8px;

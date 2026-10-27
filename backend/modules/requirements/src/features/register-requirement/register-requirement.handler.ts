@@ -1,51 +1,34 @@
-import { Injectable } from '@nestjs/common';
-import { Transactional } from '@mikro-orm/core';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Requirement } from '../../domain/requirement/requirement';
-import { InvalidRequirement } from '../../domain/requirement/exceptions/exceptions';
 import { RegisterRequirementCommand } from './register-requirement.command';
 import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';
-import { RequirementOutboxMessageRepository } from '../../infrastructure/repositories/requirement-outbox-message.repository';
-import { ImpactUsersDomainRepository } from '../../infrastructure/repositories/impact-users-domain.repository';
+import { ImpactUsersRepository } from '../../infrastructure/repositories/impact-users.repository';
 
-@Injectable()
-export class RegisterRequirementHandler {
+@CommandHandler(RegisterRequirementCommand)
+export class RegisterRequirementHandler implements ICommandHandler<RegisterRequirementCommand> {
   constructor(
     private readonly requirementRepository: RequirementRepository,
-    private readonly outboxMessageRepository: RequirementOutboxMessageRepository,
-    private readonly impactUsersDomainRepository: ImpactUsersDomainRepository,
+    private readonly impactUsersRepository: ImpactUsersRepository,
   ) {}
 
-  @Transactional()
-  async handle(command: RegisterRequirementCommand): Promise<void> {
+  async execute(command: RegisterRequirementCommand): Promise<Requirement> {
     const { start_date, end_date, ...requirementAttributes } = command.payload;
 
-    let impactUsersValue = requirementAttributes.impact_users_value;
-
-    if (impactUsersValue === undefined || impactUsersValue === null) {
-      const impactTier = await this.impactUsersDomainRepository.findOne({
-        id: requirementAttributes.impact_number_users_id,
-      });
-
-      if (!impactTier) {
-        throw new InvalidRequirement(
-          `Impact users tier with id ${requirementAttributes.impact_number_users_id} not found.`,
-        );
-      }
-
-      impactUsersValue = impactTier.impact_number_users_level;
-    }
+    const tier = await this.impactUsersRepository.findUserImpactRange(
+      requirementAttributes.domain_in_charge_id,
+      requirementAttributes.impact_number_users_id,
+    );
 
     const requirement = Requirement.create({
       ...requirementAttributes,
-      impact_users_value: impactUsersValue,
+      impact_number_users_id:
+        tier?.id ?? requirementAttributes.impact_number_users_id,
+      impact_users_tier: tier,
       start_date: start_date ? new Date(start_date) : undefined,
       end_date: end_date ? new Date(end_date) : undefined,
     });
 
     await this.requirementRepository.save(requirement);
-
-    await this.outboxMessageRepository.storeOutboxMessages(
-      requirement.getMessages(),
-    );
+    return requirement;
   }
 }

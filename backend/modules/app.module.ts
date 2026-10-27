@@ -5,7 +5,6 @@ import { RequirementsModule } from './requirements/src/requirements.module';
 import { AppController } from './app.controller';
 import { AppHandler } from './app.handler';
 import ormConfig from './shared/infrastructure/database/config/mikro-orm.config';
-import { OutboxProducerModule } from './shared/infrastructure/message-bus/outbox-producer.module';
 
 @Module({
   imports: [
@@ -13,7 +12,6 @@ import { OutboxProducerModule } from './shared/infrastructure/message-bus/outbox
     MikroOrmModule.forRootAsync({
       useFactory: () => ormConfig('requirements'),
     }),
-    OutboxProducerModule,
     RequirementsModule,
   ],
   controllers: [AppController],

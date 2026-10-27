@@ -1,22 +1,26 @@
 .button {
   display: flex !important;
   width: 300px !important;
+  height: 42px !important;
   padding: 11px 8px !important;
   justify-content: center !important;
   align-items: center !important;
   gap: 16px !important;
   border-radius: 8px !important;
   border: 1px solid #9e9e9e !important;
-  background: #fff !important;
+  background: #ffffff !important;
   cursor: pointer !important;
   transition: all 0.15s ease-in-out !important;
   box-sizing: border-box !important;
   outline: none !important;
+  text-transform: none !important;
+  box-shadow: none !important;
 }
 
 .button:hover:not(:disabled) {
   background-color: #fafafa !important;
-  border-color: #757575;
+  border-color: #757575 !important;
+  box-shadow: none !important;
 }
 
 .button:disabled {
@@ -25,9 +29,9 @@
 }
 
 .icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0 !important;
 }
 
 .text {
@@ -38,6 +42,7 @@
   font-style: normal !important;
   font-weight: 600 !important;
   line-height: 20px !important;
+  text-transform: none !important;
 }
 
 .loader {

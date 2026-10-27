@@ -1,5 +1,5 @@
 import { EntitySchema } from '@mikro-orm/core';
-import { Institution } from '@modules/requirements/src/domain/institution/institution';
+import { Institution } from '@modules/requirements/src/domain/requirement/institution/institution';
 
 export const InstitutionEntity = new EntitySchema<Institution>({
   class: Institution,

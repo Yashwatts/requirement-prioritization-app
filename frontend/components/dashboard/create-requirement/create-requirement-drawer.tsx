@@ -1,66 +1,47 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Controller, useForm, useWatch, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
-  Checkbox,
   Divider,
   Drawer,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  Skeleton,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import MinimizeIcon from "@mui/icons-material/Minimize";
-import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import FormatSizeIcon from "@mui/icons-material/FormatSize";
-import FormatBoldIcon from "@mui/icons-material/FormatBold";
-import FormatItalicIcon from "@mui/icons-material/FormatItalic";
-import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import LinkIcon from "@mui/icons-material/Link";
-import CodeIcon from "@mui/icons-material/Code";
+import { DescriptionEditor } from "./description-editor";
+import { DiscardDialog } from "./discard-dialog";
+import { DrawerHeader } from "./drawer-header";
+import { FormSelectField, type FormSelectFieldProps } from "./form-select-field";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useSnackbar } from "@/components/snackbar/use-snackbar";
 import {
+  calculateImpact,
   createRequirement,
-  fetchReferenceData,
+  fetchDomains,
+  fetchImpactUsers,
+  fetchInstitutions,
   fetchRequirements,
 } from "@/features/requirements/requirement.action";
 import {
   mapClientPriorityToNumber,
   mapComplexityToNumber,
   mapImpactLevelToNumber,
-  mapManagementPriorityToNumber,
+  mapStatusToNumber,
   mapTypeToNumber,
 } from "@/features/requirements/mappers/requirement.mapper";
 import type {
-  BenefitedInstitution,
   ClientPriority,
   ComplexityEffort,
   CreateRequirementPayload,
-  DomainArea,
-  ManagementPriority,
-  RequestingInstitution,
+  RequirementStatus,
   RequirementType,
   StudyModality,
-  UserImpactLevel,
 } from "@/@types/requirement.types";
 import {
   requirementFormSchema,
@@ -74,19 +55,14 @@ const modalities: StudyModality[] = [
   "Presencial",
   "Virtual/Presencial",
 ];
-const impacts: UserImpactLevel[] = ["Low", "Medium", "High", "Very High"];
 const complexities: ComplexityEffort[] = ["XS", "S", "M", "L", "XL"];
 const priorities: ClientPriority[] = ["Low", "Medium", "High"];
-const managementPriorities: ManagementPriority[] = [
-  "Under",
-  "Medium",
-  "High",
-  "Discarded",
-];
+const statusOptions: RequirementStatus[] = ["Registered", "Flow"];
+const yesNoOptions = ["Yes", "No"];
 
 const defaultValues: RequirementFormValues = {
   name: "",
-  requestedBy: "",
+  requestedBy: [],
   requestingInstitution: "",
   type: "",
   domain: "",
@@ -94,13 +70,13 @@ const defaultValues: RequirementFormValues = {
   followerDomains: [],
   benefitedInstitutions: [],
   studyModalities: [],
-  isObligatory: false,
-  hasAlternativeSolution: false,
+  isObligatory: "No",
+  hasAlternativeSolution: "No",
   impactUsers: "",
   impact: "",
   complexityEffort: "",
   clientPriorityOverride: "",
-  managementPriority: "Under",
+  status: "Registered",
   startDate: "",
   finishDate: "",
   description: "",
@@ -112,15 +88,7 @@ interface CreateRequirementDrawerProps {
   onCreated: () => void;
 }
 
-interface SelectFieldProps {
-  name: keyof RequirementFormValues;
-  label: string;
-  options: readonly string[];
-  multiple?: boolean;
-  optional?: boolean;
-  onOpen?: () => void;
-  isLoading?: boolean;
-}
+type SelectFieldHelperProps = Omit<FormSelectFieldProps, "control" | "errors">;
 
 export const CreateRequirementDrawer = ({
   open,
@@ -132,16 +100,42 @@ export const CreateRequirementDrawer = ({
 
   const {
     institutions: apiInstitutions,
+    institutionsStatus,
     domains: apiDomains,
-    referenceDataStatus,
+    domainsStatus,
+    impactUsers: apiImpactUsers,
+    impactUsersStatus,
   } = useAppSelector((state) => state.requirements);
 
   const [minimized, setMinimized] = useState(false);
+  const [discardDialogOpen, setDiscardDialogOpen] = useState(false);
 
-  // Trigger reference data fetch only when a dropdown is opened
-  const handleReferenceDataOpen = () => {
-    if (referenceDataStatus === "idle") {
-      dispatch(fetchReferenceData());
+  // Pre-fetch reference data when drawer opens
+  useEffect(() => {
+    if (open) {
+      if (institutionsStatus === "idle") dispatch(fetchInstitutions());
+      if (domainsStatus === "idle") dispatch(fetchDomains());
+      if (impactUsersStatus === "idle") dispatch(fetchImpactUsers());
+    }
+  }, [open, institutionsStatus, domainsStatus, impactUsersStatus, dispatch]);
+
+  // Trigger institutions fetch only when an institutions dropdown is opened
+  const handleInstitutionsOpen = () => {
+    if (institutionsStatus === "idle") {
+      dispatch(fetchInstitutions());
+    }
+  };
+
+  // Trigger domains fetch only when a domains dropdown is opened
+  const handleDomainsOpen = () => {
+    if (domainsStatus === "idle") {
+      dispatch(fetchDomains());
+    }
+  };
+
+  const handleImpactUsersOpen = () => {
+    if (impactUsersStatus === "idle") {
+      dispatch(fetchImpactUsers());
     }
   };
 
@@ -160,81 +154,238 @@ export const CreateRequirementDrawer = ({
     return apiDomains?.map((d) => d.name) ?? [];
   }, [apiDomains]);
 
-  const isReferenceDataLoading = referenceDataStatus === "loading";
+  const isInstitutionsLoading = institutionsStatus === "loading";
+  const isDomainsLoading = domainsStatus === "loading";
+  const isImpactUsersLoading = impactUsersStatus === "loading";
 
   const {
     control,
     register,
     handleSubmit,
     setValue,
+    getValues,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<RequirementFormValues>({
-    resolver: zodResolver(requirementFormSchema),
+    resolver:
+      zodResolver(requirementFormSchema) as unknown as Resolver<RequirementFormValues>,
     defaultValues,
     mode: "onSubmit",
   });
 
-  // Watch fields contributing to impact calculation
-  const benefitedInstitutions = useWatch({
+  const watchedDomain = useWatch({ control, name: "domain" });
+  const watchedBenefited = useWatch({
     control,
     name: "benefitedInstitutions",
   });
-  const isObligatory = useWatch({ control, name: "isObligatory" });
-  const hasAlternativeSolution = useWatch({
+  const watchedObligatory = useWatch({ control, name: "isObligatory" });
+  const watchedAlternative = useWatch({
     control,
     name: "hasAlternativeSolution",
   });
-  const impactUsers = useWatch({ control, name: "impactUsers" });
+  const watchedImpactUsers = useWatch({ control, name: "impactUsers" });
 
-  // Auto-calculate impact according to SRS formula:
-  // Impact = Total Benefited Institutions + Obligation (8) + No Alternative Solution (8) + Impact User Level (1-4)
   useEffect(() => {
-    if (!impactUsers) return;
+    if (!watchedImpactUsers || !watchedDomain) {
+      setValue("impact", "", { shouldValidate: true });
+      setValue("clientPriorityOverride", "", { shouldValidate: true });
+      return;
+    }
 
-    const benefitedCount = Array.isArray(benefitedInstitutions)
-      ? benefitedInstitutions.length
-      : 0;
-    const obligationVal = isObligatory ? 8 : 0;
-    const alternativeSolutionVal = hasAlternativeSolution ? 0 : 8;
-    const userImpactVal =
-      impactUsers === "Low"
-        ? 1
-        : impactUsers === "Medium"
-          ? 2
-          : impactUsers === "High"
-            ? 3
-            : impactUsers === "Very High"
-              ? 4
-              : 1;
+    const resolvedDomain = apiDomains?.find((d) => d.name === watchedDomain);
+    if (!resolvedDomain) {
+      return;
+    }
 
-    const calculatedImpact =
-      benefitedCount + obligationVal + alternativeSolutionVal + userImpactVal;
+    const impactNumberUsersId = mapImpactLevelToNumber(watchedImpactUsers);
+    const obligation = watchedObligatory === "Yes";
+    const existSolutionAlternative = watchedAlternative === "Yes";
+    const benefitedList = Array.isArray(watchedBenefited)
+      ? watchedBenefited
+      : [];
 
-    setValue("impact", String(calculatedImpact), { shouldValidate: true });
+    const timer = setTimeout(async () => {
+      try {
+        const result = await dispatch(
+          calculateImpact({
+            benefited_institutions: benefitedList,
+            obligation,
+            exist_solution_alternative: existSolutionAlternative,
+            domain_in_charge_id: resolvedDomain.id,
+            impact_number_users_id: impactNumberUsersId,
+          }),
+        ).unwrap();
 
-    // Suggest default client priority based on SRS tiers
-    const suggestedPriority: ClientPriority =
-      calculatedImpact <= 10
-        ? "Low"
-        : calculatedImpact <= 20
-          ? "Medium"
-          : "High";
-    setValue("clientPriorityOverride", suggestedPriority, {
-      shouldValidate: true,
-    });
+        setValue("impact", String(result.impact), { shouldValidate: true });
+        setValue("clientPriorityOverride", result.client_priority_name, {
+          shouldValidate: true,
+        });
+      } catch {
+        // Silently catch in-flight error
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [
-    benefitedInstitutions,
-    isObligatory,
-    hasAlternativeSolution,
-    impactUsers,
+    watchedDomain,
+    watchedBenefited,
+    watchedObligatory,
+    watchedAlternative,
+    watchedImpactUsers,
+    apiDomains,
+    dispatch,
     setValue,
   ]);
 
-  const close = () => {
+  const impactOptions = useMemo(() => {
+    const defaultOptions = ["Low", "Medium", "High", "Very High"];
+    if (!watchedDomain || !apiDomains || !apiImpactUsers) {
+      return defaultOptions;
+    }
+
+    const resolvedDomain = apiDomains.find((d) => d.name === watchedDomain);
+    if (!resolvedDomain) {
+      return defaultOptions;
+    }
+
+    const domainImpact = apiImpactUsers.find(
+      (item) => item.domain_uuid === resolvedDomain.uuid,
+    );
+    if (!domainImpact || !domainImpact.impact_users) {
+      return defaultOptions;
+    }
+
+    const { LOW, MEDIUM, HIGH, VERY_HIGH } = domainImpact.impact_users;
+
+    return [
+      LOW ? `Low (${LOW.from}-${LOW.to})` : "Low",
+      MEDIUM ? `Medium (${MEDIUM.from}-${MEDIUM.to})` : "Medium",
+      HIGH ? `High (${HIGH.from}-${HIGH.to})` : "High",
+      VERY_HIGH ? `Very High (${VERY_HIGH.from}-${VERY_HIGH.to})` : "Very High",
+    ];
+  }, [watchedDomain, apiDomains, apiImpactUsers]);
+
+  useEffect(() => {
+    if (!watchedImpactUsers) return;
+    const currentLevel = mapImpactLevelToNumber(watchedImpactUsers);
+    if (
+      currentLevel >= 1 &&
+      currentLevel <= 4 &&
+      impactOptions[currentLevel - 1]
+    ) {
+      const newLabel = impactOptions[currentLevel - 1];
+      if (newLabel !== watchedImpactUsers) {
+        setValue("impactUsers", newLabel, { shouldValidate: true });
+      }
+    }
+  }, [impactOptions, watchedImpactUsers, setValue]);
+
+  const hasEnteredData = useCallback((): boolean => {
+    const values = getValues();
+    if (values.name && values.name.trim().length > 0) {
+      return true;
+    }
+    if (
+      Array.isArray(values.requestedBy)
+        ? values.requestedBy.length > 0
+        : Boolean(values.requestedBy && (values.requestedBy as string).trim().length > 0)
+    ) {
+      return true;
+    }
+    if (values.requestingInstitution && values.requestingInstitution.trim().length > 0) {
+      return true;
+    }
+    if (values.type && values.type.trim().length > 0) {
+      return true;
+    }
+    if (values.domain && values.domain.trim().length > 0) {
+      return true;
+    }
+    if (Array.isArray(values.collaboratorDomains) && values.collaboratorDomains.length > 0) {
+      return true;
+    }
+    if (Array.isArray(values.followerDomains) && values.followerDomains.length > 0) {
+      return true;
+    }
+    if (Array.isArray(values.benefitedInstitutions) && values.benefitedInstitutions.length > 0) {
+      return true;
+    }
+    if (Array.isArray(values.studyModalities) && values.studyModalities.length > 0) {
+      return true;
+    }
+    if (values.isObligatory !== "No") {
+      return true;
+    }
+    if (values.hasAlternativeSolution !== "No") {
+      return true;
+    }
+    if (values.impactUsers && values.impactUsers.trim().length > 0) {
+      return true;
+    }
+    if (values.complexityEffort && values.complexityEffort.trim().length > 0) {
+      return true;
+    }
+    if (values.clientPriorityOverride && values.clientPriorityOverride.trim().length > 0) {
+      return true;
+    }
+    if (values.status !== "Registered") {
+      return true;
+    }
+    if (values.startDate && values.startDate.trim().length > 0) {
+      return true;
+    }
+    if (values.finishDate && values.finishDate.trim().length > 0) {
+      return true;
+    }
+    if (values.description && values.description.trim().length > 0) {
+      const stripped = values.description.replace(/<[^>]*>/g, "").trim();
+      if (stripped.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }, [getValues]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (hasEnteredData()) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [open, hasEnteredData]);
+
+  const forceClose = () => {
     reset(defaultValues);
     setMinimized(false);
+    setDiscardDialogOpen(false);
     onClose();
+  };
+
+  const handleRequestClose = () => {
+    if (hasEnteredData()) {
+      setDiscardDialogOpen(true);
+    } else {
+      forceClose();
+    }
+  };
+
+  const handleConfirmDiscard = () => {
+    forceClose();
+    showSnackbar("Requisition registration cancelled", "info");
+  };
+
+  const handleCancelDiscard = () => {
+    setDiscardDialogOpen(false);
   };
 
   const onSubmit = async (values: RequirementFormValues) => {
@@ -258,11 +409,11 @@ export const CreateRequirementDrawer = ({
       (hasVirtual && hasPresencial);
     const studyModality = hasBoth ? 3 : hasPresencial ? 2 : 1;
 
-    // Format requested_by array from string (split by comma if multiple)
-    const requestedByList = values.requestedBy
-      .split(",")
-      .map((item) => item.trim())
-      .filter((item) => item.length > 0);
+    const requestedByList = Array.isArray(values.requestedBy)
+      ? values.requestedBy
+      : values.requestedBy
+        ? [values.requestedBy]
+        : [];
 
     const payload: CreateRequirementPayload = {
       name: values.name,
@@ -272,10 +423,10 @@ export const CreateRequirementDrawer = ({
       benefited_institutions: values.benefitedInstitutions,
       study_modality: studyModality,
       impact_number_users_id: mapImpactLevelToNumber(
-        values.impactUsers as UserImpactLevel,
+        values.impactUsers,
       ),
-      obligation: values.isObligatory,
-      exist_solution_alternative: values.hasAlternativeSolution,
+      obligation: values.isObligatory === "Yes",
+      exist_solution_alternative: values.hasAlternativeSolution === "Yes",
       complexity_and_effort: mapComplexityToNumber(
         values.complexityEffort as ComplexityEffort,
       ),
@@ -284,30 +435,27 @@ export const CreateRequirementDrawer = ({
             values.clientPriorityOverride as ClientPriority,
           )
         : undefined,
-      management_priority: values.managementPriority
-        ? mapManagementPriorityToNumber(
-            values.managementPriority as ManagementPriority,
-          )
-        : 1,
       domain_in_charge_id: domainInChargeId,
       domains_collaborators: values.collaboratorDomains,
       followers_domains: values.followerDomains,
-      start_date: values.startDate || undefined,
-      end_date: values.finishDate || undefined,
+      status: mapStatusToNumber(values.status as RequirementStatus),
+      start_date: values.startDate ? values.startDate : undefined,
+      end_date: values.finishDate ? values.finishDate : undefined,
       type: mapTypeToNumber(values.type as RequirementType),
     };
 
     const actionResult = await dispatch(createRequirement(payload));
 
     if (createRequirement.fulfilled.match(actionResult)) {
-      showSnackbar("Requirement registered successfully.", "success");
+      showSnackbar("Requisition registered successfully", "success");
       dispatch(fetchRequirements());
       onCreated();
-      close();
+      forceClose();
     } else {
       const errorMsg =
-        (actionResult.payload as string) ||
-        "Unable to create requirement. Please check your inputs.";
+        typeof actionResult.payload === "string"
+          ? actionResult.payload
+          : "Unable to create requirement. Please check your inputs.";
       showSnackbar(errorMsg, "error");
     }
   };
@@ -316,84 +464,21 @@ export const CreateRequirementDrawer = ({
     showSnackbar("Please fill all required fields correctly.", "warning");
   };
 
-  const selectField = ({
-    name,
-    label,
-    options,
-    multiple = false,
-    optional = false,
-    onOpen,
-    isLoading = false,
-  }: SelectFieldProps) => (
-    <Controller
-      key={name}
-      name={name}
+  const selectField = (props: SelectFieldHelperProps) => (
+    <FormSelectField
+      {...props}
+      key={props.name}
       control={control}
-      render={({ field }) => (
-        <FormControl className={styles.field} error={Boolean(errors[name])}>
-          <InputLabel>{label}</InputLabel>
-          <Select
-            {...field}
-            multiple={multiple}
-            label={label}
-            onOpen={onOpen}
-            IconComponent={ArrowDropDownIcon}
-            renderValue={
-              multiple
-                ? (selected) => (selected as string[]).join(", ")
-                : undefined
-            }
-          >
-            {isLoading ? (
-              <Stack spacing={1} sx={{ p: 1, minWidth: 200 }}>
-                <Skeleton
-                  variant="rectangular"
-                  height={32}
-                  animation="wave"
-                  sx={{ borderRadius: 1, bgcolor: "rgba(0, 0, 0, 0.04)" }}
-                />
-                <Skeleton
-                  variant="rectangular"
-                  height={32}
-                  animation="wave"
-                  sx={{ borderRadius: 1, bgcolor: "rgba(0, 0, 0, 0.04)" }}
-                />
-                <Skeleton
-                  variant="rectangular"
-                  height={32}
-                  animation="wave"
-                  sx={{ borderRadius: 1, bgcolor: "rgba(0, 0, 0, 0.04)" }}
-                />
-              </Stack>
-            ) : options.length > 0 ? (
-              options.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem disabled value="">
-                <Typography variant="body2" color="text.secondary">
-                  No options available
-                </Typography>
-              </MenuItem>
-            )}
-          </Select>
-          {(errors[name]?.message || optional) && (
-            <FormHelperText>
-              {errors[name]?.message ?? "Optional"}
-            </FormHelperText>
-          )}
-        </FormControl>
-      )}
+      errors={errors}
     />
   );
 
   return (
-    <Drawer
+    <>
+      <Drawer
       anchor="right"
       open={open}
-      onClose={close}
+      onClose={handleRequestClose}
       hideBackdrop={minimized}
       ModalProps={{
         keepMounted: true,
@@ -407,23 +492,11 @@ export const CreateRequirementDrawer = ({
         component="form"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
-        <Box className={styles.header}>
-          <Typography className={styles.headerTitle}>
-            New requirement
-          </Typography>
-          <Box className={styles.headerActions}>
-            <IconButton
-              aria-label={minimized ? "Open in full" : "Minimize"}
-              size="small"
-              onClick={() => setMinimized((value) => !value)}
-            >
-              {minimized ? <OpenInFullIcon /> : <MinimizeIcon />}
-            </IconButton>
-            <IconButton aria-label="Close" size="small" onClick={close}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </Box>
+        <DrawerHeader
+          minimized={minimized}
+          onToggleMinimize={() => setMinimized((value) => !value)}
+          onClose={handleRequestClose}
+        />
         <Box className={styles.scrollContent}>
           <Stack className={styles.formContent} spacing={2}>
             <TextField
@@ -432,19 +505,21 @@ export const CreateRequirementDrawer = ({
               error={Boolean(errors.name)}
               helperText={errors.name?.message}
             />
-            <TextField
-              label="Requested by"
-              {...register("requestedBy")}
-              error={Boolean(errors.requestedBy)}
-              helperText={errors.requestedBy?.message}
-            />
+            {selectField({
+              name: "requestedBy",
+              label: "Requested by",
+              options: institutionOptions,
+              multiple: true,
+              onOpen: handleInstitutionsOpen,
+              isLoading: isInstitutionsLoading,
+            })}
             <Box className={styles.twoColumns}>
               {selectField({
                 name: "requestingInstitution",
                 label: "Requesting institution",
                 options: institutionOptions,
-                onOpen: handleReferenceDataOpen,
-                isLoading: isReferenceDataLoading,
+                onOpen: handleInstitutionsOpen,
+                isLoading: isInstitutionsLoading,
               })}
               {selectField({
                 name: "type",
@@ -456,8 +531,8 @@ export const CreateRequirementDrawer = ({
               name: "domain",
               label: "Domain",
               options: domainOptions,
-              onOpen: handleReferenceDataOpen,
-              isLoading: isReferenceDataLoading,
+              onOpen: handleDomainsOpen,
+              isLoading: isDomainsLoading,
             })}
             <Box className={styles.twoColumns}>
               {selectField({
@@ -466,8 +541,8 @@ export const CreateRequirementDrawer = ({
                 options: domainOptions,
                 multiple: true,
                 optional: true,
-                onOpen: handleReferenceDataOpen,
-                isLoading: isReferenceDataLoading,
+                onOpen: handleDomainsOpen,
+                isLoading: isDomainsLoading,
               })}
               {selectField({
                 name: "followerDomains",
@@ -475,8 +550,8 @@ export const CreateRequirementDrawer = ({
                 options: domainOptions,
                 multiple: true,
                 optional: true,
-                onOpen: handleReferenceDataOpen,
-                isLoading: isReferenceDataLoading,
+                onOpen: handleDomainsOpen,
+                isLoading: isDomainsLoading,
               })}
             </Box>
 
@@ -488,8 +563,8 @@ export const CreateRequirementDrawer = ({
               label: "Benefited institutions",
               options: benefitedInstitutionOptions,
               multiple: true,
-              onOpen: handleReferenceDataOpen,
-              isLoading: isReferenceDataLoading,
+              onOpen: handleInstitutionsOpen,
+              isLoading: isInstitutionsLoading,
             })}
             <Box className={styles.twoColumns}>
               {selectField({
@@ -498,39 +573,17 @@ export const CreateRequirementDrawer = ({
                 options: modalities,
                 multiple: true,
               })}
-              <Controller
-                name="isObligatory"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    className={styles.checkboxField}
-                    control={
-                      <Checkbox
-                        checked={field.value}
-                        onChange={field.onChange}
-                      />
-                    }
-                    label="Mandatory"
-                  />
-                )}
-              />
+              {selectField({
+                name: "isObligatory",
+                label: "Mandatory",
+                options: yesNoOptions,
+              })}
             </Box>
-            <Controller
-              name="hasAlternativeSolution"
-              control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  className={styles.checkboxField}
-                  control={
-                    <Checkbox
-                      checked={field.value}
-                      onChange={field.onChange}
-                    />
-                  }
-                  label="Alternative solution exists"
-                />
-              )}
-            />
+            {selectField({
+              name: "hasAlternativeSolution",
+              label: "Alternative solution exists",
+              options: yesNoOptions,
+            })}
 
             <Typography className={styles.sectionTitle}>
               Impact and Feasibility
@@ -538,21 +591,39 @@ export const CreateRequirementDrawer = ({
             <Box className={styles.twoColumns}>
               {selectField({
                 name: "impactUsers",
-                label: "User impact",
-                options: impacts,
+                label: "Impact users",
+                options: impactOptions,
+                onOpen: handleImpactUsersOpen,
+                isLoading: isImpactUsersLoading,
               })}
-              <TextField
-                label="Impact"
-                placeholder="-"
-                type="text"
-                slotProps={{
-                  input: {
-                    readOnly: true,
-                    endAdornment: <InfoOutlinedIcon fontSize="small" />,
-                  },
-                }}
-                {...register("impact")}
-                helperText="Auto-calculated (SRS formula)"
+              <Controller
+                name="impact"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    value={
+                      field.value !== undefined &&
+                      field.value !== null &&
+                      field.value !== ""
+                        ? String(field.value)
+                        : ""
+                    }
+                    label="Impact"
+                    placeholder="-"
+                    type="text"
+                    slotProps={{
+                      input: {
+                        readOnly: true,
+                        endAdornment: <InfoOutlinedIcon fontSize="small" />,
+                      },
+                      inputLabel: {
+                        shrink: true,
+                      },
+                    }}
+                    helperText="Auto-calculated"
+                  />
+                )}
               />
             </Box>
             <Box className={styles.twoColumns}>
@@ -565,12 +636,13 @@ export const CreateRequirementDrawer = ({
                 name: "clientPriorityOverride",
                 label: "Client priority",
                 options: priorities,
+                helperText: "Auto-calculated",
               })}
             </Box>
             {selectField({
-              name: "managementPriority",
+              name: "status",
               label: "Status",
-              options: managementPriorities,
+              options: statusOptions,
             })}
 
             <Typography className={styles.sectionTitle}>Timeline</Typography>
@@ -580,11 +652,6 @@ export const CreateRequirementDrawer = ({
                 type="date"
                 slotProps={{
                   inputLabel: { shrink: true },
-                  input: {
-                    endAdornment: (
-                      <CalendarTodayOutlinedIcon fontSize="small" />
-                    ),
-                  },
                 }}
                 {...register("startDate")}
                 error={Boolean(errors.startDate)}
@@ -595,11 +662,6 @@ export const CreateRequirementDrawer = ({
                 type="date"
                 slotProps={{
                   inputLabel: { shrink: true },
-                  input: {
-                    endAdornment: (
-                      <CalendarTodayOutlinedIcon fontSize="small" />
-                    ),
-                  },
                 }}
                 {...register("finishDate")}
                 error={Boolean(errors.finishDate)}
@@ -608,60 +670,29 @@ export const CreateRequirementDrawer = ({
             </Box>
 
             <Typography className={styles.sectionTitle}>Description</Typography>
-            <Box className={styles.editor}>
-              <Box
-                className={styles.editorBody}
-                contentEditable
-                suppressContentEditableWarning
-                role="textbox"
-                aria-label="Description"
-                onInput={(event) =>
-                  setValue(
-                    "description",
-                    event.currentTarget.textContent ?? "",
-                    {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    },
-                  )
-                }
-              />
-              <Box className={styles.editorToolbar}>
-                <Button size="small">
-                  <FormatSizeIcon />
-                </Button>
-                <Button size="small">
-                  <FormatBoldIcon />
-                </Button>
-                <Button size="small">
-                  <FormatItalicIcon />
-                </Button>
-                <Button size="small">
-                  <FormatUnderlinedIcon />
-                </Button>
-                <Button size="small">
-                  <FormatListNumberedIcon />
-                </Button>
-                <Button size="small">
-                  <FormatListBulletedIcon />
-                </Button>
-                <Button size="small">
-                  <LinkIcon />
-                </Button>
-                <Button size="small">
-                  <CodeIcon />
-                </Button>
-              </Box>
-            </Box>
-            {errors.description && (
-              <Typography color="error" variant="caption" sx={{ ml: 1.5 }}>
-                {errors.description.message}
-              </Typography>
-            )}
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <DescriptionEditor
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={Boolean(errors.description)}
+                  helperText={errors.description?.message}
+                />
+              )}
+            />
           </Stack>
         </Box>
         <Divider />
         <Box className={styles.footer}>
+          <Button
+            type="button"
+            onClick={handleRequestClose}
+            className={styles.cancelButton}
+          >
+            Cancel
+          </Button>
           <Button
             type="submit"
             disabled={isSubmitting}
@@ -672,5 +703,12 @@ export const CreateRequirementDrawer = ({
         </Box>
       </Box>
     </Drawer>
+
+      <DiscardDialog
+        open={discardDialogOpen}
+        onCancel={handleCancelDiscard}
+        onConfirm={handleConfirmDiscard}
+      />
+    </>
   );
 };

@@ -18,7 +18,12 @@ export function extractErrorMessage(error: unknown): string {
       return data.invalid_params
         .map((param: Record<string, unknown>) => {
           const name = param.name ? `${param.name}: ` : "";
-          const reason = param.reason || param.message || JSON.stringify(param);
+          const reason =
+            typeof param.reason === "string"
+              ? param.reason
+              : typeof param.message === "string"
+                ? param.message
+                : JSON.stringify(param);
           return `${name}${reason}`;
         })
         .join("; ");

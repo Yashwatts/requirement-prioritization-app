@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 import { useAuth } from "@/auth/auth-provider";
 import { Sidebar } from "@/components/dashboard/sidebar/sidebar";
-import { Topbar } from "@/components/dashboard/topbar/topbar";
+import { Header } from "@/components/dashboard/header/header";
 import styles from "@/app/dashboard/page.module.css";
 
 interface DashboardLayoutClientProps {
@@ -28,7 +28,7 @@ export const DashboardLayoutClient = ({
 
   return (
     <Box className={styles.page}>
-      <Topbar
+      <Header
         user={user}
         onMenuClick={() => setSidebarOpen((open) => !open)}
       />

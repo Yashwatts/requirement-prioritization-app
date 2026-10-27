@@ -77,11 +77,6 @@ export const RequirementEntity = new EntitySchema<Requirement>({
       type: 'smallint',
     },
 
-    management_priority: {
-      type: 'smallint',
-      nullable: true,
-    },
-
     requested_by: {
       type: 'json',
     },

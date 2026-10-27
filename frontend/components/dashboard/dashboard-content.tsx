@@ -1,9 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Box } from "@mui/material";
-import { RequirementsTable } from "@/components/dashboard/requirements-table/requirements-table";
+import dynamic from "next/dynamic";
 import { CreateRequirementDrawer } from "@/components/dashboard/create-requirement/create-requirement-drawer";
+
+const RequirementsTable = dynamic(
+  () =>
+    import("@/components/dashboard/requirements-table/requirements-table").then(
+      (mod) => mod.RequirementsTable,
+    ),
+  { ssr: false },
+);
 
 export const DashboardContent = () => {
   const [createOpen, setCreateOpen] = useState(false);
@@ -11,10 +19,12 @@ export const DashboardContent = () => {
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      <RequirementsTable
-        onCreateNew={() => setCreateOpen(true)}
-        refreshToken={requirementsRefreshToken}
-      />
+      <Suspense fallback={null}>
+        <RequirementsTable
+          onCreateNew={() => setCreateOpen(true)}
+          refreshToken={requirementsRefreshToken}
+        />
+      </Suspense>
       <CreateRequirementDrawer
         open={createOpen}
         onClose={() => setCreateOpen(false)}
@@ -23,3 +33,4 @@ export const DashboardContent = () => {
     </Box>
   );
 };
+

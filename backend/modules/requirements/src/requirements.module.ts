@@ -1,24 +1,23 @@
 import { Module } from '@nestjs/common';
-
+import { RequirementsRepositoryModule } from './infrastructure/repositories/requirements-repository.module';
 import { RegisterRequirementModule } from './features/register-requirement/register-requirement.module';
-import { AdjustClientPriorityModule } from './features/adjust-client-priority/adjust-client-priority.module';
-import { SetManagementPriorityModule } from './features/set-management-priority/set-management-priority.module';
+import { ModifyClientPriorityModule } from './features/modify-client-priority/modify-client-priority.module';
 import { ListRequirementsModule } from './features/list-requirements/list-requirements.module';
-import { GetRequirementModule } from './features/get-requirement/get-requirement.module';
-import { UpdateRequirementModule } from './features/update-requirement/update-requirement.module';
-import { ReferenceDataModule } from './features/reference-data/reference-data.module';
-import { RequirementsMessageDestinationModule } from './infrastructure/message-bus/requirements-message-destination.module';
+import { FetchDomainsModule } from './features/fetch-domains/fetch-domains.module';
+import { FetchInstitutionsModule } from './features/fetch-institutions/fetch-institutions.module';
+import { FetchImpactUsersModule } from './features/fetch-impact-users/fetch-impact-users.module';
+import { CalculateImpactModule } from './features/calculate-impact/calculate-impact.module';
 
 @Module({
   imports: [
-    RequirementsMessageDestinationModule,
+    RequirementsRepositoryModule,
+    CalculateImpactModule,
     RegisterRequirementModule,
-    AdjustClientPriorityModule,
-    SetManagementPriorityModule,
+    ModifyClientPriorityModule,
     ListRequirementsModule,
-    GetRequirementModule,
-    UpdateRequirementModule,
-    ReferenceDataModule,
+    FetchDomainsModule,
+    FetchInstitutionsModule,
+    FetchImpactUsersModule,
   ],
 })
 export class RequirementsModule {}

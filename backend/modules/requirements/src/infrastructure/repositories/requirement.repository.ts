@@ -9,6 +9,15 @@ export class RequirementRepository extends EntityRepository<Requirement> {
     super(em, Requirement);
   }
 
+  async findByIdOrUuid(id: string | number): Promise<Requirement | null> {
+    const isNumeric = typeof id === 'number' || /^\d+$/.test(String(id));
+    if (isNumeric) {
+      const num = Number(id);
+      return this.findOne({ $or: [{ id: num }, { code: num }] });
+    }
+    return this.findOne({ uuid: String(id) });
+  }
+
   async save(requirement: Requirement | Requirement[]): Promise<void> {
     this.em.persist(requirement);
     await this.em.flush();

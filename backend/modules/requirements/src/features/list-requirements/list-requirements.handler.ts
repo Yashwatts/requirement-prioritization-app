@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { FindOptions } from '@mikro-orm/core';
 import { Requirement } from '../../domain/requirement/requirement';
 import { ListRequirementsQuery } from './list-requirements.query';
@@ -7,16 +7,23 @@ import { InstitutionRepository } from '../../infrastructure/repositories/institu
 import { DomainRepository } from '../../infrastructure/repositories/domain.repository';
 import {
   ListRequirementsResult,
-  EnrichedRequirement,
+  RequirementDetail,
 } from '../../domain/requirement/interfaces/requirement';
 
-@Injectable()
-export class ListRequirementsHandler {
+@QueryHandler(ListRequirementsQuery)
+export class ListRequirementsHandler implements IQueryHandler<
+  ListRequirementsQuery,
+  ListRequirementsResult
+> {
   constructor(
     private readonly requirementRepository: RequirementRepository,
     private readonly institutionRepository: InstitutionRepository,
     private readonly domainRepository: DomainRepository,
   ) {}
+
+  async execute(query: ListRequirementsQuery): Promise<ListRequirementsResult> {
+    return this.handle(query);
+  }
 
   async handle(query: ListRequirementsQuery): Promise<ListRequirementsResult> {
     const {
@@ -24,14 +31,10 @@ export class ListRequirementsHandler {
       limit,
       search,
       status,
-      state,
       client_priority,
-      management_priority,
       sort_by,
       sort_order,
     } = query.params;
-
-    const requirementStatus = status ?? state;
 
     const criteria: Record<string, unknown> = {
       ...(search && {
@@ -49,24 +52,44 @@ export class ListRequirementsHandler {
         ],
       }),
 
-      ...(requirementStatus && {
-        status: requirementStatus,
+      ...(status && {
+        status,
       }),
 
       ...(client_priority && {
         client_priority,
       }),
-
-      ...(management_priority && {
-        management_priority,
-      }),
     };
+
+    const VALID_SORT_COLUMNS = new Set([
+      'id',
+      'code',
+      'name',
+      'status',
+      'impact',
+      'client_priority',
+      'complexity_and_effort',
+      'domain_in_charge_id',
+      'requesting_institution_id',
+      'obligation',
+      'exist_solution_alternative',
+      'impact_number_users_id',
+      'total_benefited_institutions',
+      'start_date',
+      'end_date',
+      'type',
+      'created_at',
+      'updated_at',
+    ]);
+
+    const safeSortBy = VALID_SORT_COLUMNS.has(sort_by) ? sort_by : 'created_at';
+    const safeSortOrder = sort_order ?? 'DESC';
 
     const options: FindOptions<Requirement> = {
       limit,
       offset: (page - 1) * limit,
       orderBy: {
-        [sort_by]: sort_order,
+        [safeSortBy]: safeSortOrder,
       },
     };
 
@@ -102,7 +125,7 @@ export class ListRequirementsHandler {
     const institutionMap = new Map(institutions.map((i) => [i.id, i]));
     const domainMap = new Map(domains.map((d) => [d.id, d]));
 
-    const rows: EnrichedRequirement[] = requirements.map((req) => {
+    const rows: RequirementDetail[] = requirements.map((req) => {
       const institution = institutionMap.get(req.requesting_institution_id);
       const domain = domainMap.get(req.domain_in_charge_id);
 
@@ -132,7 +155,6 @@ export class ListRequirementsHandler {
         impact: req.impact,
         complexity_and_effort: req.complexity_and_effort,
         client_priority: req.client_priority,
-        management_priority: req.management_priority,
         domain_in_charge_id: req.domain_in_charge_id,
         domain_in_charge_name: domain?.name ?? null,
         domain_in_charge: domain

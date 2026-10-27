@@ -6,7 +6,7 @@ export const NetworkBackground = () => {
     <Box aria-hidden="true" className={styles.container}>
       <Box
         component="img"
-        src="/login-background/login-background.svg"
+        src="/login-background/figma-network-bg.svg"
         alt=""
         className={styles.svg}
       />

@@ -7,6 +7,5 @@ import { Migration } from '@mikro-orm/migrations';
  * schema name.
  */
 export abstract class RequirementsMigration extends Migration {
-  protected readonly schema: string =
-    process.env.DB_REQUIREMENTS_SCHEMA ?? 'requirements';
+  protected readonly schema: string = process.env.DB_REQUIREMENTS_SCHEMA!;
 }

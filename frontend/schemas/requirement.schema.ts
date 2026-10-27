@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-// ============================================================
-// Requirement Creation Form Validation Schema (Aligned with SRS & Backend)
-// ============================================================
-
 export const requirementFormSchema = z
   .object({
     name: z
@@ -13,10 +9,8 @@ export const requirementFormSchema = z
       .max(250, "Name must not exceed 250 characters"),
 
     requestedBy: z
-      .string()
-      .trim()
-      .min(1, "Requested by is required")
-      .max(250, "Requester name must not exceed 250 characters"),
+      .array(z.string())
+      .min(1, "Requested by is required"),
 
     requestingInstitution: z
       .string()
@@ -38,11 +32,11 @@ export const requirementFormSchema = z
       .array(z.string())
       .min(1, "At least one study modality is required"),
 
-    isObligatory: z.boolean(),
+    isObligatory: z.enum(["Yes", "No"]),
 
-    hasAlternativeSolution: z.boolean(),
+    hasAlternativeSolution: z.enum(["Yes", "No"]),
 
-    impactUsers: z.string().min(1, "User impact is required"),
+    impactUsers: z.string().min(1, "Impact users is required"),
 
     impact: z.union([z.string(), z.number()]).optional(),
 
@@ -50,7 +44,7 @@ export const requirementFormSchema = z
 
     clientPriorityOverride: z.string().optional(),
 
-    managementPriority: z.string().optional(),
+    status: z.string().min(1, "Status is required").default("Registered"),
 
     startDate: z
       .string()
@@ -88,14 +82,7 @@ export const requirementFormSchema = z
   );
 
 export type RequirementFormValues = z.infer<typeof requirementFormSchema>;
-
-// Alias for PascalCase naming convention
 export const RequirementFormSchema = requirementFormSchema;
-
-// ============================================================
-// Zod schemas mirroring backend API response shapes
-// Used for runtime validation of requirements list responses
-// ============================================================
 
 export const RequirementListItemSchema = z.object({
   id: z.string(),
@@ -115,8 +102,8 @@ export const RequirementListItemSchema = z.object({
   impact: z.number(),
   complexityEffort: z.string(),
   clientPriority: z.string(),
-  managementPriority: z.string(),
-  state: z.string(),
+  status: z.string(),
+  state: z.string().optional(),
   type: z.string(),
   startDate: z.string().nullable(),
   finishDate: z.string().nullable(),

@@ -30,17 +30,6 @@ export const authenticationService = {
     return firebaseAuth.currentUser;
   },
 
-  async getIdToken(forceRefresh = false): Promise<string | null> {
-    if (typeof firebaseAuth.authStateReady === "function") {
-      await firebaseAuth.authStateReady();
-    }
-    const currentUser = firebaseAuth.currentUser;
-    if (!currentUser) {
-      return null;
-    }
-    return currentUser.getIdToken(forceRefresh);
-  },
-
   subscribeToAuthState(
     callback: (user: User | null) => void,
     onError?: (error: Error) => void,

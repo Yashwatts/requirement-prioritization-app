@@ -1,6 +1,6 @@
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { Institution } from '@modules/requirements/src/domain/institution/institution';
+import { Institution } from '@modules/requirements/src/domain/requirement/institution/institution';
 
 @Injectable()
 export class InstitutionRepository extends EntityRepository<Institution> {

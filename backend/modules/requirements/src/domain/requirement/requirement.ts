@@ -1,34 +1,16 @@
 import { randomUUID } from 'node:crypto';
-import { Command } from '@modules/shared/domain/common/command';
-import { Event } from '@modules/shared/domain/common/event';
 import { ClientPriority } from './enums/client-priority.enum';
 import { ComplexityEffort } from './enums/complexity-effort.enum';
-import { ManagementPriority } from './enums/management-priority.enum';
 import { RequirementState } from './enums/requirement-state.enum';
 import { RequirementType } from './enums/requirement-type.enum';
 import { StudyModality } from './enums/study-modality.enum';
-import { RequirementRegisteredEvent } from './event/requirement-registered.event';
-import { RequirementClientPriorityUpdatedEvent } from './event/requirement-client-priority-updated.event';
-import { RequirementManagementPriorityUpdatedEvent } from './event/requirement-management-priority-updated.event';
 import {
   CreateRequirementInterface,
   UpdateRequirementInterface,
 } from './interfaces/requirement';
 import { InvalidRequirement } from './exceptions/exceptions';
 
-const MESSAGES = Symbol('messages');
-
 export class Requirement {
-  [MESSAGES]: Array<Event | Command> = [];
-
-  private get messages(): Array<Event | Command> {
-    if (!this[MESSAGES]) {
-      this[MESSAGES] = [];
-    }
-
-    return this[MESSAGES];
-  }
-
   id!: number;
   uuid: string;
   code!: number;
@@ -46,7 +28,6 @@ export class Requirement {
   impact!: number;
   complexity_and_effort!: ComplexityEffort;
   client_priority!: ClientPriority;
-  management_priority?: ManagementPriority;
   domain_in_charge_id!: number;
   domains_collaborators: string[];
   followers_domains: string[];
@@ -82,10 +63,10 @@ export class Requirement {
     exist_solution_alternative,
     study_modality,
     impact_number_users_id,
+    impact_users_tier,
     impact_users_value,
     complexity_and_effort,
     client_priority,
-    management_priority = ManagementPriority.UNDER,
     domain_in_charge_id,
     domains_collaborators = [],
     followers_domains = [],
@@ -118,7 +99,6 @@ export class Requirement {
     requirement.study_modality = study_modality;
     requirement.impact_number_users_id = impact_number_users_id;
     requirement.complexity_and_effort = complexity_and_effort;
-    requirement.management_priority = management_priority;
     requirement.domain_in_charge_id = domain_in_charge_id;
     requirement.domains_collaborators = [...domains_collaborators];
     requirement.followers_domains = [...followers_domains];
@@ -127,57 +107,67 @@ export class Requirement {
     requirement.start_date = start_date;
     requirement.end_date = end_date;
     requirement.type = type;
-    requirement.impact = requirement.calculateImpact(impact_users_value);
+
+    const userImpact =
+      impact_users_tier?.getAverageQuantity() ??
+      impact_users_value ??
+      impact_number_users_id;
+    requirement.impact = requirement.calculateImpact(userImpact);
     requirement.client_priority =
       client_priority ?? requirement.calculateClientPriority();
     requirement.created_at = new Date();
     requirement.updated_at = new Date();
 
-    requirement.messages.push(new RequirementRegisteredEvent(requirement));
-
     return requirement;
   }
 
-  private calculateImpact(impact_users_value: number): number {
-    const obligationValue = this.obligation ? 8 : 0;
-    const alternativeSolutionValue = this.exist_solution_alternative ? 0 : 8;
+  public static calculateImpactValue(params: {
+    total_benefited_institutions: number;
+    obligation: boolean;
+    exist_solution_alternative: boolean;
+    user_impact_value: number;
+  }): number {
+    const obligationValue = params.obligation ? 8 : 0;
+    const alternativeSolutionValue = params.exist_solution_alternative ? 0 : 8;
 
     return (
-      this.total_benefited_institutions +
+      params.total_benefited_institutions +
       obligationValue +
       alternativeSolutionValue +
-      impact_users_value
+      params.user_impact_value
     );
   }
 
-  private calculateClientPriority(): ClientPriority {
-    if (this.impact <= 10) {
+  public static calculateClientPriorityFromImpact(
+    impact: number,
+  ): ClientPriority {
+    if (impact <= 10) {
       return ClientPriority.LOW;
     }
 
-    if (this.impact <= 20) {
+    if (impact <= 20) {
       return ClientPriority.MEDIUM;
     }
 
     return ClientPriority.HIGH;
   }
 
-  adjustClientPriority(clientPriority: ClientPriority): void {
-    const previousPriority = String(this.client_priority);
-    this.client_priority = clientPriority;
-    this.updated_at = new Date();
-    this.messages.push(
-      new RequirementClientPriorityUpdatedEvent(this, previousPriority),
-    );
+  private calculateImpact(impact_users_value: number): number {
+    return Requirement.calculateImpactValue({
+      total_benefited_institutions: this.total_benefited_institutions,
+      obligation: this.obligation,
+      exist_solution_alternative: this.exist_solution_alternative,
+      user_impact_value: impact_users_value,
+    });
   }
 
-  setManagementPriority(managementPriority: ManagementPriority): void {
-    const previousPriority = String(this.management_priority ?? '');
-    this.management_priority = managementPriority;
+  private calculateClientPriority(): ClientPriority {
+    return Requirement.calculateClientPriorityFromImpact(this.impact);
+  }
+
+  modifyClientPriority(clientPriority: ClientPriority): void {
+    this.client_priority = clientPriority;
     this.updated_at = new Date();
-    this.messages.push(
-      new RequirementManagementPriorityUpdatedEvent(this, previousPriority),
-    );
   }
 
   update(params: UpdateRequirementInterface): void {
@@ -201,9 +191,6 @@ export class Requirement {
     this.study_modality = params.study_modality;
     this.impact_number_users_id = params.impact_number_users_id;
     this.complexity_and_effort = params.complexity_and_effort;
-    if (params.management_priority !== undefined) {
-      this.management_priority = params.management_priority;
-    }
     this.domain_in_charge_id = params.domain_in_charge_id;
     if (params.domains_collaborators) {
       this.domains_collaborators = [...params.domains_collaborators];
@@ -220,8 +207,12 @@ export class Requirement {
     this.end_date = params.end_date ?? null;
     this.type = params.type;
 
-    if (params.impact_users_value !== undefined) {
-      this.impact = this.calculateImpact(params.impact_users_value);
+    const userImpact =
+      params.impact_users_tier?.getAverageQuantity() ??
+      params.impact_users_value;
+
+    if (userImpact !== undefined) {
+      this.impact = this.calculateImpact(userImpact);
       this.client_priority =
         params.client_priority ?? this.calculateClientPriority();
     } else if (params.client_priority !== undefined) {
@@ -229,14 +220,6 @@ export class Requirement {
     }
 
     this.updated_at = new Date();
-  }
-
-  getMessages(): Array<Event | Command> {
-    return this[MESSAGES] ?? [];
-  }
-
-  clearMessages(): void {
-    this[MESSAGES] = [];
   }
 
   private static validateCreation({

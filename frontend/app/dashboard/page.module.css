@@ -10,14 +10,6 @@
   padding: 32px;
 }
 
-.loadingState {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #F5F5F5;
-}
-
 @media (max-width: 900px) {
   .content {
     margin-left: 56px;

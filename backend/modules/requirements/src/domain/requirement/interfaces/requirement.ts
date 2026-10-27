@@ -1,9 +1,9 @@
 import { ClientPriority } from '../enums/client-priority.enum';
 import { ComplexityEffort } from '../enums/complexity-effort.enum';
-import { ManagementPriority } from '../enums/management-priority.enum';
 import { RequirementState } from '../enums/requirement-state.enum';
 import { RequirementType } from '../enums/requirement-type.enum';
 import { StudyModality } from '../enums/study-modality.enum';
+import { ImpactUsers } from '../impact-users/impact-users';
 
 export interface CreateRequirementInterface {
   name: string;
@@ -15,10 +15,10 @@ export interface CreateRequirementInterface {
   exist_solution_alternative: boolean;
   study_modality: StudyModality;
   impact_number_users_id: number;
-  impact_users_value: number;
+  impact_users_tier?: ImpactUsers | null;
+  impact_users_value?: number;
   complexity_and_effort: ComplexityEffort;
   client_priority?: ClientPriority;
-  management_priority?: ManagementPriority;
   domain_in_charge_id: number;
   domains_collaborators?: string[];
   followers_domains?: string[];
@@ -39,10 +39,10 @@ export interface UpdateRequirementInterface {
   exist_solution_alternative: boolean;
   study_modality: StudyModality;
   impact_number_users_id: number;
+  impact_users_tier?: ImpactUsers | null;
   impact_users_value?: number;
   complexity_and_effort: ComplexityEffort;
   client_priority?: ClientPriority;
-  management_priority?: ManagementPriority;
   domain_in_charge_id: number;
   domains_collaborators?: string[];
   followers_domains?: string[];
@@ -53,7 +53,7 @@ export interface UpdateRequirementInterface {
   type: RequirementType;
 }
 
-export interface EnrichedRequirement {
+export interface RequirementDetail {
   id: number;
   uuid: string;
   code: number;
@@ -77,7 +77,6 @@ export interface EnrichedRequirement {
   impact: number;
   complexity_and_effort: number;
   client_priority: number;
-  management_priority?: number;
   domain_in_charge_id: number;
   domain_in_charge_name: string | null;
   domain_in_charge: {
@@ -100,5 +99,5 @@ export interface ListRequirementsResult {
   total: number;
   limit: number;
   page: number;
-  rows: EnrichedRequirement[];
+  rows: RequirementDetail[];
 }

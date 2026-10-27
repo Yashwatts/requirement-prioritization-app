@@ -52,24 +52,20 @@ export const LoginView = () => {
       <Box className={styles.container}>
         <Box className={styles.card}>
           <Box className={styles.leftSection}>
-            <Box className={styles.iconHeader}>
-              <Box className={styles.iconWrapper} aria-hidden="true">
-                <Box className={styles.iconSvg} />
-              </Box>
+            <Box className={styles.iconWrapper} aria-hidden="true">
+              <Box
+                component="img"
+                src="/login-background/figma-app-icon.svg"
+                alt=""
+                width={50}
+                height={50}
+                className={styles.iconImg}
+              />
             </Box>
 
             <Typography
               component="h1"
               className={styles.title}
-              sx={{
-                width: "352px",
-                color: "#212121 !important",
-                fontFamily: '"Open Sans", sans-serif !important',
-                fontSize: "22px !important",
-                fontWeight: "400 !important",
-                lineHeight: "32px !important",
-                margin: "0 !important",
-              }}
             >
               {translation.title}
             </Typography>
@@ -77,15 +73,6 @@ export const LoginView = () => {
             <Typography
               component="p"
               className={styles.subtext}
-              sx={{
-                width: "352px",
-                color: "#757575 !important",
-                fontFamily: '"Open Sans", sans-serif !important',
-                fontSize: "12px !important",
-                fontWeight: "400 !important",
-                lineHeight: "20px !important",
-                margin: "4px 0 0 0 !important",
-              }}
             >
               {translation.description}
             </Typography>
@@ -94,15 +81,6 @@ export const LoginView = () => {
           <Box className={styles.rightSection}>
             <Typography
               className={styles.loginText}
-              sx={{
-                width: "300px",
-                color: "#212121 !important",
-                fontFamily: '"Open Sans", sans-serif !important',
-                fontSize: "18px !important",
-                fontWeight: "400 !important",
-                lineHeight: "24px !important",
-                textAlign: "left !important",
-              }}
             >
               {translation.login}
             </Typography>

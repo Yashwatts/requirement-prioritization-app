@@ -1,18 +1,17 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { RegisterRequirementCommand } from './register-requirement.command';
-import { RegisterRequirementHandler } from './register-requirement.handler';
 import { RegisterRequirementValidator } from './register-requirement.validator';
 
 @Controller('requirements')
 export class RegisterRequirementController {
-  constructor(private readonly handler: RegisterRequirementHandler) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
   @Post()
   async handle(@Body() validator: RegisterRequirementValidator) {
-    const command = new RegisterRequirementCommand(validator);
-    await this.handler.handle(command);
+    await this.commandBus.execute(new RegisterRequirementCommand(validator));
     return {
-      message: 'Requirement registered successfully',
+      message: 'Requisition registered successfully',
     };
   }
 }

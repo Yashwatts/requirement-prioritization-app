@@ -1,25 +1,6 @@
-export type RequestingInstitution =
-  | "FUNIBER"
-  | "UNEATLANTICO"
-  | "UNIC"
-  | "UNINCOL"
-  | "UNIB"
-  | "UNINI-MX"
-  | "UNIROMANA"
-  | "UDAS"
-  | "Grupo Funiber"
-  | "Proyectos Europeos";
+export type RequestingInstitution = string;
 
-export type BenefitedInstitution =
-  | "FUNIBER"
-  | "UNEATLANTICO"
-  | "UNIC"
-  | "UNINCOL"
-  | "UNIB"
-  | "UNINI-MX"
-  | "UNIROMANA"
-  | "UDAS"
-  | "Proyectos Europeos";
+export type BenefitedInstitution = string;
 
 export type StudyModality = "Virtual" | "Presencial" | "Virtual/Presencial";
 
@@ -29,9 +10,7 @@ export type ComplexityEffort = "XS" | "S" | "M" | "L" | "XL";
 
 export type ClientPriority = "Low" | "Medium" | "High";
 
-export type ManagementPriority = "Under" | "Medium" | "High" | "Discarded";
-
-export type DomainArea =
+export type Domain =
   | "Financiero"
   | "Reincorporaciones"
   | "Ventas"
@@ -51,7 +30,7 @@ export type DomainArea =
   | "ESEC"
   | "Proyectos Europeos";
 
-export type RequirementState = "Registered" | "Flow";
+export type RequirementStatus = "Registered" | "Flow";
 
 export type RequirementType = "Internal" | "External" | "Client";
 
@@ -69,17 +48,12 @@ export const ComplexityEffortEnum = {
   XL: 5,
 } as const;
 
-export const ManagementPriorityEnum = {
-  UNDER: 1,
-  MEDIUM: 2,
-  HIGH: 3,
-  DISCARDED: 4,
-} as const;
-
-export const RequirementStateEnum = {
+export const RequirementStatusEnum = {
   REGISTERED: 1,
   FLOW: 2,
 } as const;
+
+export const RequirementStateEnum = RequirementStatusEnum;
 
 export const RequirementTypeEnum = {
   INTERNAL: 1,
@@ -100,7 +74,7 @@ export const UserImpactLevelEnum = {
   VERY_HIGH: 4,
 } as const;
 
-export interface BackendEnrichedRequirement {
+export interface RequirementDetail {
   id: number;
   uuid: string;
   code: number;
@@ -124,7 +98,6 @@ export interface BackendEnrichedRequirement {
   impact: number;
   complexity_and_effort: number;
   client_priority: number;
-  management_priority?: number;
   domain_in_charge_id: number;
   domain_in_charge_name: string | null;
   domain_in_charge: {
@@ -147,7 +120,7 @@ export interface BackendListRequirementsResult {
   total: number;
   limit: number;
   page: number;
-  rows: BackendEnrichedRequirement[];
+  rows: RequirementDetail[];
 }
 
 export interface RequirementListItem {
@@ -160,10 +133,10 @@ export interface RequirementListItem {
   requestingInstitutionId: number;
   requestedBy: string;
   requestedByList: string[];
-  domain: DomainArea;
+  domain: Domain;
   domainId: number;
-  collaboratorDomains: DomainArea[];
-  followerDomains: DomainArea[];
+  collaboratorDomains: Domain[];
+  followerDomains: Domain[];
   benefitedInstitutions: BenefitedInstitution[];
   totalBenefitedInstitutions: number;
   isObligatory: boolean;
@@ -177,10 +150,10 @@ export interface RequirementListItem {
   complexityEffortId: number;
   clientPriority: ClientPriority;
   clientPriorityId: number;
-  managementPriority: ManagementPriority;
-  managementPriorityId: number;
-  state: RequirementState;
-  stateId: number;
+  status: RequirementStatus;
+  statusId: number;
+  state?: RequirementStatus;
+  stateId?: number;
   type: RequirementType;
   typeId: number;
   developmentTimeInSprints: number | null;
@@ -202,14 +175,11 @@ export type SortOrder = "ASC" | "DESC";
 
 export interface ListRequirementsParams {
   search?: string;
-  domain?: DomainArea;
+  domain?: Domain;
   domain_in_charge_id?: number;
-  state?: RequirementState | number;
-  status?: RequirementState | number;
+  status?: RequirementStatus | number;
   clientPriority?: ClientPriority | number;
   client_priority?: ClientPriority | number;
-  managementPriority?: ManagementPriority | number;
-  management_priority?: ManagementPriority | number;
   sortBy?: string;
   sort_by?: string;
   sortOrder?: SortOrder;
@@ -231,7 +201,6 @@ export interface CreateRequirementPayload {
   exist_solution_alternative: boolean;
   complexity_and_effort: number;
   client_priority?: number;
-  management_priority?: number;
   domain_in_charge_id: number;
   domains_collaborators?: string[];
   followers_domains?: string[];
@@ -239,4 +208,5 @@ export interface CreateRequirementPayload {
   start_date?: string;
   end_date?: string;
   type: number;
+  status?: number;
 }

@@ -1,11 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { useEffect, useMemo, useRef, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
@@ -22,16 +17,18 @@ import {
   Chip,
   IconButton,
   InputAdornment,
-  MenuItem,
   Paper,
-  Select,
   Skeleton,
   Stack,
   TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import MaterialReactTable, { type MRT_ColumnDef } from "material-react-table";
+import MaterialReactTable, {
+  type MRT_ColumnDef,
+  type MRT_RowSelectionState,
+  type MRT_SortingState,
+} from "material-react-table";
 
 import styles from "./requirements-table.module.css";
 import { useSnackbar } from "@/components/snackbar/use-snackbar";
@@ -43,46 +40,50 @@ import {
   setSearch,
   setSortBy,
   setSortOrder,
-  toggleSortOrder,
 } from "@/features/requirements/requirement.slice";
-import type { RequirementListItem } from "@/@types/requirement.types";
+import type { RequirementListItem, SortOrder } from "@/@types/requirement.types";
+import { TableEmptyState } from "./table-empty-state";
+import { TablePagination } from "./table-pagination";
 
-const EmptyState = () => (
-  <Box className={styles.emptyState}>
-    <Box className={styles.emptyStateIllustration} aria-hidden="true">
-      <Image
-        src="/empty-results/empty-street.svg?v=figma-1"
-        alt=""
-        width={190}
-        height={147}
-      />
-    </Box>
-    <Typography className={styles.emptyStateMessage}>
-      No results found. Try changing your filters.
-    </Typography>
-  </Box>
-);
+const COLUMN_SORT_MAP: Record<string, string> = {
+  name: "name",
+  code: "code",
+  requestingInstitution: "requesting_institution_id",
+  requestedBy: "requested_by",
+  domain: "domain_in_charge_id",
+  type: "type",
+  totalBenefitedInstitutions: "total_benefited_institutions",
+  isObligatory: "obligation",
+  hasAlternativeSolution: "exist_solution_alternative",
+  impactUsers: "impact_number_users_id",
+  impact: "impact",
+  complexityEffort: "complexity_and_effort",
+  clientPriority: "client_priority",
+  status: "status",
+  startDate: "start_date",
+  finishDate: "end_date",
+  createdAt: "created_at",
+};
 
-const TableHeader = ({
-  label,
-  onClick,
-  descending = false,
-  showSortIcon = true,
-}: {
-  label: string;
-  onClick?: () => void;
-  descending?: boolean;
-  showSortIcon?: boolean;
-}) => (
-  <Button className={styles.headerButton} onClick={onClick}>
-    {label}
-    {showSortIcon && (
-      <ArrowUpwardIcon
-        style={{ transform: descending ? "rotate(180deg)" : "none" }}
-      />
-    )}
-  </Button>
-);
+const BACKEND_SORT_MAP: Record<string, string> = {
+  name: "name",
+  code: "code",
+  requesting_institution_id: "requestingInstitution",
+  requested_by: "requestedBy",
+  domain_in_charge_id: "domain",
+  type: "type",
+  total_benefited_institutions: "totalBenefitedInstitutions",
+  obligation: "isObligatory",
+  exist_solution_alternative: "hasAlternativeSolution",
+  impact_number_users_id: "impactUsers",
+  impact: "impact",
+  complexity_and_effort: "complexityEffort",
+  client_priority: "clientPriority",
+  status: "status",
+  start_date: "startDate",
+  end_date: "finishDate",
+  created_at: "createdAt",
+};
 
 interface RequirementsTableProps {
   onCreateNew: () => void;
@@ -149,103 +150,241 @@ export const RequirementsTable = ({
     dispatch(setSearch(""));
   };
 
-  const handlePrevPage = () => {
-    if (page > 1) {
-      dispatch(setPage(page - 1));
+  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
+
+  const sortDebounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync MRT sorting state directly from Redux
+  const reduxSortingState = useMemo<MRT_SortingState>(() => {
+    if (!sortBy) return [];
+    const colId = BACKEND_SORT_MAP[sortBy] ?? sortBy;
+    return [{ id: colId, desc: sortOrder === "DESC" }];
+  }, [sortBy, sortOrder]);
+
+  // Local active sorting state for instant UI response
+  const [activeSorting, setActiveSorting] = useState<MRT_SortingState>(reduxSortingState);
+  const [prevReduxSort, setPrevReduxSort] = useState(reduxSortingState);
+
+  // Adjust local sorting during render if Redux state changed externally
+  if (prevReduxSort !== reduxSortingState) {
+    setPrevReduxSort(reduxSortingState);
+    setActiveSorting(reduxSortingState);
+  }
+
+  // Handle server-side sorting change with instant UI update and 350ms debounced API dispatch
+  const handleSortingChange = (
+    updaterOrValue:
+      | MRT_SortingState
+      | ((old: MRT_SortingState) => MRT_SortingState),
+  ) => {
+    const nextSorting =
+      typeof updaterOrValue === "function"
+        ? updaterOrValue(activeSorting)
+        : updaterOrValue;
+
+    // 1. Immediately update table header UI
+    setActiveSorting(nextSorting);
+
+    // 2. Clear any pending debounced dispatch
+    if (sortDebounceRef.current) {
+      clearTimeout(sortDebounceRef.current);
     }
+
+    // 3. Debounce dispatching to Redux and fetching by 350ms
+    sortDebounceRef.current = setTimeout(() => {
+      if (nextSorting && nextSorting.length > 0) {
+        const colId = nextSorting[0].id;
+        const backendCol = COLUMN_SORT_MAP[colId] ?? colId;
+        const nextOrder: SortOrder = nextSorting[0].desc ? "DESC" : "ASC";
+        dispatch(setSortBy(backendCol));
+        dispatch(setSortOrder(nextOrder));
+      } else {
+        dispatch(setSortBy(undefined));
+        dispatch(setSortOrder("ASC"));
+      }
+    }, 350);
   };
 
-  const handleNextPage = () => {
-    if (page < totalPages) {
-      dispatch(setPage(page + 1));
-    }
-  };
-
-  const startRow = total === 0 ? 0 : (page - 1) * limit + 1;
-  const endRow = Math.min(page * limit, total);
-  const paginationText =
-    total > 0 ? `${startRow}-${endRow} of ${total}` : "0-0 of 0";
+  // Clean up debounce timer on component unmount
+  useEffect(() => {
+    return () => {
+      if (sortDebounceRef.current) {
+        clearTimeout(sortDebounceRef.current);
+      }
+    };
+  }, []);
 
   const columns = useMemo<MRT_ColumnDef<RequirementListItem>[]>(
     () => [
       {
-        id: "selection",
-        header: "",
-        size: 64,
-        Header: () => <Checkbox size="small" />,
-        Cell: () => <Checkbox size="small" />,
-      },
-      {
         accessorKey: "name",
         header: "Name",
-        size: 200,
-        Header: () => (
-          <TableHeader
-            label="Name"
-            descending={sortBy === "name" && sortOrder === "DESC"}
-            onClick={() => {
-              if (sortBy === "name") {
-                dispatch(toggleSortOrder());
-              } else {
-                dispatch(setSortBy("name"));
-                dispatch(setSortOrder("ASC"));
-              }
-            }}
-          />
-        ),
+        size: 180,
+      },
+      {
+        accessorKey: "code",
+        header: "Code",
+        size: 110,
       },
       {
         accessorKey: "requestingInstitution",
         header: "Requesting institution",
-        size: 257,
-        Header: () => <TableHeader label="Requesting institution" />,
+        size: 200,
+      },
+      {
+        accessorKey: "requestedBy",
+        header: "Requested by",
+        size: 180,
+        Cell: ({ row }) => {
+          const list = row.original.requestedByList;
+          if (Array.isArray(list) && list.length > 0) {
+            return list.join(", ");
+          }
+          return row.original.requestedBy ? row.original.requestedBy : "-";
+        },
       },
       {
         accessorKey: "domain",
         header: "Domain in charge",
-        size: 197,
-        Header: () => <TableHeader label="Domain in charge" />,
-      },
-      {
-        accessorKey: "code",
-        header: "Column 1",
-        size: 172,
-        Header: () => <TableHeader label="Column 1" />,
-      },
-      {
-        accessorKey: "requestedBy",
-        header: "Column 2",
-        size: 188,
-        Header: () => <TableHeader label="Column 2" />,
+        size: 190,
       },
       {
         accessorKey: "type",
-        header: "Column 3",
-        size: 188,
-        Header: () => <TableHeader label="Column 3" />,
+        header: "Type",
+        size: 120,
       },
       {
         accessorKey: "totalBenefitedInstitutions",
-        header: "Benefited Institutions",
-        size: 187,
-        Header: () => (
-          <TableHeader label="Benefited Institutions" showSortIcon={false} />
-        ),
-        Cell: ({ cell }) => (
-          <Chip className={styles.chip} label={String(cell.getValue<number>())} />
-        ),
+        header: "Benefited institutions",
+        size: 180,
+        Cell: ({ row }) => {
+          const benefited = row.original.benefitedInstitutions ?? [];
+          const count =
+            row.original.totalBenefitedInstitutions ?? benefited.length;
+          const displayLabel =
+            count === 1 && benefited.length > 0
+              ? String(benefited[0])
+              : String(count);
+
+          return <Chip className={styles.chip} label={displayLabel} />;
+        },
+      },
+      {
+        accessorKey: "studyModalities",
+        header: "Study modality",
+        size: 160,
+        Cell: ({ row }) => {
+          const modalities = row.original.studyModalities;
+          return Array.isArray(modalities) && modalities.length > 0
+            ? modalities.join(", ")
+            : "-";
+        },
+      },
+      {
+        accessorKey: "isObligatory",
+        header: "Mandatory",
+        size: 120,
+        Cell: ({ row }) => (row.original.isObligatory ? "Yes" : "No"),
+      },
+      {
+        accessorKey: "hasAlternativeSolution",
+        header: "Alternative solution",
+        size: 170,
+        Cell: ({ row }) =>
+          row.original.hasAlternativeSolution ? "Yes" : "No",
+      },
+      {
+        accessorKey: "impactUsers",
+        header: "User impact",
+        size: 130,
       },
       {
         accessorKey: "impact",
         header: "Impact",
-        size: 162,
-        Header: () => <TableHeader label="Impact" />,
+        size: 110,
         Cell: ({ cell }) => (
-          <Chip className={styles.chip} label={String(cell.getValue<number>())} />
+          <Chip
+            className={styles.chip}
+            label={String(cell.getValue<number>() ?? 0)}
+          />
         ),
       },
+      {
+        accessorKey: "complexityEffort",
+        header: "Complexity & effort",
+        size: 160,
+      },
+      {
+        accessorKey: "clientPriority",
+        header: "Client priority",
+        size: 130,
+      },
+      {
+        accessorKey: "status",
+        header: "Status",
+        size: 120,
+      },
+      {
+        accessorKey: "collaboratorDomains",
+        header: "Collaborator domains",
+        size: 190,
+        Cell: ({ row }) => {
+          const domains = row.original.collaboratorDomains;
+          return Array.isArray(domains) && domains.length > 0
+            ? domains.join(", ")
+            : "-";
+        },
+      },
+      {
+        accessorKey: "followerDomains",
+        header: "Follower domains",
+        size: 180,
+        Cell: ({ row }) => {
+          const domains = row.original.followerDomains;
+          return Array.isArray(domains) && domains.length > 0
+            ? domains.join(", ")
+            : "-";
+        },
+      },
+      {
+        accessorKey: "startDate",
+        header: "Start date",
+        size: 130,
+        Cell: ({ row }) => row.original.startDate ?? "-",
+      },
+      {
+        accessorKey: "finishDate",
+        header: "Finish date",
+        size: 130,
+        Cell: ({ row }) => row.original.finishDate ?? "-",
+      },
+      {
+        accessorKey: "description",
+        header: "Description",
+        size: 220,
+        Cell: ({ row }) => {
+          const raw = row.original.description ?? "";
+          const clean = raw.replace(/<[^>]*>?/gm, "").trim();
+          return (
+            <Tooltip title={clean} placement="top-start">
+              <Typography
+                variant="body2"
+                sx={{
+                  maxWidth: 200,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  fontSize: 13,
+                }}
+              >
+                {clean ? clean : "-"}
+              </Typography>
+            </Tooltip>
+          );
+        },
+      },
     ],
-    [dispatch, sortBy, sortOrder],
+    [],
   );
 
   return (
@@ -315,22 +454,68 @@ export const RequirementsTable = ({
             enableColumnFilters={false}
             enableGlobalFilter={false}
             enablePagination={false}
-            enableSorting={false}
+            enableSorting
+            enableMultiSort={false}
+            manualSorting
+            enableRowSelection
+            enableSelectAll
+            getRowId={(row, index) =>
+              String(row?.id ?? row?.code ?? `row-${index}`)
+            }
+            onRowSelectionChange={setRowSelection}
+            onSortingChange={handleSortingChange}
             enableTopToolbar={false}
             enableBottomToolbar={false}
             enableRowActions
-            layoutMode="grid"
+            layoutMode="semantic"
             positionActionsColumn="last"
             displayColumnDefOptions={{
+              "mrt-row-select": {
+                size: 56,
+                Header: ({ table }) => (
+                  <Checkbox
+                    size="small"
+                    checked={table.getIsAllRowsSelected()}
+                    indeterminate={
+                      table.getIsSomeRowsSelected() &&
+                      !table.getIsAllRowsSelected()
+                    }
+                    onChange={table.getToggleAllRowsSelectedHandler()}
+                  />
+                ),
+                Cell: ({ row }) => (
+                  <Checkbox
+                    size="small"
+                    checked={row.getIsSelected()}
+                    disabled={!row.getCanSelect()}
+                    indeterminate={row.getIsSomeSelected()}
+                    onChange={row.getToggleSelectedHandler()}
+                  />
+                ),
+              },
               "mrt-row-actions": {
                 header: "",
-                size: 121,
+                size: 100,
+                muiTableHeadCellProps: {
+                  className: styles.stickyActionsHeadCell,
+                },
+                muiTableBodyCellProps: {
+                  className: styles.stickyActionsBodyCell,
+                },
+              },
+            }}
+            enablePinning
+            initialState={{
+              columnPinning: {
+                right: ["mrt-row-actions"],
               },
             }}
             state={{
               isLoading: false,
-              showSkeletons: status === "loading",
+              showSkeletons: status === "loading" && items.length === 0,
               showAlertBanner: status === "failed",
+              rowSelection,
+              sorting: activeSorting,
             }}
             muiTableProps={{ className: styles.table, stickyHeader: true }}
             muiTableHeadCellProps={{ className: styles.tableHeadCell }}
@@ -357,7 +542,7 @@ export const RequirementsTable = ({
                   ))}
                 </Stack>
               ) : (
-                <EmptyState />
+                <TableEmptyState />
               )
             }
             renderRowActions={() => (
@@ -376,38 +561,15 @@ export const RequirementsTable = ({
             )}
           />
           {items.length > 0 && (
-            <Box className={styles.pagination}>
-              <Typography>Rows per page:</Typography>
-              <Select
-                value={limit}
-                size="small"
-                IconComponent={ArrowDropDownIcon}
-                onChange={(e) => dispatch(setLimit(Number(e.target.value)))}
-              >
-                <MenuItem value={16}>16</MenuItem>
-              </Select>
-              <Typography>{paginationText}</Typography>
-              <Tooltip title="Previous page">
-                <Box component="span">
-                  <IconButton
-                    disabled={page <= 1 || status === "loading"}
-                    onClick={handlePrevPage}
-                  >
-                    <ArrowLeftIcon />
-                  </IconButton>
-                </Box>
-              </Tooltip>
-              <Tooltip title="Next page">
-                <Box component="span">
-                  <IconButton
-                    disabled={page >= totalPages || total === 0 || status === "loading"}
-                    onClick={handleNextPage}
-                  >
-                    <ArrowRightIcon />
-                  </IconButton>
-                </Box>
-              </Tooltip>
-            </Box>
+            <TablePagination
+              page={page}
+              limit={limit}
+              total={total}
+              totalPages={totalPages}
+              isLoading={status === "loading"}
+              onPageChange={(newPage) => dispatch(setPage(newPage))}
+              onLimitChange={(newLimit) => dispatch(setLimit(newLimit))}
+            />
           )}
         </Box>
       </Paper>

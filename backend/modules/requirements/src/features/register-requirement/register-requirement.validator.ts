@@ -15,7 +15,7 @@ import {
 import { StudyModality } from '../../domain/requirement/enums/study-modality.enum';
 import { ComplexityEffort } from '../../domain/requirement/enums/complexity-effort.enum';
 import { ClientPriority } from '../../domain/requirement/enums/client-priority.enum';
-import { ManagementPriority } from '../../domain/requirement/enums/management-priority.enum';
+import { RequirementState } from '../../domain/requirement/enums/requirement-state.enum';
 import { RequirementType } from '../../domain/requirement/enums/requirement-type.enum';
 
 export class RegisterRequirementValidator {
@@ -69,10 +69,6 @@ export class RegisterRequirementValidator {
   @IsEnum(ClientPriority)
   client_priority?: ClientPriority;
 
-  @IsOptional()
-  @IsEnum(ManagementPriority)
-  management_priority?: ManagementPriority;
-
   @IsInt()
   @Min(1)
   domain_in_charge_id!: number;
@@ -101,4 +97,8 @@ export class RegisterRequirementValidator {
 
   @IsEnum(RequirementType)
   type!: RequirementType;
+
+  @IsOptional()
+  @IsEnum(RequirementState)
+  status?: RequirementState;
 }

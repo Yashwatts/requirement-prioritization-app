@@ -135,7 +135,7 @@ export function resolveFromHttpException(
 
   if (typeof response === 'object' && response !== null) {
     const res = response as Record<string, unknown>;
-    title = (res.error as string) || exception.name;
+    title = typeof res.error === 'string' ? res.error : exception.name;
 
     if (Array.isArray(res.message)) {
       detail = (res.message as string[]).join('; ');

@@ -19,13 +19,9 @@ export default (contextName: string): Options => {
     password: configService.get<string>('DB_PASSWORD'),
     dbName: configService.get<string>('DB_DATABASE'),
     schema: contextSchemaMap[contextName],
-    entities: [
-      `dist/${moduleName}/src/infrastructure/database/**/*.entity.js`,
-      'dist/shared/**/*.entity.js',
-    ],
+    entities: [`dist/${moduleName}/src/infrastructure/database/**/*.entity.js`],
     entitiesTs: [
       `modules/${moduleName}/src/infrastructure/database/**/*.entity.ts`,
-      'modules/shared/**/*.entity.ts',
     ],
     migrations: {
       path: `modules/${moduleName}/src/infrastructure/database/migrations`,
