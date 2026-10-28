@@ -61,10 +61,10 @@ export class FetchImpactUsersHandler implements IQueryHandler<FetchImpactUsersQu
         });
       }
 
-      const item = grouped.get(row.domain_uuid)!;
+      const domainImpactGroup = grouped.get(row.domain_uuid)!;
       const key = LEVEL_MAP[row.impact_number_users_level];
       if (key) {
-        item.impact_users[key] = {
+        domainImpactGroup.impact_users[key] = {
           from: row.quantity.from,
           to: row.quantity.to,
         };

@@ -50,7 +50,7 @@ export const requirementFormSchema = z
       .string()
       .optional()
       .refine(
-        (val) => !val || !isNaN(Date.parse(val)),
+        (dateString) => !dateString || !isNaN(Date.parse(dateString)),
         "Start date must be a valid date",
       ),
 
@@ -58,7 +58,7 @@ export const requirementFormSchema = z
       .string()
       .optional()
       .refine(
-        (val) => !val || !isNaN(Date.parse(val)),
+        (dateString) => !dateString || !isNaN(Date.parse(dateString)),
         "Finish date must be a valid date",
       ),
 
@@ -69,9 +69,9 @@ export const requirementFormSchema = z
       .max(500, "Description must not exceed 500 characters"),
   })
   .refine(
-    (data) => {
-      if (data.startDate && data.finishDate) {
-        return new Date(data.finishDate) >= new Date(data.startDate);
+    (formValues) => {
+      if (formValues.startDate && formValues.finishDate) {
+        return new Date(formValues.finishDate) >= new Date(formValues.startDate);
       }
       return true;
     },
@@ -82,45 +82,3 @@ export const requirementFormSchema = z
   );
 
 export type RequirementFormValues = z.infer<typeof requirementFormSchema>;
-export const RequirementFormSchema = requirementFormSchema;
-
-export const RequirementListItemSchema = z.object({
-  id: z.string(),
-  code: z.number().int().positive(),
-  name: z.string(),
-  requestingInstitution: z.string(),
-  requestedBy: z.string(),
-  domain: z.string(),
-  collaboratorDomains: z.array(z.string()),
-  followerDomains: z.array(z.string()),
-  benefitedInstitutions: z.array(z.string()),
-  totalBenefitedInstitutions: z.number().int().nonnegative(),
-  isObligatory: z.boolean(),
-  hasAlternativeSolution: z.boolean(),
-  studyModalities: z.array(z.string()),
-  impactUsers: z.string(),
-  impact: z.number(),
-  complexityEffort: z.string(),
-  clientPriority: z.string(),
-  status: z.string(),
-  state: z.string().optional(),
-  type: z.string(),
-  startDate: z.string().nullable(),
-  finishDate: z.string().nullable(),
-  createdAt: z.string(),
-});
-
-export const PaginatedRequirementsSchema = z.object({
-  items: z.array(RequirementListItemSchema),
-  total: z.number().int().nonnegative(),
-  page: z.number().int().positive(),
-  limit: z.number().int().positive(),
-  totalPages: z.number().int().nonnegative(),
-});
-
-export type RequirementListItemSchemaType = z.infer<
-  typeof RequirementListItemSchema
->;
-export type PaginatedRequirementsSchemaType = z.infer<
-  typeof PaginatedRequirementsSchema
->;

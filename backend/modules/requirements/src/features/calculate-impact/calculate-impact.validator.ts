@@ -1,5 +1,6 @@
 import { IsArray, IsBoolean, IsInt, IsOptional, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
+import { mapImpactLevelToNumber } from '../../domain/requirement/mappers/requirement.mapper';
 
 export class CalculateImpactValidator {
   @IsArray()
@@ -17,8 +18,8 @@ export class CalculateImpactValidator {
   @Type(() => Number)
   domain_in_charge_id!: number;
 
+  @Transform(({ value }) => mapImpactLevelToNumber(value))
   @IsInt()
   @Min(1)
-  @Type(() => Number)
   impact_number_users_id!: number;
 }

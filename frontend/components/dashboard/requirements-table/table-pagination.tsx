@@ -43,7 +43,7 @@ export const TablePagination = ({
         value={limit}
         size="small"
         IconComponent={ArrowDropDownIcon}
-        onChange={(e) => onLimitChange(Number(e.target.value))}
+        onChange={(event) => onLimitChange(Number(event.target.value))}
       >
         <MenuItem value={10}>10</MenuItem>
         <MenuItem value={20}>20</MenuItem>

@@ -6,7 +6,7 @@ export class AppController {
   constructor(private readonly handler: AppHandler) {}
 
   @Get()
-  handle(): { message: string } {
-    return this.handler.handle();
+  getServiceStatus(): { message: string } {
+    return this.handler.getServiceStatus();
   }
 }

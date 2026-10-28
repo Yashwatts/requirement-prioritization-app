@@ -30,7 +30,9 @@ export const DashboardLayoutClient = ({
     <Box className={styles.page}>
       <Header
         user={user}
-        onMenuClick={() => setSidebarOpen((open) => !open)}
+        onMenuClick={() =>
+          setSidebarOpen((isPreviouslyOpen) => !isPreviouslyOpen)
+        }
       />
       <Sidebar open={sidebarOpen} />
       <Box component="main" className={styles.content}>

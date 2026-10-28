@@ -8,7 +8,7 @@ import { CreateRequirementDrawer } from "@/components/dashboard/create-requireme
 const RequirementsTable = dynamic(
   () =>
     import("@/components/dashboard/requirements-table/requirements-table").then(
-      (mod) => mod.RequirementsTable,
+      (importedModule) => importedModule.RequirementsTable,
     ),
   { ssr: false },
 );
@@ -28,7 +28,11 @@ export const DashboardContent = () => {
       <CreateRequirementDrawer
         open={createOpen}
         onClose={() => setCreateOpen(false)}
-        onCreated={() => setRequirementsRefreshToken((value) => value + 1)}
+        onCreated={() =>
+          setRequirementsRefreshToken(
+            (previousRefreshToken) => previousRefreshToken + 1,
+          )
+        }
       />
     </Box>
   );

@@ -1,7 +1,7 @@
-import { DomainItem } from "@/@types/domain-item.types";
-import { ImpactUsersItem } from "@/@types/impact-users.types";
-import { InstitutionItem } from "@/@types/institution-item.types";
-import { RequirementListItem, SortOrder } from "@/@types/requirement.types";
+import { Domain } from "@/@types/domain.types";
+import { DomainImpactUsers } from "@/@types/impact-users.types";
+import { Institution } from "@/@types/institution.types";
+import { RequirementTableRow, SortOrder } from "@/@types/requirement.types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
   fetchDomains,
@@ -13,7 +13,7 @@ import {
 export type AsyncStatus = "idle" | "loading" | "succeeded" | "failed";
 
 export interface RequirementsState {
-  items: RequirementListItem[];
+  requirements: RequirementTableRow[];
   total: number;
   totalPages: number;
   page: number;
@@ -23,13 +23,13 @@ export interface RequirementsState {
   sortBy: string | undefined;
   sortOrder: SortOrder;
 
-  institutions: InstitutionItem[];
+  institutions: Institution[];
   institutionsStatus: AsyncStatus;
 
-  domains: DomainItem[];
+  domains: Domain[];
   domainsStatus: AsyncStatus;
 
-  impactUsers: ImpactUsersItem[];
+  impactUsers: DomainImpactUsers[];
   impactUsersStatus: AsyncStatus;
 
   status: AsyncStatus;
@@ -37,14 +37,14 @@ export interface RequirementsState {
 }
 
 const initialState: RequirementsState = {
-  items: [],
+  requirements: [],
   total: 0,
   totalPages: 0,
   page: 1,
   limit: 10,
   search: "",
   sortBy: undefined,
-  sortOrder: "ASC",
+  sortOrder: "DESC",
 
   institutions: [],
   institutionsStatus: "idle",
@@ -95,7 +95,7 @@ export const requirementSlice = createSlice({
       })
       .addCase(fetchRequirements.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.items = action.payload.items;
+        state.requirements = action.payload.requirements;
         state.total = action.payload.total;
         state.totalPages = action.payload.totalPages;
         state.page = action.payload.page;

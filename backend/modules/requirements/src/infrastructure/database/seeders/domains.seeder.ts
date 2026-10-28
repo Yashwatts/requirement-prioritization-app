@@ -78,13 +78,21 @@ export const DOMAINS_DATA = [
 export class DomainsSeeder extends Seeder {
   async run(entityManager: EntityManager): Promise<void> {
     const existingDomains = await entityManager.find(Domain, {
-      name: { $in: DOMAINS_DATA.map((item) => item.name) },
+      name: {
+        $in: DOMAINS_DATA.map((domainDefinition) => domainDefinition.name),
+      },
     });
     const existingNames = new Set(existingDomains.map((domain) => domain.name));
 
     const newDomains = DOMAINS_DATA.filter(
-      (item) => !existingNames.has(item.name),
-    ).map((item) => Domain.create(item.name, item.abbreviation, item.email));
+      (domainDefinition) => !existingNames.has(domainDefinition.name),
+    ).map((domainDefinition) =>
+      Domain.create(
+        domainDefinition.name,
+        domainDefinition.abbreviation,
+        domainDefinition.email,
+      ),
+    );
 
     if (newDomains.length > 0) {
       await entityManager.persist(newDomains).flush();

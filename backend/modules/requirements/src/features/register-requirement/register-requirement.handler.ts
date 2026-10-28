@@ -14,16 +14,17 @@ export class RegisterRequirementHandler implements ICommandHandler<RegisterRequi
   async execute(command: RegisterRequirementCommand): Promise<Requirement> {
     const { start_date, end_date, ...requirementAttributes } = command.payload;
 
-    const tier = await this.impactUsersRepository.findUserImpactRange(
-      requirementAttributes.domain_in_charge_id,
-      requirementAttributes.impact_number_users_id,
-    );
+    const userImpactRange =
+      await this.impactUsersRepository.findUserImpactRange(
+        requirementAttributes.domain_in_charge_id,
+        requirementAttributes.impact_number_users_id,
+      );
 
     const requirement = Requirement.create({
       ...requirementAttributes,
       impact_number_users_id:
-        tier?.id ?? requirementAttributes.impact_number_users_id,
-      impact_users_tier: tier,
+        userImpactRange?.id ?? requirementAttributes.impact_number_users_id,
+      user_impact_range: userImpactRange,
       start_date: start_date ? new Date(start_date) : undefined,
       end_date: end_date ? new Date(end_date) : undefined,
     });

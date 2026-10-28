@@ -15,7 +15,7 @@ export interface CreateRequirementInterface {
   exist_solution_alternative: boolean;
   study_modality: StudyModality;
   impact_number_users_id: number;
-  impact_users_tier?: ImpactUsers | null;
+  user_impact_range?: ImpactUsers | null;
   impact_users_value?: number;
   complexity_and_effort: ComplexityEffort;
   client_priority?: ClientPriority;
@@ -39,7 +39,7 @@ export interface UpdateRequirementInterface {
   exist_solution_alternative: boolean;
   study_modality: StudyModality;
   impact_number_users_id: number;
-  impact_users_tier?: ImpactUsers | null;
+  user_impact_range?: ImpactUsers | null;
   impact_users_value?: number;
   complexity_and_effort: ComplexityEffort;
   client_priority?: ClientPriority;
@@ -99,5 +99,7 @@ export interface ListRequirementsResult {
   total: number;
   limit: number;
   page: number;
-  rows: RequirementDetail[];
+  totalPages: number;
+  requirements: any[];
+  rows: any[];
 }

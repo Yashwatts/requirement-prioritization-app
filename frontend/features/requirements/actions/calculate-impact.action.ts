@@ -7,7 +7,7 @@ export interface CalculateImpactParams {
   obligation: boolean;
   exist_solution_alternative: boolean;
   domain_in_charge_id: number;
-  impact_number_users_id: number;
+  impact_number_users_id: string | number;
 }
 
 export interface CalculateImpactResponse {

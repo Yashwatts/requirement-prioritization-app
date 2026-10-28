@@ -20,12 +20,6 @@ export class CalculateImpactHandler implements ICommandHandler<
   async execute(
     command: CalculateImpactCommand,
   ): Promise<CalculateImpactResult> {
-    return this.handle(command);
-  }
-
-  async handle(
-    command: CalculateImpactCommand,
-  ): Promise<CalculateImpactResult> {
     const {
       benefited_institutions,
       obligation,
@@ -34,13 +28,14 @@ export class CalculateImpactHandler implements ICommandHandler<
       impact_number_users_id,
     } = command.payload;
 
-    const tier = await this.impactUsersRepository.findUserImpactRange(
-      domain_in_charge_id,
-      impact_number_users_id,
-    );
+    const userImpactRange =
+      await this.impactUsersRepository.findUserImpactRange(
+        domain_in_charge_id,
+        impact_number_users_id,
+      );
 
     const userImpactValue =
-      tier?.getAverageQuantity() ?? impact_number_users_id;
+      userImpactRange?.getAverageQuantity() ?? impact_number_users_id;
 
     const totalBenefited = benefited_institutions?.length ?? 0;
 

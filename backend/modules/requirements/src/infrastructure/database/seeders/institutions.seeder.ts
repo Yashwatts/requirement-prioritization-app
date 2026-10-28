@@ -21,7 +21,7 @@ export class InstitutionsSeeder extends Seeder {
       name: { $in: institutionNames },
     });
     const existingNames = new Set(
-      existingInstitutions.map((inst) => inst.name),
+      existingInstitutions.map((institution) => institution.name),
     );
 
     const newInstitutions = institutionNames

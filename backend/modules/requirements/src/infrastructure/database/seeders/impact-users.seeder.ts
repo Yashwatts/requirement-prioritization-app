@@ -132,43 +132,43 @@ export class ImpactUsersSeeder extends Seeder {
   async run(entityManager: EntityManager): Promise<void> {
     const domains = await entityManager.find(Domain, {});
     const existingImpactLevels = await entityManager.find(ImpactUsers, {});
-    const existingMap = new Map<string, ImpactUsers>();
-    for (const item of existingImpactLevels) {
-      existingMap.set(
-        `${item.domain_uuid}:${item.impact_number_users_level}`,
-        item,
+    const existingImpactUsersMap = new Map<string, ImpactUsers>();
+    for (const impactUsersRecord of existingImpactLevels) {
+      existingImpactUsersMap.set(
+        `${impactUsersRecord.domain_uuid}:${impactUsersRecord.impact_number_users_level}`,
+        impactUsersRecord,
       );
     }
 
-    const toPersist: ImpactUsers[] = [];
+    const impactUsersToPersist: ImpactUsers[] = [];
 
     for (const domain of domains) {
       const profile = DOMAIN_PROFILES[domain.name] ?? DEFAULT_PROFILE;
 
       for (const level of [1, 2, 3, 4] as const) {
-        const key = `${domain.uuid}:${level}`;
+        const lookupKey = `${domain.uuid}:${level}`;
         const range = profile[level];
-        const existing = existingMap.get(key);
+        const existingImpactUsers = existingImpactUsersMap.get(lookupKey);
 
-        if (!existing) {
-          toPersist.push(
+        if (!existingImpactUsers) {
+          impactUsersToPersist.push(
             ImpactUsers.create(domain.uuid, level, {
               from: range.from,
               to: range.to,
             }),
           );
         } else {
-          existing.quantity = {
+          existingImpactUsers.quantity = {
             from: range.from,
             to: range.to,
           };
-          toPersist.push(existing);
+          impactUsersToPersist.push(existingImpactUsers);
         }
       }
     }
 
-    if (toPersist.length > 0) {
-      await entityManager.persist(toPersist).flush();
+    if (impactUsersToPersist.length > 0) {
+      await entityManager.persist(impactUsersToPersist).flush();
     }
   }
 }

@@ -34,96 +34,7 @@ export type RequirementStatus = "Registered" | "Flow";
 
 export type RequirementType = "Internal" | "External" | "Client";
 
-export const ClientPriorityEnum = {
-  LOW: 1,
-  MEDIUM: 2,
-  HIGH: 3,
-} as const;
-
-export const ComplexityEffortEnum = {
-  XS: 1,
-  S: 2,
-  M: 3,
-  L: 4,
-  XL: 5,
-} as const;
-
-export const RequirementStatusEnum = {
-  REGISTERED: 1,
-  FLOW: 2,
-} as const;
-
-export const RequirementStateEnum = RequirementStatusEnum;
-
-export const RequirementTypeEnum = {
-  INTERNAL: 1,
-  EXTERNAL: 2,
-  CLIENT: 3,
-} as const;
-
-export const StudyModalityEnum = {
-  VIRTUAL: 1,
-  PRESENCIAL: 2,
-  VIRTUAL_PRESENCIAL: 3,
-} as const;
-
-export const UserImpactLevelEnum = {
-  LOW: 1,
-  MEDIUM: 2,
-  HIGH: 3,
-  VERY_HIGH: 4,
-} as const;
-
-export interface RequirementDetail {
-  id: number;
-  uuid: string;
-  code: number;
-  status: number;
-  name: string;
-  description: string;
-  requesting_institution_id: number;
-  requesting_institution_name: string | null;
-  requesting_institution: {
-    id: number;
-    uuid: string;
-    name: string;
-  } | null;
-  requested_by: string[];
-  benefited_institutions: string[];
-  total_benefited_institutions: number;
-  obligation: boolean;
-  exist_solution_alternative: boolean;
-  study_modality: number;
-  impact_number_users_id: number;
-  impact: number;
-  complexity_and_effort: number;
-  client_priority: number;
-  domain_in_charge_id: number;
-  domain_in_charge_name: string | null;
-  domain_in_charge: {
-    id: number;
-    uuid: string;
-    name: string;
-    abbreviation?: string;
-  } | null;
-  domains_collaborators: string[];
-  followers_domains: string[];
-  development_time_in_sprints: number | null;
-  start_date: string | null;
-  end_date: string | null;
-  type: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface BackendListRequirementsResult {
-  total: number;
-  limit: number;
-  page: number;
-  rows: RequirementDetail[];
-}
-
-export interface RequirementListItem {
+export interface RequirementTableRow {
   id: string;
   numericId: number;
   code: number;
@@ -164,7 +75,7 @@ export interface RequirementListItem {
 }
 
 export interface PaginatedRequirements {
-  items: RequirementListItem[];
+  requirements: RequirementTableRow[];
   total: number;
   page: number;
   limit: number;
@@ -194,19 +105,19 @@ export interface CreateRequirementPayload {
   requesting_institution_id: number;
   requested_by: string[];
   benefited_institutions: string[];
-  study_modality: number;
-  impact_number_users_id: number;
+  study_modality: StudyModality | number | string | string[];
+  impact_number_users_id: string | number;
   impact_users_value?: number;
   obligation: boolean;
   exist_solution_alternative: boolean;
-  complexity_and_effort: number;
-  client_priority?: number;
+  complexity_and_effort: ComplexityEffort | number | string;
+  client_priority?: ClientPriority | number | string;
   domain_in_charge_id: number;
   domains_collaborators?: string[];
   followers_domains?: string[];
   development_time_in_sprints?: number;
   start_date?: string;
   end_date?: string;
-  type: number;
-  status?: number;
+  type: RequirementType | number | string;
+  status?: RequirementStatus | number | string;
 }

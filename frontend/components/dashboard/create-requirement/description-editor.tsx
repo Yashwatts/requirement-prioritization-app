@@ -78,7 +78,7 @@ export function DescriptionEditor({
   // Re-render when active marks change
   useEffect(() => {
     if (!editor) return;
-    const forceUpdate = () => setTick((t) => t + 1);
+    const forceUpdate = () => setTick((previousTick) => previousTick + 1);
     editor.on("transaction", forceUpdate);
     editor.on("selectionUpdate", forceUpdate);
     return () => {
@@ -138,7 +138,7 @@ export function DescriptionEditor({
     if (!editor) return false;
     const { state } = editor;
     if (state.selection.empty && state.storedMarks) {
-      return state.storedMarks.some((m) => m.type.name === format);
+      return state.storedMarks.some((mark) => mark.type.name === format);
     }
     return editor.isActive(format);
   };
@@ -224,8 +224,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={styles.toolbarDropdownButton}
-            onClick={(e) => setFontAnchor(e.currentTarget)}
-            onMouseDown={(e) => e.preventDefault()}
+            onClick={(event) => setFontAnchor(event.currentTarget)}
+            onMouseDown={(event) => event.preventDefault()}
             aria-label="Font family"
           >
             <Typography sx={{ fontSize: "13px", fontWeight: 500, textTransform: "none" }}>
@@ -238,14 +238,14 @@ export function DescriptionEditor({
             open={Boolean(fontAnchor)}
             onClose={() => setFontAnchor(null)}
           >
-            {FONT_OPTIONS.map((opt) => (
+            {FONT_OPTIONS.map((fontOption) => (
               <MenuItem
-                key={opt.label}
-                selected={currentFont === opt.label}
-                onClick={() => handleFontSelect(opt.label, opt.value)}
+                key={fontOption.label}
+                selected={currentFont === fontOption.label}
+                onClick={() => handleFontSelect(fontOption.label, fontOption.value)}
               >
-                <Typography sx={{ fontFamily: opt.value, fontSize: "14px" }}>
-                  {opt.label}
+                <Typography sx={{ fontFamily: fontOption.value, fontSize: "14px" }}>
+                  {fontOption.label}
                 </Typography>
               </MenuItem>
             ))}
@@ -256,8 +256,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={styles.toolbarDropdownButton}
-            onClick={(e) => setHeadingAnchor(e.currentTarget)}
-            onMouseDown={(e) => e.preventDefault()}
+            onClick={(event) => setHeadingAnchor(event.currentTarget)}
+            onMouseDown={(event) => event.preventDefault()}
             aria-label="Text size"
           >
             <Typography sx={{ fontSize: "13px", fontWeight: 700, letterSpacing: "-0.5px" }}>
@@ -309,8 +309,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={isFormatActive("bold") ? styles.activeButton : ""}
-            onMouseDown={(e) => {
-              e.preventDefault();
+            onMouseDown={(event) => {
+              event.preventDefault();
               handleToggleMark("bold");
             }}
             aria-label="Bold"
@@ -325,8 +325,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={isFormatActive("italic") ? styles.activeButton : ""}
-            onMouseDown={(e) => {
-              e.preventDefault();
+            onMouseDown={(event) => {
+              event.preventDefault();
               handleToggleMark("italic");
             }}
             aria-label="Italic"
@@ -349,8 +349,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={isFormatActive("underline") ? styles.activeButton : ""}
-            onMouseDown={(e) => {
-              e.preventDefault();
+            onMouseDown={(event) => {
+              event.preventDefault();
               handleToggleMark("underline");
             }}
             aria-label="Underline"
@@ -374,8 +374,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={editor.isActive("orderedList") ? styles.activeButton : ""}
-            onMouseDown={(e) => {
-              e.preventDefault();
+            onMouseDown={(event) => {
+              event.preventDefault();
               handleToggleList("orderedList");
             }}
             aria-label="Numbered List"
@@ -388,8 +388,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={editor.isActive("bulletList") ? styles.activeButton : ""}
-            onMouseDown={(e) => {
-              e.preventDefault();
+            onMouseDown={(event) => {
+              event.preventDefault();
               handleToggleList("bulletList");
             }}
             aria-label="Bullet List"
@@ -402,8 +402,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={editor.isActive("link") ? styles.activeButton : ""}
-            onClick={(e) => handleOpenLinkPopover(e.currentTarget)}
-            onMouseDown={(e) => e.preventDefault()}
+            onClick={(event) => handleOpenLinkPopover(event.currentTarget)}
+            onMouseDown={(event) => event.preventDefault()}
             aria-label="Link"
           >
             <LinkIcon />
@@ -414,8 +414,8 @@ export function DescriptionEditor({
             size="small"
             type="button"
             className={isFormatActive("code") ? styles.activeButton : ""}
-            onMouseDown={(e) => {
-              e.preventDefault();
+            onMouseDown={(event) => {
+              event.preventDefault();
               handleToggleMark("code");
             }}
             aria-label="Code"
@@ -456,11 +456,11 @@ export function DescriptionEditor({
           size="small"
           placeholder="https://example.com"
           value={linkUrl}
-          onChange={(e) => setLinkUrl(e.target.value)}
+          onChange={(event) => setLinkUrl(event.target.value)}
           autoFocus
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
               handleApplyLink();
             }
           }}

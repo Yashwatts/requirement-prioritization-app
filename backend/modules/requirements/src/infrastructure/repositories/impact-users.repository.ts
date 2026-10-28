@@ -27,17 +27,17 @@ export class ImpactUsersRepository extends EntityRepository<ImpactUsers> {
     }
 
     if (domainUuid) {
-      const tierByLevel = await this.findOne({
+      const rangeByLevel = await this.findOne({
         domain_uuid: domainUuid,
         impact_number_users_level: levelOrId,
       });
-      if (tierByLevel) return tierByLevel;
+      if (rangeByLevel) return rangeByLevel;
 
-      const tierById = await this.findOne({
+      const rangeById = await this.findOne({
         domain_uuid: domainUuid,
         id: levelOrId,
       });
-      if (tierById) return tierById;
+      if (rangeById) return rangeById;
     }
 
     return (
@@ -45,29 +45,6 @@ export class ImpactUsersRepository extends EntityRepository<ImpactUsers> {
       (await this.findOne({ impact_number_users_level: levelOrId })) ??
       (await this.findOne({ id: 1 }))
     );
-  }
-
-  async resolveImpactValue(tierId: number): Promise<number> {
-    const tier = await this.findOne({ id: tierId });
-    if (!tier) {
-      if (tierId >= 1 && tierId <= 4) return tierId;
-      throw new Error(`Impact users tier with id ${tierId} not found.`);
-    }
-    return tier.getAverageQuantity();
-  }
-
-  async resolveImpactTier(
-    domainIdOrUuid: number | string,
-    levelOrId: number,
-  ): Promise<{ id: number; level: number; averageQuantity: number }> {
-    const tier = await this.findUserImpactRange(domainIdOrUuid, levelOrId);
-    return {
-      id: tier?.id ?? levelOrId,
-      level:
-        tier?.impact_number_users_level ??
-        (levelOrId >= 1 && levelOrId <= 4 ? levelOrId : 1),
-      averageQuantity: tier?.getAverageQuantity() ?? 0,
-    };
   }
 
   async save(impactUsers: ImpactUsers | ImpactUsers[]): Promise<void> {

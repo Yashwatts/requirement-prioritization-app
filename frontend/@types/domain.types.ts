@@ -1,4 +1,4 @@
-export interface DomainItem {
+export interface Domain {
   id: number;
   uuid: string;
   name: string;

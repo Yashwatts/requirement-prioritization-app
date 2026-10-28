@@ -63,7 +63,7 @@ export class Requirement {
     exist_solution_alternative,
     study_modality,
     impact_number_users_id,
-    impact_users_tier,
+    user_impact_range,
     impact_users_value,
     complexity_and_effort,
     client_priority,
@@ -109,7 +109,7 @@ export class Requirement {
     requirement.type = type;
 
     const userImpact =
-      impact_users_tier?.getAverageQuantity() ??
+      user_impact_range?.getAverageQuantity() ??
       impact_users_value ??
       impact_number_users_id;
     requirement.impact = requirement.calculateImpact(userImpact);
@@ -208,7 +208,7 @@ export class Requirement {
     this.type = params.type;
 
     const userImpact =
-      params.impact_users_tier?.getAverageQuantity() ??
+      params.user_impact_range?.getAverageQuantity() ??
       params.impact_users_value;
 
     if (userImpact !== undefined) {

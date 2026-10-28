@@ -28,13 +28,8 @@ import {
   fetchInstitutions,
   fetchRequirements,
 } from "@/features/requirements/requirement.action";
-import {
-  mapClientPriorityToNumber,
-  mapComplexityToNumber,
-  mapImpactLevelToNumber,
-  mapStatusToNumber,
-  mapTypeToNumber,
-} from "@/features/requirements/mappers/requirement.mapper";
+import { setPage } from "@/features/requirements/requirement.slice";
+
 import type {
   ClientPriority,
   ComplexityEffort,
@@ -141,7 +136,7 @@ export const CreateRequirementDrawer = ({
 
   // Dynamically populated from backend reference data with NO fallback hardcoded values
   const institutionOptions = useMemo(() => {
-    return apiInstitutions?.map((i) => i.name) ?? [];
+    return apiInstitutions?.map((institution) => institution.name) ?? [];
   }, [apiInstitutions]);
 
   const benefitedInstitutionOptions = useMemo(() => {
@@ -151,7 +146,7 @@ export const CreateRequirementDrawer = ({
   }, [institutionOptions]);
 
   const domainOptions = useMemo(() => {
-    return apiDomains?.map((d) => d.name) ?? [];
+    return apiDomains?.map((domain) => domain.name) ?? [];
   }, [apiDomains]);
 
   const isInstitutionsLoading = institutionsStatus === "loading";
@@ -192,12 +187,13 @@ export const CreateRequirementDrawer = ({
       return;
     }
 
-    const resolvedDomain = apiDomains?.find((d) => d.name === watchedDomain);
+    const resolvedDomain = apiDomains?.find(
+      (domain) => domain.name === watchedDomain,
+    );
     if (!resolvedDomain) {
       return;
     }
 
-    const impactNumberUsersId = mapImpactLevelToNumber(watchedImpactUsers);
     const obligation = watchedObligatory === "Yes";
     const existSolutionAlternative = watchedAlternative === "Yes";
     const benefitedList = Array.isArray(watchedBenefited)
@@ -212,7 +208,7 @@ export const CreateRequirementDrawer = ({
             obligation,
             exist_solution_alternative: existSolutionAlternative,
             domain_in_charge_id: resolvedDomain.id,
-            impact_number_users_id: impactNumberUsersId,
+            impact_number_users_id: watchedImpactUsers,
           }),
         ).unwrap();
 
@@ -245,13 +241,15 @@ export const CreateRequirementDrawer = ({
       return defaultOptions;
     }
 
-    const resolvedDomain = apiDomains.find((d) => d.name === watchedDomain);
+    const resolvedDomain = apiDomains.find(
+      (domain) => domain.name === watchedDomain,
+    );
     if (!resolvedDomain) {
       return defaultOptions;
     }
 
     const domainImpact = apiImpactUsers.find(
-      (item) => item.domain_uuid === resolvedDomain.uuid,
+      (domainImpact) => domainImpact.domain_uuid === resolvedDomain.uuid,
     );
     if (!domainImpact || !domainImpact.impact_users) {
       return defaultOptions;
@@ -269,20 +267,17 @@ export const CreateRequirementDrawer = ({
 
   useEffect(() => {
     if (!watchedImpactUsers) return;
-    const currentLevel = mapImpactLevelToNumber(watchedImpactUsers);
-    if (
-      currentLevel >= 1 &&
-      currentLevel <= 4 &&
-      impactOptions[currentLevel - 1]
-    ) {
-      const newLabel = impactOptions[currentLevel - 1];
-      if (newLabel !== watchedImpactUsers) {
-        setValue("impactUsers", newLabel, { shouldValidate: true });
-      }
+    const matchingOption = impactOptions.find(
+      (option) =>
+        option.split(" ")[0].toLowerCase() ===
+        watchedImpactUsers.split(" ")[0].toLowerCase(),
+    );
+    if (matchingOption && matchingOption !== watchedImpactUsers) {
+      setValue("impactUsers", matchingOption, { shouldValidate: true });
     }
   }, [impactOptions, watchedImpactUsers, setValue]);
 
-  const hasEnteredData = useCallback((): boolean => {
+  const hasEnteredFormValues = useCallback((): boolean => {
     const values = getValues();
     if (values.name && values.name.trim().length > 0) {
       return true;
@@ -352,7 +347,7 @@ export const CreateRequirementDrawer = ({
     if (!open) return;
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      if (hasEnteredData()) {
+      if (hasEnteredFormValues()) {
         event.preventDefault();
         event.returnValue = "";
       }
@@ -362,7 +357,7 @@ export const CreateRequirementDrawer = ({
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [open, hasEnteredData]);
+  }, [open, hasEnteredFormValues]);
 
   const forceClose = () => {
     reset(defaultValues);
@@ -372,7 +367,7 @@ export const CreateRequirementDrawer = ({
   };
 
   const handleRequestClose = () => {
-    if (hasEnteredData()) {
+    if (hasEnteredFormValues()) {
       setDiscardDialogOpen(true);
     } else {
       forceClose();
@@ -391,23 +386,15 @@ export const CreateRequirementDrawer = ({
   const onSubmit = async (values: RequirementFormValues) => {
     // Resolve requesting institution ID from backend reference data
     const resolvedInstitution = apiInstitutions?.find(
-      (inst) => inst.name === values.requestingInstitution,
+      (institution) => institution.name === values.requestingInstitution,
     );
     const requestingInstitutionId = resolvedInstitution?.id ?? 1;
 
     // Resolve domain in charge ID from backend reference data
     const resolvedDomain = apiDomains?.find(
-      (d) => d.name === values.domain,
+      (domain) => domain.name === values.domain,
     );
     const domainInChargeId = resolvedDomain?.id ?? 1;
-
-    // Resolve study modality ID (Virtual: 1, Presencial: 2, Virtual/Presencial: 3)
-    const hasVirtual = values.studyModalities.includes("Virtual");
-    const hasPresencial = values.studyModalities.includes("Presencial");
-    const hasBoth =
-      values.studyModalities.includes("Virtual/Presencial") ||
-      (hasVirtual && hasPresencial);
-    const studyModality = hasBoth ? 3 : hasPresencial ? 2 : 1;
 
     const requestedByList = Array.isArray(values.requestedBy)
       ? values.requestedBy
@@ -421,42 +408,35 @@ export const CreateRequirementDrawer = ({
       requesting_institution_id: requestingInstitutionId,
       requested_by: requestedByList,
       benefited_institutions: values.benefitedInstitutions,
-      study_modality: studyModality,
-      impact_number_users_id: mapImpactLevelToNumber(
-        values.impactUsers,
-      ),
+      study_modality: values.studyModalities,
+      impact_number_users_id: values.impactUsers,
       obligation: values.isObligatory === "Yes",
       exist_solution_alternative: values.hasAlternativeSolution === "Yes",
-      complexity_and_effort: mapComplexityToNumber(
-        values.complexityEffort as ComplexityEffort,
-      ),
-      client_priority: values.clientPriorityOverride
-        ? mapClientPriorityToNumber(
-            values.clientPriorityOverride as ClientPriority,
-          )
-        : undefined,
+      complexity_and_effort: values.complexityEffort,
+      client_priority: values.clientPriorityOverride || undefined,
       domain_in_charge_id: domainInChargeId,
       domains_collaborators: values.collaboratorDomains,
       followers_domains: values.followerDomains,
-      status: mapStatusToNumber(values.status as RequirementStatus),
+      status: values.status,
       start_date: values.startDate ? values.startDate : undefined,
       end_date: values.finishDate ? values.finishDate : undefined,
-      type: mapTypeToNumber(values.type as RequirementType),
+      type: values.type,
     };
 
     const actionResult = await dispatch(createRequirement(payload));
 
     if (createRequirement.fulfilled.match(actionResult)) {
       showSnackbar("Requisition registered successfully", "success");
-      dispatch(fetchRequirements());
+      dispatch(setPage(1));
+      dispatch(fetchRequirements({ page: 1, limit: 10, sortOrder: "DESC" }));
       onCreated();
       forceClose();
     } else {
-      const errorMsg =
+      const errorMessage =
         typeof actionResult.payload === "string"
           ? actionResult.payload
           : "Unable to create requirement. Please check your inputs.";
-      showSnackbar(errorMsg, "error");
+      showSnackbar(errorMessage, "error");
     }
   };
 
@@ -494,7 +474,9 @@ export const CreateRequirementDrawer = ({
       >
         <DrawerHeader
           minimized={minimized}
-          onToggleMinimize={() => setMinimized((value) => !value)}
+          onToggleMinimize={() =>
+            setMinimized((isPreviouslyMinimized) => !isPreviouslyMinimized)
+          }
           onClose={handleRequestClose}
         />
         <Box className={styles.scrollContent}>

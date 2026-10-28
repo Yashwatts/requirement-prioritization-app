@@ -1,15 +1,15 @@
-import { ImpactQuantity } from './interfaces/impact-quantity.interface';
+import { UserImpactRange } from './interfaces/user-impact-range.interface';
 
 export class ImpactUsers {
   id!: number;
   domain_uuid: string;
   impact_number_users_level: number; // 1: Low, 2: Medium, 3: High, 4: Very High
-  quantity: ImpactQuantity;
+  quantity: UserImpactRange;
 
   constructor(
     domain_uuid: string,
     impact_number_users_level: number,
-    quantity: ImpactQuantity,
+    quantity: UserImpactRange,
     id?: number,
   ) {
     this.domain_uuid = domain_uuid;
@@ -23,14 +23,14 @@ export class ImpactUsers {
   static create(
     domain_uuid: string,
     impact_number_users_level: number,
-    quantity: ImpactQuantity,
+    quantity: UserImpactRange,
   ): ImpactUsers {
     return new ImpactUsers(domain_uuid, impact_number_users_level, quantity);
   }
 
   getAverageQuantity(): number {
-    const fromVal = this.quantity?.from ?? 0;
-    const toVal = this.quantity?.to ?? 0;
-    return Math.round((fromVal + toVal) / 2);
+    const minimumRangeValue = this.quantity?.from ?? 0;
+    const maximumRangeValue = this.quantity?.to ?? 0;
+    return Math.round((minimumRangeValue + maximumRangeValue) / 2);
   }
 }

@@ -41,7 +41,7 @@ import {
   setSortBy,
   setSortOrder,
 } from "@/features/requirements/requirement.slice";
-import type { RequirementListItem, SortOrder } from "@/@types/requirement.types";
+import type { RequirementTableRow, SortOrder } from "@/@types/requirement.types";
 import { TableEmptyState } from "./table-empty-state";
 import { TablePagination } from "./table-pagination";
 
@@ -97,7 +97,7 @@ export const RequirementsTable = ({
   const dispatch = useAppDispatch();
 
   const {
-    items,
+    requirements,
     total,
     totalPages,
     page,
@@ -200,7 +200,7 @@ export const RequirementsTable = ({
         dispatch(setSortOrder(nextOrder));
       } else {
         dispatch(setSortBy(undefined));
-        dispatch(setSortOrder("ASC"));
+        dispatch(setSortOrder("DESC"));
       }
     }, 350);
   };
@@ -214,7 +214,7 @@ export const RequirementsTable = ({
     };
   }, []);
 
-  const columns = useMemo<MRT_ColumnDef<RequirementListItem>[]>(
+  const columns = useMemo<MRT_ColumnDef<RequirementTableRow>[]>(
     () => [
       {
         accessorKey: "name",
@@ -447,9 +447,9 @@ export const RequirementsTable = ({
           </Box>
         </Box>
           <Box className={styles.tableFrame}>
-          <MaterialReactTable<RequirementListItem>
+          <MaterialReactTable<RequirementTableRow>
             columns={columns}
-            data={items}
+            data={requirements}
             enableColumnActions={false}
             enableColumnFilters={false}
             enableGlobalFilter={false}
@@ -512,7 +512,7 @@ export const RequirementsTable = ({
             }}
             state={{
               isLoading: false,
-              showSkeletons: status === "loading" && items.length === 0,
+              showSkeletons: status === "loading" && requirements.length === 0,
               showAlertBanner: status === "failed",
               rowSelection,
               sorting: activeSorting,
@@ -560,7 +560,7 @@ export const RequirementsTable = ({
               </Box>
             )}
           />
-          {items.length > 0 && (
+          {requirements.length > 0 && (
             <TablePagination
               page={page}
               limit={limit}

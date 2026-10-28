@@ -9,6 +9,7 @@ import {
   ListRequirementsResult,
   RequirementDetail,
 } from '../../domain/requirement/interfaces/requirement';
+import { toRequirementTableRow } from '../../domain/requirement/mappers/requirement.mapper';
 
 @QueryHandler(ListRequirementsQuery)
 export class ListRequirementsHandler implements IQueryHandler<
@@ -90,6 +91,7 @@ export class ListRequirementsHandler implements IQueryHandler<
       offset: (page - 1) * limit,
       orderBy: {
         [safeSortBy]: safeSortOrder,
+        ...(safeSortBy !== 'id' ? { id: 'DESC' } : {}),
       },
     };
 
@@ -101,7 +103,7 @@ export class ListRequirementsHandler implements IQueryHandler<
     const institutionIds = Array.from(
       new Set(
         requirements
-          .map((r) => r.requesting_institution_id)
+          .map((requirement) => requirement.requesting_institution_id)
           .filter((id): id is number => typeof id === 'number'),
       ),
     );
@@ -109,7 +111,7 @@ export class ListRequirementsHandler implements IQueryHandler<
     const domainIds = Array.from(
       new Set(
         requirements
-          .map((r) => r.domain_in_charge_id)
+          .map((requirement) => requirement.domain_in_charge_id)
           .filter((id): id is number => typeof id === 'number'),
       ),
     );
@@ -122,21 +124,25 @@ export class ListRequirementsHandler implements IQueryHandler<
       ? await this.domainRepository.find({ id: { $in: domainIds } })
       : [];
 
-    const institutionMap = new Map(institutions.map((i) => [i.id, i]));
-    const domainMap = new Map(domains.map((d) => [d.id, d]));
+    const institutionMap = new Map(
+      institutions.map((institution) => [institution.id, institution]),
+    );
+    const domainMap = new Map(domains.map((domain) => [domain.id, domain]));
 
-    const rows: RequirementDetail[] = requirements.map((req) => {
-      const institution = institutionMap.get(req.requesting_institution_id);
-      const domain = domainMap.get(req.domain_in_charge_id);
+    const rows: RequirementDetail[] = requirements.map((requirement) => {
+      const institution = institutionMap.get(
+        requirement.requesting_institution_id,
+      );
+      const domain = domainMap.get(requirement.domain_in_charge_id);
 
       return {
-        id: req.id,
-        uuid: req.uuid,
-        code: req.code,
-        status: req.status,
-        name: req.name,
-        description: req.description,
-        requesting_institution_id: req.requesting_institution_id,
+        id: requirement.id,
+        uuid: requirement.uuid,
+        code: requirement.code,
+        status: requirement.status,
+        name: requirement.name,
+        description: requirement.description,
+        requesting_institution_id: requirement.requesting_institution_id,
         requesting_institution_name: institution?.name ?? null,
         requesting_institution: institution
           ? {
@@ -145,17 +151,17 @@ export class ListRequirementsHandler implements IQueryHandler<
               name: institution.name,
             }
           : null,
-        requested_by: req.requested_by,
-        benefited_institutions: req.benefited_institutions,
-        total_benefited_institutions: req.total_benefited_institutions,
-        obligation: req.obligation,
-        exist_solution_alternative: req.exist_solution_alternative,
-        study_modality: req.study_modality,
-        impact_number_users_id: req.impact_number_users_id,
-        impact: req.impact,
-        complexity_and_effort: req.complexity_and_effort,
-        client_priority: req.client_priority,
-        domain_in_charge_id: req.domain_in_charge_id,
+        requested_by: requirement.requested_by,
+        benefited_institutions: requirement.benefited_institutions,
+        total_benefited_institutions: requirement.total_benefited_institutions,
+        obligation: requirement.obligation,
+        exist_solution_alternative: requirement.exist_solution_alternative,
+        study_modality: requirement.study_modality,
+        impact_number_users_id: requirement.impact_number_users_id,
+        impact: requirement.impact,
+        complexity_and_effort: requirement.complexity_and_effort,
+        client_priority: requirement.client_priority,
+        domain_in_charge_id: requirement.domain_in_charge_id,
         domain_in_charge_name: domain?.name ?? null,
         domain_in_charge: domain
           ? {
@@ -165,22 +171,30 @@ export class ListRequirementsHandler implements IQueryHandler<
               abbreviation: domain.abbreviation,
             }
           : null,
-        domains_collaborators: req.domains_collaborators,
-        followers_domains: req.followers_domains,
-        development_time_in_sprints: req.development_time_in_sprints,
-        start_date: req.start_date,
-        end_date: req.end_date,
-        type: req.type,
-        created_at: req.created_at,
-        updated_at: req.updated_at,
+        domains_collaborators: requirement.domains_collaborators,
+        followers_domains: requirement.followers_domains,
+        development_time_in_sprints: requirement.development_time_in_sprints,
+        start_date: requirement.start_date,
+        end_date: requirement.end_date,
+        type: requirement.type,
+        created_at: requirement.created_at,
+        updated_at: requirement.updated_at,
       };
     });
+
+    const mappedRequirements = rows.map((detail) =>
+      toRequirementTableRow(detail),
+    );
+    const totalPages =
+      Math.ceil(total / limit) > 0 ? Math.ceil(total / limit) : 1;
 
     return {
       total,
       limit,
       page,
-      rows,
+      totalPages,
+      requirements: mappedRequirements,
+      rows: mappedRequirements,
     };
   }
 }
