@@ -1,17 +1,22 @@
 .sidebar {
-  position: fixed;
+  position: absolute;
   top: 64px;
   bottom: 0;
   left: 0;
-  z-index: 3;
+  z-index: 1250 !important;
   width: 72px;
+  min-height: calc(100vh - 64px);
   padding-top: 8px;
+  padding-bottom: 8px;
   background: #ffffff;
+  border-right: 1px solid #e0e0e0;
   transition: width 160ms ease;
+  overflow-x: hidden;
 }
 
 .expanded {
   width: 256px;
+  height: 836px;
 }
 
 .railItem {
@@ -34,26 +39,32 @@
   color: inherit;
 }
 
+.railIcon svg {
+  width: 20px;
+  height: 20px;
+}
+
 .expandedItem {
   width: 256px;
   height: 48px;
-  padding: 12px 16px;
-  border-radius: 0;
-  background: #e8f0fe;
+  padding: 12px 16px !important;
+  border-radius: 0 !important;
+  background: #e8f0fe !important;
   color: #01579b !important;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .expandedItem.Mui-selected,
 .expandedItem.Mui-selected:hover {
-  background: #e8f0fe;
+  background: #e8f0fe !important;
 }
 
 .expandedIcon {
-  min-width: 40px;
+  width: 20px !important;
   color: #01579b !important;
+  display: flex !important;
+  align-items: flex-start !important;
 }
 
 .expandedIcon svg {

@@ -1,14 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { ImpactUsersRepository } from '../../infrastructure/repositories/impact-users.repository';
 import { DomainRepository } from '../../infrastructure/repositories/domain.repository';
+import { UserImpactLevel } from '../../domain/requirement/enums/user-impact-level.enum';
 import { FetchImpactUsersQuery } from './fetch-impact-users.query';
-
-const LEVEL_MAP: Record<number, 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH'> = {
-  1: 'LOW',
-  2: 'MEDIUM',
-  3: 'HIGH',
-  4: 'VERY_HIGH',
-};
 
 @QueryHandler(FetchImpactUsersQuery)
 export class FetchImpactUsersHandler implements IQueryHandler<FetchImpactUsersQuery> {
@@ -45,10 +39,10 @@ export class FetchImpactUsersHandler implements IQueryHandler<FetchImpactUsersQu
       {
         domain_uuid: string;
         impact_users: {
-          LOW?: { from: number; to: number };
-          MEDIUM?: { from: number; to: number };
-          HIGH?: { from: number; to: number };
-          VERY_HIGH?: { from: number; to: number };
+          LOW?: { id: number; from: number; to: number };
+          MEDIUM?: { id: number; from: number; to: number };
+          HIGH?: { id: number; from: number; to: number };
+          VERY_HIGH?: { id: number; from: number; to: number };
         };
       }
     >();
@@ -62,9 +56,11 @@ export class FetchImpactUsersHandler implements IQueryHandler<FetchImpactUsersQu
       }
 
       const domainImpactGroup = grouped.get(row.domain_uuid)!;
-      const key = LEVEL_MAP[row.impact_number_users_level];
-      if (key) {
-        domainImpactGroup.impact_users[key] = {
+      const levelKey = UserImpactLevel[row.impact_number_users_level] as
+        keyof typeof domainImpactGroup.impact_users | undefined;
+      if (levelKey) {
+        domainImpactGroup.impact_users[levelKey] = {
+          id: row.id,
           from: row.quantity.from,
           to: row.quantity.to,
         };

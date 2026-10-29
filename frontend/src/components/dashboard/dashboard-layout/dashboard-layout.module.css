@@ -1,5 +1,6 @@
 .page {
   min-height: 100vh;
+  position: relative;
   background: #f5f5f5;
   color: #424242;
 }
@@ -8,11 +9,20 @@
   min-height: calc(100vh - 64px);
   margin-left: 72px;
   padding: 32px;
+  transition: margin-left 160ms ease;
+}
+
+.contentExpanded {
+  margin-left: 256px;
 }
 
 @media (max-width: 900px) {
   .content {
     margin-left: 56px;
     padding: 24px 16px;
+  }
+
+  .contentExpanded {
+    margin-left: 256px;
   }
 }

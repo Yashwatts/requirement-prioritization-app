@@ -1,0 +1,195 @@
+.field {
+  width: 100%;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+.field :global(::selection),
+.field :global(*::selection) {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.field :global(.MuiOutlinedInput-root),
+.field :global(.MuiOutlinedInput-root.Mui-focused),
+.field :global(.MuiOutlinedInput-root:hover),
+.field :global(.MuiInputBase-root),
+.field :global(.MuiInputBase-root.Mui-focused),
+.field :global(.MuiInputBase-input),
+.field :global(.MuiInputBase-input:focus),
+.field :global(.MuiSelect-select),
+.field :global(.MuiSelect-select.MuiSelect-outlined),
+.field :global(.MuiSelect-select:focus),
+.field :global(.MuiSelect-select:active),
+.field :global(.MuiSelect-select:focus-visible),
+.field :global(.MuiSelect-select[aria-expanded="true"]) {
+  min-height: 40px !important;
+  border-radius: 8px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  background-color: #ffffff !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.field :global(.MuiOutlinedInput-root) {
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.field :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: #9e9e9e !important;
+}
+
+.field :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #01579b !important;
+}
+
+.field :global(.MuiInputLabel-root) {
+  color: #757575 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+}
+
+.field :global(.MuiInputLabel-root.Mui-focused) {
+  color: #01579b !important;
+}
+
+.field :global(.MuiSelect-select) {
+  padding: 6px 36px 6px 14px !important;
+  min-height: 26px !important;
+  max-height: 68px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #424242 !important;
+  background-color: #ffffff !important;
+}
+
+.field :global(.MuiSelect-select:focus),
+.field :global(.MuiSelect-select[aria-expanded="true"]) {
+  background-color: #ffffff !important;
+  outline: none !important;
+}
+
+.field :global(.MuiSelect-icon) {
+  right: 12px !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: #757575 !important;
+}
+
+.chipsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  width: 100%;
+  max-height: 56px;
+  overflow: hidden;
+  padding: 2px 0;
+}
+
+.chip {
+  height: 24px !important;
+  border-radius: 4px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #212121 !important;
+  background-color: #f0f2f5 !important;
+  border: 1px solid #e0e0e0 !important;
+  max-width: calc(100% - 8px) !important;
+}
+
+.chip :global(.MuiChip-label) {
+  padding-left: 8px !important;
+  padding-right: 4px !important;
+  color: #212121 !important;
+}
+
+.chip :global(.MuiChip-deleteIcon) {
+  font-size: 14px !important;
+  color: #757575 !important;
+  margin-right: 4px !important;
+  transition: color 0.15s ease-in-out;
+}
+
+.chip :global(.MuiChip-deleteIcon:hover) {
+  color: #e53935 !important;
+}
+
+.moreCounter {
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #616161;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+  line-height: 24px;
+}
+
+.clearButton {
+  position: absolute !important;
+  right: 34px !important;
+  padding: 2px !important;
+  color: #757575 !important;
+  z-index: 2 !important;
+}
+
+.clearButton:hover {
+  color: #424242 !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.clearIcon {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.field :global(.MuiFormHelperText-root) {
+  margin: 3px 0 0 12px !important;
+  color: #757575 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+  line-height: 16px !important;
+  font-weight: 400 !important;
+}
+
+.field :global(.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline),
+.field:global(.Mui-error) :global(.MuiOutlinedInput-notchedOutline),
+.field :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
+  border-color: #e53935 !important;
+}
+
+.field :global(.MuiOutlinedInput-root.Mui-error:hover .MuiOutlinedInput-notchedOutline),
+.field:global(.Mui-error) :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline),
+.field :global(.MuiOutlinedInput-root.Mui-error.Mui-focused .MuiOutlinedInput-notchedOutline),
+.field:global(.Mui-error) :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #e53935 !important;
+}
+
+.field :global(.MuiInputLabel-root.Mui-error),
+.field:global(.Mui-error) :global(.MuiInputLabel-root),
+.field :global(.Mui-error .MuiInputLabel-root),
+.field :global(.MuiInputLabel-root.Mui-error.Mui-focused),
+.field:global(.Mui-error) :global(.MuiInputLabel-root.Mui-focused) {
+  color: #e53935 !important;
+}
+
+.field :global(.MuiOutlinedInput-root.Mui-error .MuiSelect-icon),
+.field:global(.Mui-error) :global(.MuiSelect-icon),
+.field :global(.Mui-error .MuiSelect-icon) {
+  color: #e53935 !important;
+}
+
+.field :global(.MuiFormHelperText-root.Mui-error),
+.field:global(.Mui-error) :global(.MuiFormHelperText-root),
+.field :global(.Mui-error .MuiFormHelperText-root) {
+  color: #e53935 !important;
+}

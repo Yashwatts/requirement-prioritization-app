@@ -5,46 +5,47 @@ export const requirementFormSchema = z
     name: z
       .string()
       .trim()
-      .min(3, "Name must be at least 3 characters")
+      .min(1, "required")
       .max(250, "Name must not exceed 250 characters"),
 
-    requestedBy: z
-      .array(z.string())
-      .min(1, "Requested by is required"),
+    requestedBy: z.array(z.string()).min(1, "required"),
 
-    requestingInstitution: z
-      .string()
-      .min(1, "Requesting institution is required"),
+    requestingInstitution: z.string().min(1, "required"),
 
-    type: z.string().min(1, "Type is required"),
+    type: z.string().min(1, "required"),
 
-    domain: z.string().min(1, "Domain in charge is required"),
+    domain: z.string().min(1, "required"),
 
-    collaboratorDomains: z.array(z.string()),
+    collaboratorDomains: z.array(z.string()).default([]),
 
-    followerDomains: z.array(z.string()),
+    followerDomains: z.array(z.string()).default([]),
 
-    benefitedInstitutions: z
-      .array(z.string())
-      .min(1, "At least one benefited institution is required"),
+    benefitedInstitutions: z.array(z.string()).min(1, "required"),
 
-    studyModalities: z
-      .array(z.string())
-      .min(1, "At least one study modality is required"),
+    studyModalities: z.array(z.string()).min(1, "required"),
 
-    isObligatory: z.enum(["Yes", "No"]),
+    isObligatory: z
+      .enum(["Yes", "No", ""])
+      .refine((val) => val === "Yes" || val === "No", "required"),
 
-    hasAlternativeSolution: z.enum(["Yes", "No"]),
+    hasAlternativeSolution: z
+      .enum(["Yes", "No", ""])
+      .refine((val) => val === "Yes" || val === "No", "required"),
 
-    impactUsers: z.string().min(1, "Impact users is required"),
+    impactUsers: z
+      .union([z.string(), z.number()])
+      .refine(
+        (value) => value !== "" && value !== undefined,
+        "required",
+      ),
 
     impact: z.union([z.string(), z.number()]).optional(),
 
-    complexityEffort: z.string().min(1, "Complexity and effort is required"),
+    complexityEffort: z.string().min(1, "required"),
 
-    clientPriorityOverride: z.string().optional(),
+    clientPriorityOverride: z.string().min(1, "required"),
 
-    status: z.string().min(1, "Status is required").default("Registered"),
+    status: z.string().min(1, "required").default("Registered"),
 
     startDate: z
       .string()
@@ -65,7 +66,7 @@ export const requirementFormSchema = z
     description: z
       .string()
       .trim()
-      .min(1, "Description is required")
+      .min(1, "required")
       .max(500, "Description must not exceed 500 characters"),
   })
   .refine(

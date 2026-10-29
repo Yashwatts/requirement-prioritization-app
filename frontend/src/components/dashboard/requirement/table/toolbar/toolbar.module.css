@@ -1,0 +1,86 @@
+.toolbar {
+  height: 40px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toolbarActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbarActions button {
+  min-width: 0;
+  padding: 8px !important;
+  color: #01579b !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.07px !important;
+  line-height: 19px !important;
+  text-transform: uppercase !important;
+}
+
+.toolbarActions button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.toolbarActions :global(.MuiIconButton-root) {
+  padding: 8px !important;
+  color: #01579b !important;
+}
+
+.toolbarActions :global(.MuiIconButton-root) svg {
+  width: 20px;
+  height: 20px;
+  color: #01579b !important;
+}
+
+.toolbarActions .toolbarIconButton,
+.toolbarActions .toolbarIconButton :global(.MuiSvgIcon-root),
+.toolbarActions .toolbarIconButton svg {
+  color: #424242 !important;
+  fill: #424242 !important;
+}
+
+.search {
+  width: 300px;
+}
+
+.search :global(.MuiOutlinedInput-root) {
+  height: 40px !important;
+  border-radius: 8px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+}
+
+.search svg {
+  width: 20px;
+  color: #757575;
+}
+
+.clearSearchButton {
+  padding: 4px !important;
+  color: #757575 !important;
+}
+
+.clearSearchButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 900px) {
+  .toolbar {
+    height: auto;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .search {
+    width: min(300px, 100%);
+  }
+}

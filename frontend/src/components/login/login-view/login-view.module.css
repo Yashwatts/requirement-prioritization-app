@@ -7,7 +7,9 @@
   justify-content: center;
   background-color: #eff5ff;
   padding: 0;
+  margin: 0;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .container {
@@ -18,6 +20,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  box-sizing: border-box;
 }
 
 .card {
@@ -26,7 +29,7 @@
   max-width: 100%;
   height: 256px;
   padding: 48px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 10px;
   border-radius: 30px;
@@ -42,7 +45,9 @@
   align-items: flex-start;
   justify-content: center;
   flex-shrink: 0;
+  padding-bottom: 24px;
   gap: 8px;
+  box-sizing: border-box;
 }
 
 .iconWrapper {
@@ -52,6 +57,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .iconImg {
@@ -61,7 +67,7 @@
 }
 
 .title {
-  width: 352px;
+  width: 352px !important;
   color: #212121 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 22px !important;
@@ -73,7 +79,7 @@
 }
 
 .subtext {
-  width: 352px;
+  width: 352px !important;
   color: #757575 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 12px !important;
@@ -93,10 +99,11 @@
   gap: 16px;
   flex-shrink: 0;
   background: transparent;
+  box-sizing: border-box;
 }
 
 .loginText {
-  width: 300px;
+  width: 300px !important;
   color: #212121 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 18px !important;

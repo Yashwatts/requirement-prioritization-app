@@ -8,7 +8,7 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import styles from "./create-requirement-drawer.module.css";
+import styles from "./discard-dialog.module.css";
 
 interface DiscardDialogProps {
   open: boolean;
@@ -27,40 +27,28 @@ export const DiscardDialog = ({
       onClose={onCancel}
       aria-labelledby="discard-dialog-title"
       aria-describedby="discard-dialog-description"
-      aria-label="By performing this action you will lose all the data entered in the form"
       slotProps={{
         paper: {
-          className: styles.discardDialogPaper,
+          className: styles.dialogPaper,
         },
       }}
     >
-      <DialogTitle id="discard-dialog-title" className={styles.discardTitle}>
+      <DialogTitle id="discard-dialog-title" className={styles.title}>
         Discard form?
       </DialogTitle>
-      <DialogContent className={styles.discardContent}>
-        <Typography
-          id="discard-dialog-description"
-          className={styles.discardText}
-        >
+      <DialogContent className={styles.content}>
+        <Typography id="discard-dialog-description" className={styles.text}>
           You have unsaved changes in this form. If you leave now, all
           modifications will be lost. Are you sure you want to discard your
           changes?
         </Typography>
       </DialogContent>
-      <DialogActions className={styles.discardActions}>
-        <Button
-          type="button"
-          onClick={onCancel}
-          className={styles.cancelDiscardBtn}
-        >
-          CANCEL
+      <DialogActions className={styles.actions}>
+        <Button type="button" onClick={onCancel} className={styles.cancelBtn}>
+          Cancel
         </Button>
-        <Button
-          type="button"
-          onClick={onConfirm}
-          className={styles.confirmDiscardBtn}
-        >
-          DISCARD
+        <Button type="button" onClick={onConfirm} className={styles.confirmBtn}>
+          Discard
         </Button>
       </DialogActions>
     </Dialog>

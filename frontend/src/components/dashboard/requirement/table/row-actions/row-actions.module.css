@@ -1,0 +1,20 @@
+.rowActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.rowActions :global(.MuiIconButton-root) {
+  padding: 6px !important;
+  color: #757575 !important;
+}
+
+.rowActions :global(.MuiIconButton-root:hover) {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  color: #01579b !important;
+}
+
+.rowActions :global(.MuiSvgIcon-root) {
+  font-size: 18px !important;
+}

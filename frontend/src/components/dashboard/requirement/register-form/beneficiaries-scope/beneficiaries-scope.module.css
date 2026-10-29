@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.sectionTitle {
+  margin: 0 !important;
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 24px !important;
+}
+
+.twoColumns {
+  display: grid;
+  grid-template-columns: 273px 273px;
+  gap: 16px;
+  width: 100%;
+}

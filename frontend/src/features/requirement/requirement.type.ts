@@ -27,14 +27,10 @@ export interface CalculateImpactResponse {
 export interface ListRequirementsParams {
   search?: string;
   domain?: Domain;
-  domain_in_charge_id?: number;
-  status?: RequirementStatus | number;
-  clientPriority?: ClientPriority | number;
-  client_priority?: ClientPriority | number;
+  status?: RequirementStatus;
+  clientPriority?: ClientPriority;
   sortBy?: string;
-  sort_by?: string;
   sortOrder?: SortOrder;
-  sort_order?: SortOrder;
   page?: number;
   limit?: number;
 }
@@ -48,6 +44,7 @@ export interface PaginatedRequirements {
 }
 
 export interface UserImpactRange {
+  id?: number;
   from: number;
   to: number;
 }

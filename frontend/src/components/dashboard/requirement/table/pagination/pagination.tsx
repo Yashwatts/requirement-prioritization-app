@@ -23,8 +23,6 @@ export interface PaginationProps {
   onLimitChange: (newLimit: number) => void;
 }
 
-export type TablePaginationProps = PaginationProps;
-
 export const Pagination = ({
   page,
   limit,
@@ -76,5 +74,3 @@ export const Pagination = ({
     </Box>
   );
 };
-
-export const TablePagination = Pagination;

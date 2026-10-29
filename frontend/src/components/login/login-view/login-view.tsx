@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import appIcon from "@/assets/svg/app-icon.svg";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Typography } from "@mui/material";
@@ -33,12 +35,12 @@ export const LoginView = () => {
         <Box className={styles.card}>
           <Box className={styles.leftSection}>
             <Box className={styles.iconWrapper} aria-hidden="true">
-              <Box
-                component="img"
-                src="/login-background/figma-app-icon.svg"
+              <Image
+                src={appIcon}
                 alt=""
                 width={50}
                 height={50}
+                priority
                 className={styles.iconImg}
               />
             </Box>

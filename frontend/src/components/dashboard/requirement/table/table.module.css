@@ -1,40 +1,7 @@
 .root {
   width: 100%;
 }
-.heading {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.title {
-  color: #424242 !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 32px !important;
-  font-weight: 600 !important;
-  letter-spacing: -0.64px !important;
-  line-height: 40px !important;
-}
-.createButton {
-  width: 115px !important;
-  min-width: 115px !important;
-  height: 36px !important;
-  padding: 8px !important;
-  border-radius: 8px !important;
-  background: #01579b !important;
-  box-shadow: none !important;
-  color: #ffffff !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.07px !important;
-  line-height: 19px !important;
-  text-transform: uppercase !important;
-}
-.createButton:hover {
-  background: #01579b !important;
-  box-shadow: none !important;
-}
+
 .workspace {
   min-height: calc(100vh - 192px);
   margin-top: 24px;
@@ -42,78 +9,22 @@
   border-radius: 8px;
   background: #ffffff;
 }
-.toolbar {
-  height: 40px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.toolbarActions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.toolbarActions button {
-  min-width: 0;
-  padding: 8px !important;
-  color: #01579b !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.07px !important;
-  line-height: 19px !important;
-  text-transform: uppercase !important;
-}
-.toolbarActions button svg { width: 20px; height: 20px; }
-.toolbarActions :global(.MuiIconButton-root) {
-  padding: 8px !important;
-  color: #01579b !important;
-}
-.toolbarActions :global(.MuiIconButton-root) svg {
-  width: 20px;
-  height: 20px;
-  color: #01579b !important;
-}
-.toolbarActions .toolbarIconButton,
-.toolbarActions .toolbarIconButton :global(.MuiSvgIcon-root),
-.toolbarActions .toolbarIconButton svg {
-  color: #424242 !important;
-  fill: #424242 !important;
-}
-.search {
-  width: 300px;
-}
-.search :global(.MuiOutlinedInput-root) {
-  height: 40px !important;
-  border-radius: 8px !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-}
-.search svg {
-  width: 20px;
-  color: #757575;
-}
-.clearSearchButton {
-  padding: 4px !important;
-  color: #757575 !important;
-}
-.clearSearchButton svg {
-  width: 20px;
-  height: 20px;
-}
+
 .tableFrame {
   width: 100%;
   border: 1px solid #e0e0e0 !important;
   border-radius: 8px !important;
   background: #ffffff;
+  overflow: hidden;
 }
+
 .mrtPaper {
   width: 100%;
   min-width: 0;
   box-shadow: none !important;
   background: transparent !important;
 }
+
 .tableContainer {
   width: 100% !important;
   height: 582px !important;
@@ -121,25 +32,31 @@
   overflow-x: auto !important;
   overflow-y: auto !important;
 }
+
 .tableContainer::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
+
 .tableContainer::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
+
 .tableContainer::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 4px;
 }
+
 .tableContainer::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
 .table {
   width: max-content !important;
   min-width: 100% !important;
 }
+
 .table :global(.MuiTableCell-head) {
   position: sticky !important;
   top: 0 !important;
@@ -155,6 +72,7 @@
   text-align: left !important;
   vertical-align: middle !important;
 }
+
 .tableHeadCell :global(.Mui-TableHeadCell-Content),
 .tableHeadCell :global(.Mui-TableHeadCell-Content-Labels) {
   width: 100% !important;
@@ -163,20 +81,24 @@
   justify-content: flex-start !important;
   white-space: nowrap !important;
 }
+
 .table :global(.MuiTableSortLabel-root) {
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 12px !important;
   font-weight: 600 !important;
 }
+
 .table :global(.MuiTableSortLabel-icon) {
   opacity: 0.6 !important;
   color: #424242 !important;
 }
+
 .table :global(.MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-icon) {
   opacity: 1 !important;
   color: #01579b !important;
 }
+
 .table :global(.MuiTableCell-body) {
   height: 52px !important;
   padding: 10px 16px !important;
@@ -186,69 +108,83 @@
   font-size: 13px !important;
   white-space: nowrap !important;
 }
+
 .table :global(.MuiTableRow-root:nth-of-type(even)) {
   background: #f7f9fc !important;
 }
-.stickyActionsHeadCell {
+
+.pinnedActionsHeadCell {
   position: sticky !important;
   top: 0 !important;
   right: 0 !important;
-  z-index: 6 !important;
-  background-color: #eeeeee !important;
-  border-left: 1px solid #d0d0d0 !important;
-  box-shadow: -4px 0 8px -3px rgba(0, 0, 0, 0.08) !important;
+  z-index: 7 !important;
   text-align: center !important;
   min-width: 100px !important;
   width: 100px !important;
+  background-color: #eeeeee !important;
+  border-left: 1px solid #d0d0d0 !important;
+  box-shadow: -4px 0 8px -3px rgba(0, 0, 0, 0.08) !important;
 }
-.stickyActionsBodyCell {
+
+.pinnedActionsBodyCell {
   position: sticky !important;
   right: 0 !important;
-  z-index: 2 !important;
-  background-color: #ffffff !important;
-  border-left: 1px solid #e0e0e0 !important;
-  box-shadow: -4px 0 8px -3px rgba(0, 0, 0, 0.08) !important;
+  z-index: 3 !important;
   text-align: center !important;
   padding: 0 8px !important;
   min-width: 100px !important;
   width: 100px !important;
+  background-color: #ffffff !important;
+  border-left: 1px solid #e0e0e0 !important;
+  box-shadow: -4px 0 8px -3px rgba(0, 0, 0, 0.08) !important;
 }
-.table :global(.MuiTableRow-root:nth-of-type(even)) .stickyActionsBodyCell {
+
+.table :global(.MuiTableRow-root:nth-of-type(even)) .pinnedActionsBodyCell {
   background-color: #f7f9fc !important;
 }
-.rowActions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+
+.alertBanner {
+  font-family: "Open Sans", sans-serif !important;
 }
-.rowActions :global(.MuiIconButton-root) {
-  padding: 6px !important;
-  color: #757575 !important;
+
+.bottomToolbar {
+  border-top: 1px solid #e0e0e0 !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  min-height: 56px !important;
+  height: 56px !important;
+  padding: 0 !important;
 }
-.rowActions :global(.MuiIconButton-root:hover) {
-  background-color: rgba(0, 0, 0, 0.06) !important;
-  color: #01579b !important;
-}
-.rowActions :global(.MuiSvgIcon-root) {
-  font-size: 18px !important;
-}
-.chip {
-  height: 20px !important;
-  border-radius: 10px !important;
-  background: #e0e0e0 !important;
+
+.pagination {
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
-  font-size: 11px !important;
+  font-size: 14px !important;
+  overflow: visible !important;
 }
-@media (max-width: 900px) {
-  .toolbar {
-    height: auto;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .search {
-    width: min(300px, 100%);
-  }
+
+.pagination :global(.MuiTablePagination-selectLabel),
+.pagination :global(.MuiTablePagination-displayedRows) {
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  margin: 0 !important;
+}
+
+.pagination :global(.MuiTablePagination-select) {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #424242 !important;
+}
+
+.pagination :global(.MuiIconButton-root) {
+  color: #424242 !important;
+}
+
+.pagination :global(.MuiIconButton-root.Mui-disabled) {
+  color: rgba(0, 0, 0, 0.26) !important;
 }

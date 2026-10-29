@@ -1,0 +1,88 @@
+.drawer :global(.MuiDrawer-paper) {
+  top: 64px !important;
+  height: calc(100vh - 64px) !important;
+  max-height: calc(100vh - 64px) !important;
+  width: 610px;
+  max-width: 100vw;
+  background: #ffffff;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.drawer :global(.MuiBackdrop-root) {
+  top: 64px !important;
+  left: 72px !important;
+  background-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.minimized :global(.MuiDrawer-paper) {
+  position: fixed !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto !important;
+  bottom: 0 !important;
+  width: 400px;
+  height: 51px !important;
+  max-height: 51px !important;
+  overflow: hidden !important;
+}
+
+.container {
+  min-height: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #424242;
+}
+
+.minimized .container {
+  min-height: 51px;
+  height: 51px;
+}
+
+.minimized .scrollContent,
+.minimized .footer {
+  display: none;
+}
+
+.scrollContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.scrollContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollContent::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 4px;
+}
+
+.scrollContent::-webkit-scrollbar-thumb:hover {
+  background: #bdbdbd;
+}
+
+.formContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .drawer :global(.MuiBackdrop-root) {
+    left: 56px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .drawer :global(.MuiDrawer-paper) {
+    width: 100%;
+  }
+}

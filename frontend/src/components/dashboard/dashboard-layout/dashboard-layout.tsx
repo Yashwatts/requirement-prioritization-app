@@ -32,7 +32,10 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         }
       />
       <Sidebar open={sidebarOpen} />
-      <Box component="main" className={styles.content}>
+      <Box
+        component="main"
+        className={`${styles.content} ${sidebarOpen ? styles.contentExpanded : ""}`}
+      >
         {children}
       </Box>
     </Box>

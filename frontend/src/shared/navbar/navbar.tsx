@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "@/shared/snackbar/use-snackbar";
+import { useLocalization } from "@/localize";
 import styles from "./navbar.module.css";
 
 export interface NavbarProps {
@@ -29,6 +30,7 @@ export interface NavbarProps {
 export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
+  const { translate } = useLocalization();
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
   const displayName = user?.displayName ?? user?.email ?? "User";
 
@@ -52,7 +54,7 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
             <MenuIcon />
           </IconButton>
           <Typography className={styles.title}>
-            Requirement prioritization
+            {translate("title")}
           </Typography>
         </Box>
         <Box className={styles.rightContent}>
@@ -92,6 +94,3 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
     </AppBar>
   );
 };
-
-export { Navbar as Header };
-export default Navbar;

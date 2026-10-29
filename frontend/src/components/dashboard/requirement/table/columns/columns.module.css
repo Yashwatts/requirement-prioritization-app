@@ -1,0 +1,18 @@
+.chip {
+  height: 20px !important;
+  border-radius: 10px !important;
+  background: #e0e0e0 !important;
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+}
+
+.descriptionText {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  color: #424242;
+}

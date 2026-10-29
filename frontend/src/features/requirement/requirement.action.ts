@@ -25,24 +25,19 @@ export const fetchRequirements = createAsyncThunk<
       if (parameters.search) {
         queryParams.search = parameters.search;
       }
-      const domain = parameters.domain ?? parameters.domain_in_charge_id;
-      if (domain !== undefined) {
-        queryParams.domain = domain;
+      if (parameters.domain !== undefined) {
+        queryParams.domain = parameters.domain;
       }
       if (parameters.status !== undefined) {
         queryParams.status = parameters.status;
       }
-      const clientPriority =
-        parameters.clientPriority ?? parameters.client_priority;
-      if (clientPriority !== undefined) {
-        queryParams.client_priority = clientPriority;
+      if (parameters.clientPriority !== undefined) {
+        queryParams.client_priority = parameters.clientPriority;
       }
-      const sortBy = parameters.sortBy ?? parameters.sort_by;
-      if (sortBy) {
-        queryParams.sort_by = sortBy;
+      if (parameters.sortBy) {
+        queryParams.sort_by = parameters.sortBy;
       }
-      const sortOrder = parameters.sortOrder ?? parameters.sort_order ?? "DESC";
-      queryParams.sort_order = sortOrder;
+      queryParams.sort_order = parameters.sortOrder ?? "DESC";
       if (parameters.page !== undefined) {
         queryParams.page = parameters.page;
       }
@@ -159,5 +154,3 @@ export const calculateImpact = createAsyncThunk<
     return rejectWithValue(extractErrorMessage(error));
   }
 });
-
-export { extractErrorMessage };

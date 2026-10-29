@@ -2,14 +2,6 @@ export type RequestingInstitution = string;
 
 export type BenefitedInstitution = string;
 
-export type StudyModality = "Virtual" | "Presencial" | "Virtual/Presencial";
-
-export type UserImpactLevel = "Low" | "Medium" | "High" | "Very High";
-
-export type ComplexityEffort = "XS" | "S" | "M" | "L" | "XL";
-
-export type ClientPriority = "Low" | "Medium" | "High";
-
 export type Domain =
   | "Financiero"
   | "Reincorporaciones"
@@ -30,9 +22,35 @@ export type Domain =
   | "ESEC"
   | "Proyectos Europeos";
 
-export type RequirementStatus = "Registered" | "Flow";
+export const STUDY_MODALITIES = [
+  "Virtual",
+  "Presencial",
+  "Virtual/Presencial",
+] as const;
+export type StudyModality = (typeof STUDY_MODALITIES)[number];
 
-export type RequirementType = "Internal" | "External" | "Client";
+export const USER_IMPACT_LEVELS = [
+  "Low",
+  "Medium",
+  "High",
+  "Very High",
+] as const;
+export type UserImpactLevel = (typeof USER_IMPACT_LEVELS)[number];
+
+export const COMPLEXITY_EFFORTS = ["XS", "S", "M", "L", "XL"] as const;
+export type ComplexityEffort = (typeof COMPLEXITY_EFFORTS)[number];
+
+export const CLIENT_PRIORITIES = ["Low", "Medium", "High"] as const;
+export type ClientPriority = (typeof CLIENT_PRIORITIES)[number];
+
+export const REQUIREMENT_STATUSES = ["Registered", "Flow"] as const;
+export type RequirementStatus = (typeof REQUIREMENT_STATUSES)[number];
+
+export const REQUIREMENT_TYPES = ["Internal", "External", "Client"] as const;
+export type RequirementType = (typeof REQUIREMENT_TYPES)[number];
+
+export const YES_NO_OPTIONS = ["Yes", "No"] as const;
+export type YesNoOption = (typeof YES_NO_OPTIONS)[number];
 
 export interface RequirementTableRow {
   id: string;

@@ -1,0 +1,109 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.twoColumns {
+  display: grid;
+  grid-template-columns: 273px 273px;
+  gap: 16px;
+  width: 100%;
+}
+
+.textField {
+  width: 100%;
+}
+
+.textField :global(.MuiOutlinedInput-root) {
+  height: 40px !important;
+  min-height: 40px !important;
+  border-radius: 8px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  background-color: #ffffff !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.textField :global(.MuiOutlinedInput-root.Mui-focused) {
+  background-color: #ffffff !important;
+}
+
+.textField :global(.MuiOutlinedInput-input) {
+  padding: 8px 16px !important;
+  height: 24px !important;
+  box-sizing: border-box !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #424242 !important;
+}
+
+.textField :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: #9e9e9e !important;
+}
+
+.textField :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #01579b !important;
+}
+
+.textField :global(.MuiInputLabel-root) {
+  color: #757575 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+}
+
+.textField :global(.MuiInputLabel-root.Mui-focused) {
+  color: #01579b !important;
+}
+
+.clearButton {
+  padding: 2px !important;
+  color: #757575 !important;
+}
+
+.clearButton:hover {
+  color: #424242 !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.clearIcon {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.textField :global(.MuiFormHelperText-root) {
+  margin: 3px 0 0 12px !important;
+  color: #757575 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+  line-height: 16px !important;
+  font-weight: 400 !important;
+}
+
+.textField :global(.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline),
+.textField:global(.Mui-error) :global(.MuiOutlinedInput-notchedOutline),
+.textField :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
+  border-color: #e53935 !important;
+}
+
+.textField :global(.MuiOutlinedInput-root.Mui-error:hover .MuiOutlinedInput-notchedOutline),
+.textField:global(.Mui-error) :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline),
+.textField :global(.MuiOutlinedInput-root.Mui-error.Mui-focused .MuiOutlinedInput-notchedOutline),
+.textField:global(.Mui-error) :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #e53935 !important;
+}
+
+.textField :global(.MuiInputLabel-root.Mui-error),
+.textField:global(.Mui-error) :global(.MuiInputLabel-root),
+.textField :global(.Mui-error .MuiInputLabel-root),
+.textField :global(.MuiInputLabel-root.Mui-error.Mui-focused),
+.textField:global(.Mui-error) :global(.MuiInputLabel-root.Mui-focused) {
+  color: #e53935 !important;
+}
+
+.textField :global(.MuiFormHelperText-root.Mui-error),
+.textField:global(.Mui-error) :global(.MuiFormHelperText-root),
+.textField :global(.Mui-error .MuiFormHelperText-root) {
+  color: #e53935 !important;
+}

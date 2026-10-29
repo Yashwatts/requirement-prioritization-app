@@ -1,17 +1,35 @@
 .pagination {
   width: 100%;
-  min-height: 48px;
-  padding: 4px 16px 4px 0;
+  height: 56px;
+  min-height: 56px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 12px;
   color: #616161;
   font-family: "Open Sans", sans-serif;
-  font-size: 11px;
+  font-size: 14px;
   border-top: 1px solid #e0e0e0;
 }
 
+.pagination :global(.MuiTypography-root) {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #424242 !important;
+}
+
 .pagination :global(.MuiSelect-select) {
-  padding: 6px 28px 6px 8px;
+  padding: 6px 28px 6px 12px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+}
+
+.pagination :global(.MuiIconButton-root) {
+  color: #424242 !important;
+  padding: 8px !important;
+}
+
+.pagination :global(.MuiIconButton-root.Mui-disabled) {
+  color: rgba(0, 0, 0, 0.26) !important;
 }

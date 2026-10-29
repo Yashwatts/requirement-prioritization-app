@@ -1,0 +1,138 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.sectionTitle {
+  margin: 0 !important;
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 24px !important;
+}
+
+.twoColumns {
+  display: grid;
+  grid-template-columns: 273px 273px;
+  gap: 16px;
+  width: 100%;
+}
+
+.readOnlyField {
+  width: 100%;
+}
+
+.readOnlyField :global(.MuiOutlinedInput-root) {
+  height: 40px !important;
+  min-height: 40px !important;
+  border-radius: 8px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  background-color: #ffffff !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.readOnlyField :global(.MuiOutlinedInput-root.Mui-focused) {
+  background-color: #ffffff !important;
+}
+
+.readOnlyField :global(.MuiOutlinedInput-input) {
+  padding: 8px 16px !important;
+  height: 24px !important;
+  box-sizing: border-box !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #424242 !important;
+}
+
+.readOnlyField :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: #9e9e9e !important;
+}
+
+.readOnlyField :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #01579b !important;
+}
+
+.readOnlyField :global(.MuiInputLabel-root) {
+  color: #757575 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+}
+
+.readOnlyField :global(.MuiInputLabel-root.Mui-focused) {
+  color: #01579b !important;
+}
+
+.infoIconButton {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  cursor: pointer !important;
+}
+
+.infoIconButton:hover {
+  background: transparent !important;
+}
+
+.infoIcon {
+  width: 20px !important;
+  height: 20px !important;
+  color: #757575 !important;
+  cursor: pointer !important;
+  transition: color 0.15s ease-in-out;
+}
+
+.infoIconButton:hover .infoIcon {
+  color: #424242 !important;
+}
+
+.tooltipPopper {
+  z-index: 1500 !important;
+}
+
+.tooltipCard {
+  background-color: #fafafa !important;
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  box-shadow: 0 2px 8px 3px rgba(51, 51, 51, 0.15) !important;
+  width: 330px !important;
+  max-width: 330px !important;
+  box-sizing: border-box !important;
+}
+
+.tooltipBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.tooltipTitle {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  color: #424242 !important;
+  margin: 0 0 4px 0 !important;
+}
+
+.tooltipMessage {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 16px !important;
+  color: #424242 !important;
+  margin: 0 0 8px 0 !important;
+}
+
+.tooltipFormula {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 16px !important;
+  color: #424242 !important;
+  margin: 0 !important;
+}

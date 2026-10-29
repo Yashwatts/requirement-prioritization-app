@@ -1,0 +1,37 @@
+.heading {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 32px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.64px !important;
+  line-height: 40px !important;
+}
+
+.createButton {
+  width: 115px !important;
+  min-width: 115px !important;
+  height: 36px !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
+  background: #01579b !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.07px !important;
+  line-height: 19px !important;
+  text-transform: uppercase !important;
+}
+
+.createButton:hover {
+  background: #01579b !important;
+  box-shadow: none !important;
+}

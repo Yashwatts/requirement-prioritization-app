@@ -1,0 +1,200 @@
+.toolbar {
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  margin: 0;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #9e9e9e;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+.fontDropdownButton {
+  min-width: 85px !important;
+  max-width: 85px !important;
+  width: 85px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  padding: 0 4px 0 8px !important;
+  color: #424242 !important;
+  border-radius: 4px !important;
+  background-color: transparent !important;
+  text-transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 2px !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+.fontDropdownButton:hover,
+.headingDropdownButton:hover,
+.iconButton:hover,
+.linkCodeButton:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.headingDropdownButton {
+  min-width: 50px !important;
+  max-width: 50px !important;
+  width: 50px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  padding: 0 4px 0 8px !important;
+  color: #424242 !important;
+  border-radius: 4px !important;
+  background-color: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 2px !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+.dropdownLabel {
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #424242;
+  white-space: nowrap;
+}
+
+.chevronIcon {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: #424242 !important;
+  flex-shrink: 0 !important;
+}
+
+.headingSizeIcon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: #424242 !important;
+  flex-shrink: 0 !important;
+}
+
+.headingArrowIcon {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: #424242 !important;
+  flex-shrink: 0 !important;
+}
+
+.toolbarDivider {
+  width: 1px !important;
+  min-width: 1px !important;
+  max-width: 1px !important;
+  height: 25px !important;
+  background-color: #eeeeee !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.formatGroup {
+  width: 88px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.listGroup {
+  width: 58px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.linkCodeGroup {
+  width: 63.33px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  min-width: 28px !important;
+  max-width: 28px !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  padding: 4px !important;
+  color: #424242 !important;
+  border-radius: 4px !important;
+  background-color: transparent !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.linkCodeButton {
+  min-width: 28.67px !important;
+  max-width: 28.67px !important;
+  width: 28.67px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  padding: 0 !important;
+  color: #424242 !important;
+  border-radius: 4px !important;
+  background-color: transparent !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.activeButton {
+  background-color: #e8f0fe !important;
+  color: #01579b !important;
+}
+
+.activeButton .toolbarIcon,
+.activeButton .linkIcon,
+.activeButton .codeIcon {
+  color: #01579b !important;
+}
+
+.toolbarIcon {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 20px !important;
+  color: #424242 !important;
+}
+
+.linkIcon {
+  width: 18px !important;
+  height: 18px !important;
+  font-size: 18px !important;
+  color: #424242 !important;
+}
+
+.codeIcon {
+  width: 18px !important;
+  height: 18px !important;
+  font-size: 18px !important;
+  color: #424242 !important;
+}

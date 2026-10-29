@@ -1,0 +1,16 @@
+.skeletonContainer {
+  width: 100%;
+  padding: 16px;
+}
+
+.skeletonRow {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.emptyStateMessage {
+  padding: 32px;
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+}
