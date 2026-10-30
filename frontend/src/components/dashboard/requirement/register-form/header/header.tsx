@@ -21,7 +21,9 @@ export const Header = ({
   const { translate } = useLocalization();
 
   return (
-    <Box className={styles.header}>
+    <Box
+      className={`${styles.header} ${minimized ? styles.minimizedHeader : ""}`}
+    >
       <Typography className={styles.title}>
         {translate("newRequirement")}
       </Typography>

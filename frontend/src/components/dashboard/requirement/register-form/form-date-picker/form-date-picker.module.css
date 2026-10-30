@@ -1,0 +1,325 @@
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 273px;
+}
+
+.datePickerTextField {
+  width: 273px !important;
+}
+
+.datePickerTextField :global(.MuiPickersOutlinedInput-root),
+.datePickerTextField :global(.MuiPickersInputBase-root),
+.datePickerTextField :global(.MuiOutlinedInput-root),
+.datePickerTextField :global(.MuiInputBase-root) {
+  width: 273px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  box-sizing: border-box !important;
+  border-radius: 8px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  background-color: #ffffff !important;
+  padding: 0 !important;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.datePickerTextField :global(.MuiPickersOutlinedInput-notchedOutline),
+.datePickerTextField :global(.MuiPickersInputBase-notchedOutline),
+.datePickerTextField :global(.MuiOutlinedInput-notchedOutline) {
+  border: 1px solid #9E9E9E !important;
+  border-radius: 8px !important;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.datePickerTextField:hover :global(.MuiPickersOutlinedInput-notchedOutline),
+.datePickerTextField:hover :global(.MuiPickersInputBase-notchedOutline),
+.datePickerTextField:hover :global(.MuiOutlinedInput-notchedOutline),
+.datePickerTextField
+  :global(.MuiPickersOutlinedInput-root:hover:not(.Mui-focused):not(.Mui-error) .MuiPickersOutlinedInput-notchedOutline),
+.datePickerTextField
+  :global(.MuiPickersInputBase-root:hover:not(.Mui-focused):not(.Mui-error) .MuiPickersInputBase-notchedOutline),
+.datePickerTextField
+  :global(.MuiOutlinedInput-root:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline) {
+  border-color: #9E9E9E !important;
+}
+
+.datePickerTextField
+  :global(.MuiPickersOutlinedInput-root.Mui-focused .MuiPickersOutlinedInput-notchedOutline),
+.datePickerTextField
+  :global(.MuiPickersInputBase-root.Mui-focused .MuiPickersInputBase-notchedOutline),
+.datePickerTextField
+  :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline),
+.datePickerTextField :global(.Mui-focused .MuiPickersOutlinedInput-notchedOutline),
+.datePickerTextField :global(.Mui-focused .MuiPickersInputBase-notchedOutline),
+.datePickerTextField :global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #01579b !important;
+  border-width: 1px !important;
+}
+
+.datePickerTextField
+  :global(.MuiPickersOutlinedInput-root.Mui-error .MuiPickersOutlinedInput-notchedOutline),
+.datePickerTextField
+  :global(.MuiPickersInputBase-root.Mui-error .MuiPickersInputBase-notchedOutline),
+.datePickerTextField
+  :global(.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline),
+.datePickerTextField :global(.Mui-error .MuiPickersOutlinedInput-notchedOutline),
+.datePickerTextField :global(.Mui-error .MuiPickersInputBase-notchedOutline),
+.datePickerTextField :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
+  border-color: #e53935 !important;
+}
+
+.datePickerTextField :global(.MuiInputLabel-root),
+.datePickerTextField :global(.MuiFormLabel-root) {
+  color: #9E9E9E !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: translate(16px, 10px) scale(1) !important;
+  pointer-events: none !important;
+}
+
+.datePickerTextField :global(.MuiInputLabel-root:not(.MuiInputLabel-shrink)),
+.datePickerTextField :global(.MuiFormLabel-root:not(.MuiInputLabel-shrink)) {
+  color: #9E9E9E !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+}
+
+.datePickerTextField :global(.MuiInputLabel-root.MuiInputLabel-shrink),
+.datePickerTextField :global(.MuiFormLabel-root.MuiInputLabel-shrink) {
+  transform: translate(14px, -9px) scale(0.75) !important;
+  font-size: 12px !important;
+}
+
+.datePickerTextField :global(.MuiInputLabel-root.Mui-focused),
+.datePickerTextField :global(.MuiFormLabel-root.Mui-focused) {
+  color: #01579b !important;
+}
+
+.datePickerTextField :global(.MuiInputLabel-root.Mui-error),
+.datePickerTextField :global(.MuiFormLabel-root.Mui-error) {
+  color: #e53935 !important;
+}
+
+.datePickerTextField :global(.MuiPickersInputBase-sectionsContainer) {
+  padding: 0 0 0 16px !important;
+  height: 40px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  color: #424242 !important;
+}
+
+.datePickerTextField :global(.MuiPickersInputBase-sectionContent) {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  color: #424242 !important;
+}
+
+.datePickerTextField :global(.MuiPickersInputBase-input),
+.datePickerTextField :global(.MuiPickersOutlinedInput-input),
+.datePickerTextField :global(.MuiOutlinedInput-input) {
+  padding: 0 0 0 16px !important;
+  height: 40px !important;
+  box-sizing: border-box !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  color: #424242 !important;
+}
+
+.datePickerTextField :global(input::placeholder),
+.datePickerTextField :global(.MuiPickersInputBase-sectionsContainer::placeholder) {
+  color: #9E9E9E !important;
+  opacity: 1 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+}
+
+.datePickerTextField :global(.MuiInputAdornment-root) {
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-right: 12px !important;
+  height: 20px !important;
+  max-height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.calendarButton,
+.datePickerTextField :global(.MuiInputAdornment-root .MuiIconButton-root) {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  color: #757575 !important;
+  background-color: transparent !important;
+}
+
+.calendarButton:hover,
+.datePickerTextField :global(.MuiInputAdornment-root .MuiIconButton-root:hover) {
+  background-color: transparent !important;
+}
+
+.calendarButton svg,
+.datePickerTextField :global(.MuiInputAdornment-root .MuiIconButton-root svg) {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 20px !important;
+  color: #757575 !important;
+  display: block !important;
+}
+
+.helperText {
+  margin: 3px 0 0 16px !important;
+  color: #757575 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+  line-height: 16px !important;
+  font-weight: 400 !important;
+  height: 16px !important;
+  min-height: 16px !important;
+}
+
+.errorHelperText {
+  color: #e53935 !important;
+}
+
+.datePickerPopper {
+  z-index: 1500 !important;
+}
+
+.datePickerPopper :global(.MuiPaper-root) {
+  width: 320px !important;
+  background-color: #ffffff !important;
+  border-radius: 8px !important;
+  box-shadow:
+    0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+  overflow: hidden !important;
+}
+
+.datePickerPopper :global(.MuiDateCalendar-root) {
+  width: 320px !important;
+  height: auto !important;
+  max-height: 360px !important;
+}
+
+.datePickerPopper :global(.MuiPickersCalendarHeader-root) {
+  padding: 12px 16px 8px 16px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.datePickerPopper :global(.MuiPickersCalendarHeader-label) {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 24px !important;
+  color: #424242 !important;
+}
+
+.datePickerPopper :global(.MuiPickersCalendarHeader-switchViewButton) {
+  padding: 4px !important;
+  color: #424242 !important;
+}
+
+.datePickerPopper :global(.MuiPickersArrowSwitcher-button) {
+  padding: 4px !important;
+  color: #424242 !important;
+}
+
+.datePickerPopper :global(.MuiPickersArrowSwitcher-button:hover) {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.datePickerPopper :global(.MuiDayCalendar-header) {
+  display: flex !important;
+  justify-content: space-around !important;
+  padding: 0 16px 4px 16px !important;
+}
+
+.datePickerPopper :global(.MuiDayCalendar-weekDayLabel) {
+  width: 36px !important;
+  height: 36px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  color: #757575 !important;
+}
+
+.datePickerPopper :global(.MuiDayCalendar-monthContainer) {
+  padding: 0 16px 12px 16px !important;
+}
+
+.datePickerPopper :global(.MuiDayCalendar-weekContainer) {
+  margin: 2px 0 !important;
+  display: flex !important;
+  justify-content: space-around !important;
+}
+
+.datePickerPopper :global(.MuiPickersDay-root) {
+  width: 36px !important;
+  height: 36px !important;
+  margin: 0 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #424242 !important;
+  border-radius: 50% !important;
+  border: none !important;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease !important;
+}
+
+.datePickerPopper
+  :global(.MuiPickersDay-root.MuiPickersDay-today:not(.Mui-selected)) {
+  border: 1px solid #e0e0e0 !important;
+  background-color: transparent !important;
+}
+
+.datePickerPopper :global(.MuiPickersDay-root:hover:not(.Mui-selected)) {
+  background-color: #e8f0fe !important;
+  color: #424242 !important;
+}
+
+.datePickerPopper :global(.MuiPickersDay-root.Mui-selected),
+.datePickerPopper :global(.MuiPickersDay-root.Mui-selected:hover),
+.datePickerPopper :global(.MuiPickersDay-root.Mui-selected:focus) {
+  background-color: #01579b !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+
+.datePickerPopper :global(.MuiPickersDay-root.Mui-disabled) {
+  color: #bdbdbd !important;
+  opacity: 0.6 !important;
+}

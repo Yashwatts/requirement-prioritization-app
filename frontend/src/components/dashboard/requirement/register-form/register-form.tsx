@@ -27,7 +27,8 @@ import {
 import type { CreateRequirementPayload } from "@/types/requirement.types";
 import { Header } from "./header/header";
 import { Footer } from "./footer/footer";
-import { DiscardDialog } from "./discard-dialog/discard-dialog";
+import { ConfirmDialog } from "@/shared/confirm-dialog/confirm-dialog";
+import { useLocalization } from "@/localize";
 import { GeneralInfo } from "./general-info/general-info";
 import { BeneficiariesScope } from "./beneficiaries-scope/beneficiaries-scope";
 import { ImpactFeasibility } from "./impact-feasibility/impact-feasibility";
@@ -70,6 +71,7 @@ export const RegisterForm = ({
 }: RegisterFormProps) => {
   const dispatch = useAppDispatch();
   const { showSnackbar } = useSnackbar();
+  const { translate } = useLocalization();
 
   const {
     institutions: apiInstitutions,
@@ -88,7 +90,7 @@ export const RegisterForm = ({
       requirementFormSchema,
     ) as unknown as Resolver<RequirementFormValues>,
     defaultValues: DEFAULT_FORM_VALUES,
-    mode: "onSubmit",
+    mode: "onChange",
   });
 
   const {
@@ -103,12 +105,21 @@ export const RegisterForm = ({
 
   useEffect(() => {
     if (open) {
+      reset(DEFAULT_FORM_VALUES);
       clearErrors();
       if (institutionsStatus === "idle") dispatch(fetchInstitutions());
       if (domainsStatus === "idle") dispatch(fetchDomains());
       if (impactUsersStatus === "idle") dispatch(fetchImpactUsers());
     }
-  }, [open, institutionsStatus, domainsStatus, impactUsersStatus, dispatch]);
+  }, [
+    open,
+    institutionsStatus,
+    domainsStatus,
+    impactUsersStatus,
+    dispatch,
+    reset,
+    clearErrors,
+  ]);
 
   const handleInstitutionsOpen = () => {
     if (institutionsStatus === "idle") dispatch(fetchInstitutions());
@@ -369,8 +380,12 @@ export const RegisterForm = ({
         </FormProvider>
       </Drawer>
 
-      <DiscardDialog
+      <ConfirmDialog
         open={discardDialogOpen}
+        title={translate("discardDialogTitle")}
+        description={translate("discardDialogText")}
+        cancelLabel={translate("cancel")}
+        confirmLabel={translate("discard")}
         onCancel={() => setDiscardDialogOpen(false)}
         onConfirm={handleConfirmDiscard}
       />

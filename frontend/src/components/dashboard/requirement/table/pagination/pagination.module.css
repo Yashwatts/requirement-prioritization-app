@@ -2,34 +2,90 @@
   width: 100%;
   height: 56px;
   min-height: 56px;
-  padding: 0 16px;
+  padding: 0 8px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
-  color: #616161;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
-  border-top: 1px solid #e0e0e0;
+  gap: 32px;
+  background: #ffffff;
 }
 
-.pagination :global(.MuiTypography-root) {
+.rowsPerPageGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rowsPerPageText {
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
+  line-height: 20px !important;
   color: #424242 !important;
 }
 
-.pagination :global(.MuiSelect-select) {
-  padding: 6px 28px 6px 12px !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
+.rowsPerPageSelect {
+  width: 74px !important;
+  height: 32px !important;
 }
 
-.pagination :global(.MuiIconButton-root) {
+.rowsPerPageSelect :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: #c4c4c4 !important;
+  border-radius: 4px !important;
+}
+
+.rowsPerPageSelect:hover :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: #757575 !important;
+}
+
+.rowsPerPageSelect:global(.Mui-focused) :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: #01579b !important;
+}
+
+.rowsPerPageSelect :global(.MuiSelect-select) {
+  padding: 6px 24px 6px 12px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
   color: #424242 !important;
+}
+
+.rowsPerPageSelect :global(.MuiSelect-icon) {
+  color: #424242 !important;
+  right: 4px !important;
+}
+
+.paginationText {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  color: #424242 !important;
+}
+
+.arrowsGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pageButton {
+  width: 40px !important;
+  height: 40px !important;
   padding: 8px !important;
+  border-radius: 4px !important;
+  color: #424242 !important;
 }
 
-.pagination :global(.MuiIconButton-root.Mui-disabled) {
+.pageButton:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.pageButton:global(.Mui-disabled) {
   color: rgba(0, 0, 0, 0.26) !important;
+}
+
+.pageIcon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
 }

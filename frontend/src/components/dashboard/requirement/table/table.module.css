@@ -34,18 +34,18 @@
 }
 
 .tableContainer::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 .tableContainer::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .tableContainer::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .tableContainer::-webkit-scrollbar-thumb:hover {
@@ -55,19 +55,84 @@
 .table {
   width: max-content !important;
   min-width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.checkboxHeadCell {
+  width: 64px !important;
+  min-width: 64px !important;
+  max-width: 64px !important;
+  padding: 0 !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  background-color: #eeeeee !important;
+  background: #eeeeee !important;
+}
+
+.checkboxHeadCell :global(.Mui-TableHeadCell-Content) {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.checkboxCell {
+  width: 64px !important;
+  min-width: 64px !important;
+  max-width: 64px !important;
+  padding: 0 !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.checkboxCell :global(.Mui-TableHeadCell-Content) {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.checkbox {
+  padding: 8px !important;
+  color: #424242 !important;
+}
+
+.checkbox:global(.Mui-checked),
+.checkbox:global(.MuiCheckbox-indeterminate) {
+  color: #01579b !important;
+}
+
+.table :global(thead),
+.table :global(.MuiTableHead-root) {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+  opacity: 1 !important;
+  background-color: #eeeeee !important;
+  background: #eeeeee !important;
+}
+
+.table :global(thead tr) {
+  position: sticky !important;
+  top: 0 !important;
+  opacity: 1 !important;
+  background-color: #eeeeee !important;
+  background: #eeeeee !important;
 }
 
 .table :global(.MuiTableCell-head) {
   position: sticky !important;
   top: 0 !important;
-  z-index: 4 !important;
+  z-index: 10 !important;
+  opacity: 1 !important;
   height: 56px !important;
-  padding: 8px 14px !important;
+  padding: 10px 16px !important;
+  background-color: #eeeeee !important;
   background: #eeeeee !important;
+  border-bottom: 1px solid #e0e0e0 !important;
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 12px !important;
   font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 20px !important;
   white-space: nowrap !important;
   text-align: left !important;
   vertical-align: middle !important;
@@ -76,7 +141,7 @@
 .tableHeadCell :global(.Mui-TableHeadCell-Content),
 .tableHeadCell :global(.Mui-TableHeadCell-Content-Labels) {
   width: 100% !important;
-  height: 40px !important;
+  height: 36px !important;
   align-items: center !important;
   justify-content: flex-start !important;
   white-space: nowrap !important;
@@ -87,10 +152,19 @@
   font-family: "Open Sans", sans-serif !important;
   font-size: 12px !important;
   font-weight: 600 !important;
+  line-height: 20px !important;
 }
 
 .table :global(.MuiTableSortLabel-icon) {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: #424242 !important;
   opacity: 0.6 !important;
+}
+
+.table :global(.MuiTableSortLabel-root:hover .MuiTableSortLabel-icon) {
+  opacity: 1 !important;
   color: #424242 !important;
 }
 
@@ -106,42 +180,120 @@
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 13px !important;
+  line-height: 18px !important;
   white-space: nowrap !important;
+  vertical-align: middle !important;
 }
 
 .table :global(.MuiTableRow-root:nth-of-type(even)) {
   background: #f7f9fc !important;
 }
 
+.table :global(thead th:last-child),
+.table :global(thead th[data-pinned="right"]),
+.table :global(th[data-pinned="true"]),
+.table :global(.MuiTableCell-head).pinnedActionsHeadCell,
 .pinnedActionsHeadCell {
   position: sticky !important;
   top: 0 !important;
   right: 0 !important;
-  z-index: 7 !important;
-  text-align: center !important;
-  min-width: 100px !important;
-  width: 100px !important;
+  left: auto !important;
+  z-index: 100 !important;
+  opacity: 1 !important;
+  min-width: 121px !important;
+  width: 121px !important;
+  max-width: 121px !important;
+  height: 56px !important;
   background-color: #eeeeee !important;
-  border-left: 1px solid #d0d0d0 !important;
-  box-shadow: -4px 0 8px -3px rgba(0, 0, 0, 0.08) !important;
+  background: #eeeeee !important;
+  /* border-left: 1px solid #e0e0e0 !important; */
+  border-bottom: 1px solid #e0e0e0 !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
 }
 
+.table :global(thead th:last-child) :global(.Mui-TableHeadCell-Content),
+.pinnedActionsHeadCell :global(.Mui-TableHeadCell-Content) {
+  display: none !important;
+}
+
+.table :global(tbody td:last-child),
+.table :global(tbody td[data-pinned="right"]),
+.table :global(td[data-pinned="true"]),
+.table :global(.MuiTableCell-body).pinnedActionsBodyCell,
 .pinnedActionsBodyCell {
   position: sticky !important;
   right: 0 !important;
-  z-index: 3 !important;
-  text-align: center !important;
-  padding: 0 8px !important;
-  min-width: 100px !important;
-  width: 100px !important;
+  left: auto !important;
+  z-index: 5 !important;
+  min-width: 121px !important;
+  width: 121px !important;
+  max-width: 121px !important;
+  height: 52px !important;
+  padding: 0 !important;
   background-color: #ffffff !important;
-  border-left: 1px solid #e0e0e0 !important;
-  box-shadow: -4px 0 8px -3px rgba(0, 0, 0, 0.08) !important;
+  /* border-left: 1px solid #e0e0e0 !important; */
+  border-bottom: 1px solid #e0e0e0 !important;
+  vertical-align: middle !important;
 }
 
+.table :global(.MuiTableRow-root:nth-of-type(even)) :global(td:last-child),
 .table :global(.MuiTableRow-root:nth-of-type(even)) .pinnedActionsBodyCell {
   background-color: #f7f9fc !important;
 }
+
+/* Unselected row hover: all cells including checkbox and pinned actions change color together */
+.table :global(tbody tr:hover),
+.table :global(.MuiTableRow-root:hover),
+.table :global(.MuiTableRow-root:nth-of-type(even):hover),
+.table :global(.MuiTableRow-root:nth-of-type(odd):hover),
+.tableBodyRow:hover {
+  background-color: #f0f4f8 !important;
+  background: #f0f4f8 !important;
+}
+
+.table :global(tbody tr:hover) :global(td),
+.table :global(.MuiTableRow-root:hover) :global(.MuiTableCell-body),
+.table :global(.MuiTableRow-root:hover) .checkboxCell,
+.table :global(.MuiTableRow-root:hover) .pinnedActionsBodyCell {
+  background-color: #f0f4f8 !important;
+  background: #f0f4f8 !important;
+}
+
+/* Selected row: dark color #e3edf5 for all rows (both odd and even) */
+.table :global(.MuiTableRow-root.Mui-selected),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)),
+.table :global(.MuiTableRow-root[data-selected="true"]) {
+  background-color: #e3edf5 !important;
+  background: #e3edf5 !important;
+}
+
+.table :global(.MuiTableRow-root.Mui-selected) :global(.MuiTableCell-body),
+.table :global(.MuiTableRow-root.Mui-selected) :global(td),
+.table :global(.MuiTableRow-root.Mui-selected) .checkboxCell,
+.table :global(.MuiTableRow-root.Mui-selected) .pinnedActionsBodyCell {
+  background-color: #e3edf5 !important;
+  background: #e3edf5 !important;
+}
+
+/* Selected row on hover: slightly deeper shade #d4e4f0 */
+.table :global(.MuiTableRow-root.Mui-selected:hover),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even):hover),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd):hover) {
+  background-color: #d4e4f0 !important;
+  background: #d4e4f0 !important;
+}
+
+.table :global(.MuiTableRow-root.Mui-selected:hover) :global(.MuiTableCell-body),
+.table :global(.MuiTableRow-root.Mui-selected:hover) :global(td),
+.table :global(.MuiTableRow-root.Mui-selected:hover) .checkboxCell,
+.table :global(.MuiTableRow-root.Mui-selected:hover) .pinnedActionsBodyCell {
+  background-color: #d4e4f0 !important;
+  background: #d4e4f0 !important;
+}
+
+
 
 .alertBanner {
   font-family: "Open Sans", sans-serif !important;
@@ -157,34 +309,4 @@
   min-height: 56px !important;
   height: 56px !important;
   padding: 0 !important;
-}
-
-.pagination {
-  color: #424242 !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-  overflow: visible !important;
-}
-
-.pagination :global(.MuiTablePagination-selectLabel),
-.pagination :global(.MuiTablePagination-displayedRows) {
-  color: #424242 !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 400 !important;
-  margin: 0 !important;
-}
-
-.pagination :global(.MuiTablePagination-select) {
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-  color: #424242 !important;
-}
-
-.pagination :global(.MuiIconButton-root) {
-  color: #424242 !important;
-}
-
-.pagination :global(.MuiIconButton-root.Mui-disabled) {
-  color: rgba(0, 0, 0, 0.26) !important;
 }

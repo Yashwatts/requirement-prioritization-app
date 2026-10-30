@@ -32,6 +32,7 @@
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
   background-color: #ffffff !important;
+  padding-right: 12px !important;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -52,14 +53,30 @@
   border-color: #9e9e9e !important;
 }
 
+.readOnlyField :global(.MuiOutlinedInput-root:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline) {
+  border-color: #9e9e9e !important;
+}
+
 .readOnlyField :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
   border-color: #01579b !important;
 }
 
 .readOnlyField :global(.MuiInputLabel-root) {
-  color: #757575 !important;
+  color: #9E9E9E !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+}
+
+.readOnlyField :global(.MuiInputLabel-root:not(.MuiInputLabel-shrink)) {
+  color: #9E9E9E !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
 }
 
 .readOnlyField :global(.MuiInputLabel-root.Mui-focused) {
@@ -89,25 +106,10 @@
   color: #424242 !important;
 }
 
-.tooltipPopper {
-  z-index: 1500 !important;
-}
-
-.tooltipCard {
-  background-color: #fafafa !important;
-  color: #424242 !important;
-  font-family: "Open Sans", sans-serif !important;
-  border-radius: 8px !important;
-  padding: 16px !important;
-  box-shadow: 0 2px 8px 3px rgba(51, 51, 51, 0.15) !important;
-  width: 330px !important;
-  max-width: 330px !important;
-  box-sizing: border-box !important;
-}
-
 .tooltipBox {
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 298px !important;
 }
 
 .tooltipTitle {
@@ -117,6 +119,7 @@
   line-height: 20px !important;
   color: #424242 !important;
   margin: 0 0 4px 0 !important;
+  padding: 0 !important;
 }
 
 .tooltipMessage {
@@ -125,7 +128,8 @@
   font-weight: 400 !important;
   line-height: 16px !important;
   color: #424242 !important;
-  margin: 0 0 8px 0 !important;
+  margin: 0 0 16px 0 !important;
+  padding: 0 !important;
 }
 
 .tooltipFormula {
@@ -135,4 +139,5 @@
   line-height: 16px !important;
   color: #424242 !important;
   margin: 0 !important;
+  padding: 0 !important;
 }

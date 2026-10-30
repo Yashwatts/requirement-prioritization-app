@@ -50,7 +50,7 @@ export const LoginView = () => {
             </Typography>
 
             <Typography component="p" className={styles.subtext}>
-              {translations.description}
+              {translations.appDescription}
             </Typography>
           </Box>
 

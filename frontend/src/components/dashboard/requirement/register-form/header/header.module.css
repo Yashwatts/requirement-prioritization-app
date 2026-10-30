@@ -8,6 +8,15 @@
   justify-content: space-between;
   border-bottom: 1px solid #e0e0e0;
   background: #f7f9fc;
+  box-sizing: border-box;
+}
+
+.minimizedHeader {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  border-bottom: #E0E0E0 !important;
+  border-radius: 8px 8px 0 0 !important;
 }
 
 .title {
@@ -21,7 +30,7 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0;
 }
 
 .actions button {

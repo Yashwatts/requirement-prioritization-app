@@ -1,4 +1,5 @@
 import { Skeleton, Stack, Typography } from "@mui/material";
+import { useLocalization } from "@/localize";
 import { EmptyState } from "../empty-state/empty-state";
 import styles from "./fallback.module.css";
 
@@ -8,10 +9,12 @@ export interface FallbackProps {
 }
 
 export const Fallback = ({ status, error }: FallbackProps) => {
+  const { translate } = useLocalization();
+
   if (status === "failed") {
     return (
       <Typography className={styles.emptyStateMessage} color="error">
-        {error ?? "Unable to load requirements."}
+        {error ?? translate("unableToLoadRequirements")}
       </Typography>
     );
   }

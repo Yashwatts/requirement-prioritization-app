@@ -79,20 +79,25 @@ export const FormSelectField = ({
       control={control}
       render={({ field }) => {
         const val = field.value;
-        const isRegisteredStatus =
-          name === "status" && (val === "Registered" || val === "Registrada");
         const hasSingleValue =
           !multiple && val !== undefined && val !== null && val !== "";
-        const showClearButton = hasSingleValue && !isRegisteredStatus;
+        const showClearButton = hasSingleValue;
         const multipleArr = multiple
           ? Array.isArray(val)
             ? val
             : []
           : [];
 
+        const fieldWidthClass =
+          name === "collaboratorDomains"
+            ? styles.collaboratorField
+            : name === "followerDomains"
+              ? styles.followerField
+              : "";
+
         return (
           <FormControl
-            className={styles.field}
+            className={`${styles.field} ${fieldWidthClass}`}
             size="small"
             error={Boolean(errorMessage)}
           >
@@ -107,6 +112,16 @@ export const FormSelectField = ({
               label={label}
               onOpen={onOpen}
               IconComponent={ArrowDropDownIcon}
+              MenuProps={{
+                slotProps: {
+                  paper: {
+                    className: styles.menuPaper,
+                    style: {
+                      maxHeight: 376,
+                    },
+                  },
+                },
+              }}
               endAdornment={
                 showClearButton ? (
                   <IconButton

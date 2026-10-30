@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Image from "next/image";
 import type { AppUser } from "@/features/auth/auth.type";
 import { authService } from "@/features/auth/auth.service";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import LogoutIcon from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
+import menuIcon from "@/assets/svg/menu-icon.svg";
+import accountCircleIcon from "@/assets/svg/account-circle-icon.svg";
+import logoutIcon from "@/assets/svg/logout-icon.svg";
 import {
   AppBar,
   Box,
@@ -17,6 +18,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { Tooltip } from "@/shared/tooltip/tooltip";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "@/shared/snackbar/use-snackbar";
 import { useLocalization } from "@/localize";
@@ -31,8 +33,18 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
   const { translate } = useLocalization();
+  const rightContentRef = useRef<HTMLDivElement>(null);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
   const displayName = user?.displayName ?? user?.email ?? "User";
+  const isMenuOpen = Boolean(anchorElement);
+
+  const handleProfileClick = () => {
+    if (isMenuOpen) {
+      setAnchorElement(null);
+    } else {
+      setAnchorElement(rightContentRef.current);
+    }
+  };
 
   const logout = async () => {
     setAnchorElement(null);
@@ -43,7 +55,7 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
 
   return (
     <AppBar position="static" className={styles.appBar}>
-      <Toolbar className={styles.toolbar}>
+      <Toolbar className={styles.toolbar} disableGutters>
         <Box className={styles.leftContent}>
           <IconButton
             edge="start"
@@ -51,45 +63,105 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
             className={styles.menuButton}
             onClick={onMenuClick}
           >
-            <MenuIcon />
+            <Image
+              src={menuIcon}
+              alt="Toggle navigation menu"
+              width={24}
+              height={24}
+              priority
+            />
           </IconButton>
           <Typography className={styles.title}>
             {translate("title")}
           </Typography>
         </Box>
-        <Box className={styles.rightContent}>
+        <Box
+          ref={rightContentRef}
+          className={styles.rightContent}
+          onClick={handleProfileClick}
+        >
           <IconButton
             className={styles.profileButton}
             aria-label="User account"
-            onClick={(event) => setAnchorElement(event.currentTarget)}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleProfileClick();
+            }}
           >
-            <AccountCircleIcon />
+            <Image
+              src={accountCircleIcon}
+              alt="User account"
+              width={20}
+              height={20}
+              priority
+            />
           </IconButton>
           <Typography className={styles.profileName}>{displayName}</Typography>
           <IconButton
             className={styles.arrowButton}
-            aria-label="Open profile options"
-            onClick={(event) => setAnchorElement(event.currentTarget)}
+            aria-label={isMenuOpen ? "Close profile options" : "Open profile options"}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleProfileClick();
+            }}
           >
-            <KeyboardArrowDownIcon />
+            <KeyboardArrowDownIcon
+              className={`${styles.arrowIcon} ${isMenuOpen ? styles.arrowIconOpen : ""}`}
+            />
           </IconButton>
         </Box>
       </Toolbar>
       <Menu
-        anchorEl={anchorElement}
-        open={Boolean(anchorElement)}
+        anchorEl={rightContentRef.current}
+        open={isMenuOpen}
         onClose={() => setAnchorElement(null)}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
+        autoFocus={false}
+        disableAutoFocusItem
+        disableRestoreFocus
+        slotProps={{
+          paper: {
+            className: styles.profileMenu,
+            elevation: 0,
+          },
+          list: {
+            className: styles.menuList,
+          },
+        }}
       >
-        <MenuItem disabled>
-          <Typography variant="body2">{user?.email}</Typography>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={logout}>
-          <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
-          Sign out
-        </MenuItem>
+        <Box className={styles.profileDetails}>
+          <Typography className={styles.profileDetailsName}>
+            {displayName}
+          </Typography>
+          <Tooltip
+            title={user?.email ?? ""}
+            placement="bottom-start"
+            arrow={false}
+            slotProps={{
+              tooltip: { className: styles.emailTooltip },
+            }}
+          >
+            <Typography className={styles.profileDetailsEmail}>
+              {user?.email}
+            </Typography>
+          </Tooltip>
+        </Box>
+        <Divider className={styles.menuDivider} />
+        <Box className={styles.logoutSection}>
+          <MenuItem className={styles.logoutItem} onClick={logout} disableRipple>
+            <Image
+              src={logoutIcon}
+              alt={translate("logout")}
+              width={20}
+              height={20}
+              className={styles.logoutIcon}
+            />
+            <Typography className={styles.logoutText}>
+              {translate("logout")}
+            </Typography>
+          </MenuItem>
+        </Box>
       </Menu>
     </AppBar>
   );

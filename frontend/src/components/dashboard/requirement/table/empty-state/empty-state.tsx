@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import { Box, Typography } from "@mui/material";
+import { useLocalization } from "@/localize";
 import emptyStreet from "@/assets/svg/empty-street.svg";
 import styles from "./empty-state.module.css";
 
 export const EmptyState = () => {
+  const { translate } = useLocalization();
+
   return (
     <Box className={styles.emptyState}>
       <Box className={styles.emptyStateIllustration} aria-hidden="true">
@@ -17,7 +20,7 @@ export const EmptyState = () => {
         />
       </Box>
       <Typography className={styles.emptyStateMessage}>
-        No results found. Try changing your filters.
+        {translate("noResultsFound")}
       </Typography>
     </Box>
   );

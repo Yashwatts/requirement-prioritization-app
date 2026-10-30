@@ -154,10 +154,17 @@ export const Table = ({ onCreateNew }: TableProps) => {
             enablePinning
             displayColumnDefOptions={{
               "mrt-row-select": {
-                size: 56,
+                size: 64,
+                muiTableHeadCellProps: {
+                  className: styles.checkboxHeadCell,
+                },
+                muiTableBodyCellProps: {
+                  className: styles.checkboxCell,
+                },
                 Header: ({ table }) => (
                   <Checkbox
                     size="small"
+                    className={styles.checkbox}
                     checked={table.getIsAllRowsSelected()}
                     indeterminate={
                       table.getIsSomeRowsSelected() &&
@@ -169,6 +176,7 @@ export const Table = ({ onCreateNew }: TableProps) => {
                 Cell: ({ row }) => (
                   <Checkbox
                     size="small"
+                    className={styles.checkbox}
                     checked={row.getIsSelected()}
                     disabled={!row.getCanSelect()}
                     indeterminate={row.getIsSomeSelected()}
@@ -178,7 +186,7 @@ export const Table = ({ onCreateNew }: TableProps) => {
               },
               "mrt-row-actions": {
                 header: "",
-                size: 100,
+                size: 121,
                 muiTableHeadCellProps: {
                   className: styles.pinnedActionsHeadCell,
                 },

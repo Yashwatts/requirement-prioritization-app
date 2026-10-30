@@ -1,9 +1,10 @@
 "use client";
 
 import { Controller, useFormContext } from "react-hook-form";
-import { Box, IconButton, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import type { RequirementFormValues } from "@/schemas/requirement.schema";
+import { Tooltip } from "@/shared/tooltip/tooltip";
 import { useLocalization } from "@/localize";
 import { FormSelectField } from "../form-select-field/form-select-field";
 import {
@@ -64,6 +65,22 @@ export const ImpactFeasibility = ({
                   readOnly: true,
                   endAdornment: (
                     <Tooltip
+                      variant="info"
+                      placement="bottom-end"
+                      enterTouchDelay={0}
+                      leaveDelay={100}
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: "offset",
+                              options: {
+                                offset: [12, 14],
+                              },
+                            },
+                          ],
+                        },
+                      }}
                       title={
                         <Box className={styles.tooltipBox}>
                           <Typography className={styles.tooltipTitle}>
@@ -77,26 +94,6 @@ export const ImpactFeasibility = ({
                           </Typography>
                         </Box>
                       }
-                      placement="bottom-end"
-                      arrow={false}
-                      enterTouchDelay={0}
-                      leaveDelay={100}
-                      classes={{
-                        popper: styles.tooltipPopper,
-                        tooltip: styles.tooltipCard,
-                      }}
-                      slotProps={{
-                        popper: {
-                          modifiers: [
-                            {
-                              name: "offset",
-                              options: {
-                                offset: [14, 15],
-                              },
-                            },
-                          ],
-                        },
-                      }}
                     >
                       <IconButton
                         size="small"

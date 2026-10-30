@@ -5,14 +5,272 @@
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 11px !important;
+  line-height: 20px !important;
 }
 
-.descriptionText {
-  max-width: 200px;
+.chip :global(.MuiChip-label) {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  color: #424242 !important;
+}
+
+.nameHeaderCell {
+  width: 200px !important;
+  max-width: 200px !important;
+  box-sizing: border-box !important;
+}
+
+.nameBodyCell {
+  width: 200px !important;
+  max-width: 200px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.cellMaxWidth200 {
+  width: 200px !important;
+  max-width: 200px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.cellMaxWidth180 {
+  width: 180px !important;
+  max-width: 180px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.singleFieldText {
+  display: block;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: "Open Sans", sans-serif;
   font-size: 13px;
+  line-height: 18px;
   color: #424242;
+  cursor: default;
+}
+
+.descriptionHeaderCell {
+  width: 110px !important;
+  min-width: 110px !important;
+  max-width: 110px !important;
+  padding: 10px 16px !important;
+  text-align: left !important;
+}
+
+.descriptionHeaderCell :global(.Mui-TableHeadCell-Content) {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+}
+
+.descriptionBodyCell {
+  width: 110px !important;
+  min-width: 110px !important;
+  max-width: 110px !important;
+  padding: 0 16px !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+.descriptionWrapper {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.descriptionTouchArea {
+  width: 40px;
+  height: 40px;
+  margin-left: -10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 150ms ease-in-out;
+}
+
+.descriptionTouchArea:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.descriptionIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.tooltipContent {
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  line-height: 20px;
+  color: #424242;
+  word-break: break-word;
+  white-space: normal;
+  text-align: left;
+}
+
+.tooltipContent p {
+  margin: 0 0 8px 0;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 20px;
+  color: #424242;
+  font-weight: 400;
+}
+
+.tooltipContent p:last-child {
+  margin-bottom: 0;
+}
+
+.tooltipContent p:empty::before {
+  content: "\00a0";
+}
+
+.tooltipContent strong,
+.tooltipContent b {
+  font-weight: 700 !important;
+  color: #212121 !important;
+}
+
+.tooltipContent em,
+.tooltipContent i {
+  font-style: italic !important;
+}
+
+.tooltipContent u {
+  text-decoration: underline !important;
+}
+
+.tooltipContent s,
+.tooltipContent strike,
+.tooltipContent del {
+  text-decoration: line-through !important;
+}
+
+.tooltipContent h1 {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #212121 !important;
+  margin: 8px 0 4px 0 !important;
+  line-height: 22px !important;
+}
+
+.tooltipContent h1:first-child {
+  margin-top: 0 !important;
+}
+
+.tooltipContent h2 {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #212121 !important;
+  margin: 6px 0 4px 0 !important;
+  line-height: 20px !important;
+}
+
+.tooltipContent h2:first-child {
+  margin-top: 0 !important;
+}
+
+.tooltipContent h3 {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #212121 !important;
+  margin: 4px 0 4px 0 !important;
+  line-height: 18px !important;
+}
+
+.tooltipContent h3:first-child {
+  margin-top: 0 !important;
+}
+
+.tooltipContent ul,
+.tooltipContent ol {
+  padding-left: 22px !important;
+  margin: 0 0 8px 0 !important;
+}
+
+.tooltipContent ul:last-child,
+.tooltipContent ol:last-child {
+  margin-bottom: 0 !important;
+}
+
+.tooltipContent li {
+  margin-bottom: 3px !important;
+  line-height: 19px !important;
+  color: #424242 !important;
+}
+
+.tooltipContent li > p {
+  margin: 0 !important;
+}
+
+.tooltipContent code {
+  background-color: #f5f5f5 !important;
+  color: #d32f2f !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-family: monospace !important;
+  font-size: 12px !important;
+  border: 1px solid #eeeeee !important;
+  word-break: break-all !important;
+}
+
+.tooltipContent pre {
+  background-color: #f5f5f5 !important;
+  color: #212121 !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  margin: 0 0 8px 0 !important;
+  overflow-x: auto !important;
+  font-family: monospace !important;
+  font-size: 12px !important;
+  border: 1px solid #eeeeee !important;
+}
+
+.tooltipContent pre code {
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.tooltipContent blockquote {
+  border-left: 3px solid #bdbdbd !important;
+  margin: 0 0 8px 0 !important;
+  padding-left: 10px !important;
+  color: #616161 !important;
+  font-style: italic !important;
+}
+
+.tooltipContent a {
+  color: #01579b !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+}
+
+.tooltipContent a:hover {
+  color: #0277bd !important;
+}
+
+.emptyTooltip {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-style: italic !important;
+  color: #757575 !important;
+  margin: 0 !important;
+  text-align: center !important;
 }

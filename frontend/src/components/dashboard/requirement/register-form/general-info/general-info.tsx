@@ -31,6 +31,7 @@ export const GeneralInfo = ({
     register,
     watch,
     setValue,
+    clearErrors,
     formState: { errors },
   } = useFormContext<RequirementFormValues>();
 
@@ -43,7 +44,14 @@ export const GeneralInfo = ({
         size="small"
         className={styles.textField}
         label={translate("name")}
-        {...register("name")}
+        value={nameVal ?? ""}
+        {...register("name", {
+          onChange: (e) => {
+            if (e.target.value && e.target.value.trim().length > 0 && errors.name) {
+              clearErrors("name");
+            }
+          },
+        })}
         error={Boolean(errors.name)}
         helperText={
           errors.name
@@ -109,50 +117,22 @@ export const GeneralInfo = ({
         isLoading={isDomainsLoading}
       />
 
-      <Box className={styles.twoColumns}>
-        {isSpanish ? (
-          <>
-            <FormSelectField
-              name="followerDomains"
-              label={translate("followerDomains")}
-              options={domainOptions}
-              multiple
-              optional
-              onOpen={onOpenDomains}
-              isLoading={isDomainsLoading}
-            />
-            <FormSelectField
-              name="collaboratorDomains"
-              label={translate("collaboratorDomains")}
-              options={domainOptions}
-              multiple
-              optional
-              onOpen={onOpenDomains}
-              isLoading={isDomainsLoading}
-            />
-          </>
-        ) : (
-          <>
-            <FormSelectField
-              name="collaboratorDomains"
-              label={translate("collaboratorDomains")}
-              options={domainOptions}
-              multiple
-              optional
-              onOpen={onOpenDomains}
-              isLoading={isDomainsLoading}
-            />
-            <FormSelectField
-              name="followerDomains"
-              label={translate("followerDomains")}
-              options={domainOptions}
-              multiple
-              optional
-              onOpen={onOpenDomains}
-              isLoading={isDomainsLoading}
-            />
-          </>
-        )}
+      <Box className={styles.domainColumns}>
+        {(isSpanish
+          ? (["followerDomains", "collaboratorDomains"] as const)
+          : (["collaboratorDomains", "followerDomains"] as const)
+        ).map((fieldName) => (
+          <FormSelectField
+            key={fieldName}
+            name={fieldName}
+            label={translate(fieldName)}
+            options={domainOptions}
+            multiple
+            optional
+            onOpen={onOpenDomains}
+            isLoading={isDomainsLoading}
+          />
+        ))}
       </Box>
     </Box>
   );

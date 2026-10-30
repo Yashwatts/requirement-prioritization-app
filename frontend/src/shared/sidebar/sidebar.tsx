@@ -1,20 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import {
   Box,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Tooltip,
 } from "@mui/material";
+import { Tooltip } from "@/shared/tooltip/tooltip";
 import { useLocalization } from "@/localize";
+import homeIcon from "@/assets/svg/home-icon.svg";
 import requirementsIcon from "@/assets/svg/requirements-icon.svg";
+import crosswordIcon from "@/assets/svg/crossword-icon.svg";
+import analyticsIcon from "@/assets/svg/analytics-icon.svg";
+import settingsIcon from "@/assets/svg/settings-icon.svg";
 import styles from "./sidebar.module.css";
 
 interface SidebarProps {
@@ -26,11 +26,11 @@ export const Sidebar = ({ open }: SidebarProps) => {
   const requirementsLabel = translate("requirements");
 
   const railItems = [
-    { label: "Home", type: "mui" as const, icon: HomeOutlinedIcon },
-    { label: requirementsLabel, type: "image" as const, active: true },
-    { label: "Grid view", type: "mui" as const, icon: GridViewOutlinedIcon },
-    { label: "Analytics", type: "mui" as const, icon: BarChartOutlinedIcon },
-    { label: "Settings", type: "mui" as const, icon: SettingsOutlinedIcon },
+    { label: translate("home"), icon: homeIcon },
+    { label: requirementsLabel, icon: requirementsIcon, active: true },
+    { label: translate("gridView"), icon: crosswordIcon },
+    { label: translate("analytics"), icon: analyticsIcon },
+    { label: translate("settings"), icon: settingsIcon },
   ];
 
   return (
@@ -58,16 +58,12 @@ export const Sidebar = ({ open }: SidebarProps) => {
             <Tooltip key={item.label} title={item.label} placement="right">
               <ListItemButton className={styles.railItem} selected={item.active}>
                 <ListItemIcon className={styles.railIcon}>
-                  {item.type === "image" ? (
-                    <Image
-                      src={requirementsIcon}
-                      alt={item.label}
-                      width={20}
-                      height={20}
-                    />
-                  ) : (
-                    <item.icon />
-                  )}
+                  <Image
+                    src={item.icon}
+                    alt={item.label}
+                    width={20}
+                    height={20}
+                  />
                 </ListItemIcon>
               </ListItemButton>
             </Tooltip>

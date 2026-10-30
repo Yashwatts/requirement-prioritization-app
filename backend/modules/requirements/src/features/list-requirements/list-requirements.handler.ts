@@ -1,5 +1,5 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { FindOptions, raw } from '@mikro-orm/core';
+import { FindOptions, QueryOrder, raw } from '@mikro-orm/core';
 import { Requirement } from '../../domain/requirement/requirement';
 import { ListRequirementsQuery } from './list-requirements.query';
 import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';
@@ -88,20 +88,23 @@ export class ListRequirementsHandler implements IQueryHandler<
     ]);
 
     const safeSortBy = VALID_SORT_COLUMNS.has(sort_by) ? sort_by : 'created_at';
-    const safeSortOrder = sort_order ?? 'DESC';
+    const isAsc = String(sort_order ?? '').toUpperCase().includes('ASC');
+    const safeSortOrder = isAsc
+      ? QueryOrder.ASC_NULLS_FIRST
+      : QueryOrder.DESC_NULLS_LAST;
 
     const schema = process.env.DB_REQUIREMENTS_SCHEMA ?? 'requirements';
 
     const ALPHABETICAL_SORT_MAP: Record<string, string> = {
-      complexity_and_effort: `(CASE complexity_and_effort WHEN 1 THEN 'XS' WHEN 2 THEN 'S' WHEN 3 THEN 'M' WHEN 4 THEN 'L' WHEN 5 THEN 'XL' ELSE '' END)`,
-      client_priority: `(CASE client_priority WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' ELSE '' END)`,
-      status: `(CASE status WHEN 1 THEN 'Registered' WHEN 2 THEN 'Flow' ELSE '' END)`,
-      type: `(CASE type WHEN 1 THEN 'Internal' WHEN 2 THEN 'External' WHEN 3 THEN 'Client' ELSE '' END)`,
+      complexity_and_effort: `(CASE complexity_and_effort WHEN 1 THEN 'XS' WHEN 2 THEN 'S' WHEN 3 THEN 'M' WHEN 4 THEN 'L' WHEN 5 THEN 'XL' ELSE NULL END)`,
+      client_priority: `(CASE client_priority WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' ELSE NULL END)`,
+      status: `(CASE status WHEN 1 THEN 'Registered' WHEN 2 THEN 'Flow' ELSE NULL END)`,
+      type: `(CASE type WHEN 1 THEN 'Internal' WHEN 2 THEN 'External' WHEN 3 THEN 'Client' ELSE NULL END)`,
       obligation: `(CASE obligation WHEN true THEN 'Yes' ELSE 'No' END)`,
       exist_solution_alternative: `(CASE exist_solution_alternative WHEN true THEN 'Yes' ELSE 'No' END)`,
       domain_in_charge_id: `(SELECT d.name FROM "${schema}"."domains" d WHERE d.id = domain_in_charge_id)`,
       requesting_institution_id: `(SELECT i.name FROM "${schema}"."institutions" i WHERE i.id = requesting_institution_id)`,
-      impact_number_users_id: `(CASE (SELECT iud.impact_number_users_level FROM "${schema}"."impact_users_domains" iud WHERE iud.id = impact_number_users_id) WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' WHEN 4 THEN 'Very High' ELSE '' END)`,
+      impact_number_users_id: `(CASE (SELECT iud.impact_number_users_level FROM "${schema}"."impact_users_domains" iud WHERE iud.id = impact_number_users_id) WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' WHEN 4 THEN 'Very High' ELSE NULL END)`,
     };
 
     const sortTarget = ALPHABETICAL_SORT_MAP[safeSortBy]

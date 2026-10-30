@@ -12,6 +12,12 @@
   width: 100%;
 }
 
+.domainColumns {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
 .textField {
   width: 100%;
 }
@@ -31,15 +37,31 @@
 }
 
 .textField :global(.MuiOutlinedInput-input) {
-  padding: 8px 16px !important;
-  height: 24px !important;
+  padding: 8px 12px 8px 16px !important;
+  height: 20px !important;
   box-sizing: border-box !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
+  font-weight: 400 !important;
   color: #424242 !important;
 }
 
+.textField :global(input::placeholder),
+.textField :global(.MuiInputBase-input::placeholder) {
+  color: #9E9E9E !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  opacity: 1 !important;
+}
+
 .textField :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: #9e9e9e !important;
+}
+
+.textField :global(.MuiOutlinedInput-root:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline) {
   border-color: #9e9e9e !important;
 }
 
@@ -48,9 +70,21 @@
 }
 
 .textField :global(.MuiInputLabel-root) {
-  color: #757575 !important;
+  color: #9E9E9E !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+}
+
+.textField :global(.MuiInputLabel-root:not(.MuiInputLabel-shrink)) {
+  color: #9E9E9E !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
 }
 
 .textField :global(.MuiInputLabel-root.Mui-focused) {

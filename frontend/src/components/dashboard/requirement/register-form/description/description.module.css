@@ -52,7 +52,7 @@
   font-weight: 400;
   cursor: text;
   box-sizing: border-box;
-  margin-bottom: 8px;
+  margin-bottom: 24px;
 }
 
 .editorBody::-webkit-scrollbar {

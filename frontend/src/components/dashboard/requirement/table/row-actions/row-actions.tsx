@@ -1,7 +1,9 @@
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import type { RequirementTableRow } from "@/types/requirement.types";
+import { Tooltip } from "@/shared/tooltip/tooltip";
+import { useLocalization } from "@/localize";
 import styles from "./row-actions.module.css";
 
 export interface RowActionsProps {
@@ -11,14 +13,16 @@ export interface RowActionsProps {
 }
 
 export const RowActions = ({ row, onView, onEdit }: RowActionsProps) => {
+  const { translate } = useLocalization();
+
   return (
     <Box className={styles.rowActions}>
-      <Tooltip title="View requirement">
+      <Tooltip title={translate("viewRequirement")}>
         <IconButton size="small" onClick={() => row && onView && onView(row)}>
           <VisibilityOutlinedIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Edit requirement">
+      <Tooltip title={translate("editRequirement")}>
         <IconButton size="small" onClick={() => row && onEdit && onEdit(row)}>
           <EditOutlinedIcon />
         </IconButton>

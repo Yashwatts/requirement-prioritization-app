@@ -1,60 +1,119 @@
 .appBar {
   background: #01579b !important;
+  height: 64px !important;
   z-index: 1300 !important;
   box-shadow:
     0 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0 2px 2px rgba(0, 0, 0, 0.14),
-    0 1px 5px rgba(0, 0, 0, 0.12);
+    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
 }
 
 .toolbar {
   min-height: 64px !important;
-  padding: 0 24px 0 12px;
-  justify-content: space-between;
-}
-
-.leftContent,
-.rightContent {
-  display: flex;
-  align-items: center;
+  height: 64px !important;
+  padding: 0 24px 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  box-sizing: border-box !important;
 }
 
 .leftContent {
-  gap: 22px;
+  display: flex !important;
+  align-items: center !important;
+  height: 64px !important;
+  gap: 22px !important;
+}
+
+.rightContent,
+.rightContent * {
+  cursor: pointer !important;
 }
 
 .rightContent {
-  gap: 2px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  height: 44px !important;
+  gap: 2px !important;
 }
 
-.menuButton,
-.profileButton,
-.arrowButton {
-  padding: 12px;
+.menuButton {
+  width: 48px !important;
+  height: 48px !important;
+  padding: 12px !important;
+  border-radius: 48px !important;
   color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
+
+.profileButton,
+.profileButton * {
+  cursor: pointer !important;
 }
 
 .profileButton {
   width: 40px !important;
   height: 44px !important;
   padding: 12px 8px 12px 12px !important;
+  border-radius: 48px !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+.arrowButton,
+.arrowButton * {
+  cursor: pointer !important;
 }
 
 .arrowButton {
   width: 20px !important;
   height: 20px !important;
+  min-width: 20px !important;
   padding: 0 !important;
-}
-
-.menuButton svg,
-.profileButton svg,
-.arrowButton svg {
+  border-radius: 50% !important;
   color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
 }
 
-.arrowButton svg {
-  width: 20px;
-  height: 20px;
+.menuButton img,
+.profileButton img {
+  display: block;
+}
+
+.arrowIcon,
+.arrowIcon * {
+  cursor: pointer !important;
+}
+
+.arrowIcon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: #ffffff !important;
+  display: block !important;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.arrowIconOpen {
+  transform: rotate(180deg) !important;
+}
+
+.menuButton:hover,
+.profileButton:hover,
+.arrowButton:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 .title {
@@ -63,56 +122,143 @@
   font-size: 18px !important;
   font-weight: 600 !important;
   line-height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
 }
 
 .profileName {
   color: #ffffff !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
+  font-weight: 400 !important;
   line-height: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  user-select: none;
 }
 
-.profileButton svg {
-  width: 20px;
-  height: 20px;
-}
-
+/* Profile Menu Dialog Box */
 .profileMenu {
-  width: 240px;
-  border-radius: 8px;
+  width: 240px !important;
+  border-radius: 8px !important;
+  background-color: #ffffff !important;
   box-shadow:
-    0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 5px 5px -3px rgba(0, 0, 0, 0.2) !important;
+  overflow: hidden !important;
+  margin-top: 12px !important;
+}
+
+.menuList {
+  padding: 0 !important;
 }
 
 .profileDetails {
-  padding: 12px 24px;
-  color: #424242;
+  padding: 20px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+  width: 240px !important;
 }
 
-.profileDetails p:first-child {
-  font-size: 16px;
-  line-height: 24px;
+.profileDetailsName {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 24px !important;
+  color: #424242 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 192px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
-.profileDetails p:last-child {
-  overflow: hidden;
-  color: #757575;
-  font-size: 14px;
-  line-height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.profileDetailsEmail {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  color: #757575 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 192px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
+  cursor: pointer !important;
 }
 
-.profileEmail {
-  display: block;
-  width: 192px;
+.emailTooltip {
+  background-color: rgba(48, 48, 48, 0.8) !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 16px !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  max-width: none !important;
+}
+
+.menuDivider {
+  height: 1px !important;
+  background-color: #e0e0e0 !important;
+  border: none !important;
+  margin: 0 !important;
+  width: 240px !important;
+}
+
+.logoutSection {
+  padding: 8px 0 !important;
+  box-sizing: border-box !important;
+  width: 240px !important;
 }
 
 .logoutItem {
-  min-height: 64px;
-  gap: 16px;
-  padding: 8px 24px;
-  color: #424242;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 12px 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  background-color: transparent !important;
+  outline: none !important;
+}
+
+.logoutItem:focus,
+.logoutItem:focus-visible,
+.logoutItem:global(.Mui-focusVisible) {
+  background-color: transparent !important;
+  outline: none !important;
+}
+
+.logoutItem:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.logoutIcon {
+  width: 20px !important;
+  height: 20px !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+.logoutText {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 24px !important;
+  color: #424242 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }

@@ -14,8 +14,9 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  Tooltip,
 } from "@mui/material";
+import { Tooltip } from "@/shared/tooltip/tooltip";
+import { useLocalization } from "@/localize";
 import styles from "./toolbar.module.css";
 
 export interface ToolbarProps {
@@ -24,6 +25,7 @@ export interface ToolbarProps {
 }
 
 export const Toolbar = ({ search, onSearchChange }: ToolbarProps) => {
+  const { translate } = useLocalization();
   const [searchInput, setSearchInput] = useState(search);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ export const Toolbar = ({ search, onSearchChange }: ToolbarProps) => {
         className={styles.search}
         value={searchInput}
         onChange={(event) => setSearchInput(event.target.value)}
-        placeholder="Search"
+        placeholder={translate("search")}
         size="small"
         slotProps={{
           input: {
@@ -59,7 +61,7 @@ export const Toolbar = ({ search, onSearchChange }: ToolbarProps) => {
             endAdornment: searchInput ? (
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="Clear search"
+                  aria-label={translate("clearSearch")}
                   className={styles.clearSearchButton}
                   onClick={handleClearSearch}
                   edge="end"
@@ -73,21 +75,27 @@ export const Toolbar = ({ search, onSearchChange }: ToolbarProps) => {
         }}
       />
       <Box className={styles.toolbarActions}>
-        <Tooltip title="Change view">
-          <Button startIcon={<ViewQuiltOutlinedIcon />}>View</Button>
+        <Tooltip title={translate("changeView")}>
+          <Button startIcon={<ViewQuiltOutlinedIcon />}>
+            {translate("view")}
+          </Button>
         </Tooltip>
-        <Tooltip title="Download requirements">
-          <Button startIcon={<FileDownloadOutlinedIcon />}>Download</Button>
+        <Tooltip title={translate("downloadRequirements")}>
+          <Button startIcon={<FileDownloadOutlinedIcon />}>
+            {translate("download")}
+          </Button>
         </Tooltip>
-        <Tooltip title="Filter requirements">
-          <Button startIcon={<FilterListIcon />}>Filters</Button>
+        <Tooltip title={translate("filterRequirements")}>
+          <Button startIcon={<FilterListIcon />}>
+            {translate("filters")}
+          </Button>
         </Tooltip>
-        <Tooltip title="Table settings">
+        <Tooltip title={translate("tableSettings")}>
           <IconButton className={styles.toolbarIconButton}>
             <SettingsOutlinedIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="More actions">
+        <Tooltip title={translate("moreActions")}>
           <IconButton className={styles.toolbarIconButton}>
             <MoreVertIcon />
           </IconButton>
