@@ -2,9 +2,7 @@
 
 import { Controller, useFormContext, type Path } from "react-hook-form";
 import {
-  Box,
   Checkbox,
-  Chip,
   FormControl,
   FormHelperText,
   IconButton,
@@ -17,6 +15,7 @@ import {
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
+import { ChipList } from "@/shared/chip-list/chip-list";
 import type { RequirementFormValues } from "@/schemas/requirement.schema";
 import { useLocalization } from "@/localize";
 import styles from "./form-select-field.module.css";
@@ -49,8 +48,7 @@ export const FormSelectField = ({
   onOpen,
   isLoading = false,
 }: FormSelectFieldProps) => {
-  const { translate, locale } = useLocalization();
-  const isSpanish = locale === "es-ES";
+  const { translate } = useLocalization();
   const {
     control,
     formState: { errors },
@@ -66,27 +64,26 @@ export const FormSelectField = ({
   const getOptionValue = (option: FormSelectOption): string | number =>
     typeof option === "object" ? option.value : option;
 
-  const isHalfWidth =
-    name === "collaboratorDomains" ||
-    name === "followerDomains" ||
-    name === "studyModalities";
-  const maxVisibleChips = isHalfWidth ? 2 : 4;
-
   return (
     <Controller
       key={name}
       name={name as Path<RequirementFormValues>}
       control={control}
       render={({ field }) => {
-        const val = field.value;
+        const currentFieldValue = field.value;
         const hasSingleValue =
-          !multiple && val !== undefined && val !== null && val !== "";
-        const showClearButton = hasSingleValue;
-        const multipleArr = multiple
-          ? Array.isArray(val)
-            ? val
+          !multiple &&
+          currentFieldValue !== undefined &&
+          currentFieldValue !== null &&
+          currentFieldValue !== "";
+        const selectedValuesList = multiple
+          ? Array.isArray(currentFieldValue)
+            ? currentFieldValue
             : []
           : [];
+        const hasMultipleValue =
+          multiple && selectedValuesList.length > 0;
+        const showClearButton = hasSingleValue || hasMultipleValue;
 
         const fieldWidthClass =
           name === "collaboratorDomains"
@@ -105,7 +102,7 @@ export const FormSelectField = ({
             <Select
               {...field}
               size="small"
-              value={multiple ? multipleArr : (val ?? "")}
+              value={multiple ? selectedValuesList : (currentFieldValue ?? "")}
               labelId={`${name}-label`}
               id={`${name}-select`}
               multiple={multiple}
@@ -128,17 +125,17 @@ export const FormSelectField = ({
                     size="small"
                     tabIndex={-1}
                     className={styles.clearButton}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
+                    onClick={(clickEvent) => {
+                      clickEvent.preventDefault();
+                      clickEvent.stopPropagation();
                       if (typeof window !== "undefined") {
                         window.getSelection()?.removeAllRanges();
                       }
-                      field.onChange("");
+                      field.onChange(multiple ? [] : "");
                     }}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
+                    onMouseDown={(mouseDownEvent) => {
+                      mouseDownEvent.preventDefault();
+                      mouseDownEvent.stopPropagation();
                     }}
                     aria-label="Clear selection"
                   >
@@ -146,65 +143,52 @@ export const FormSelectField = ({
                   </IconButton>
                 ) : null
               }
-              renderValue={(selected) => {
+              renderValue={(selectedValue) => {
                 if (multiple) {
-                  const arr = selected as (string | number)[];
-                  if (!arr || arr.length === 0) return "";
-                  const visibleItems = arr.slice(0, maxVisibleChips);
-                  const hiddenCount = arr.length - visibleItems.length;
+                  const selectedItemsArray = selectedValue as (
+                    | string
+                    | number
+                  )[];
+                  if (!selectedItemsArray || selectedItemsArray.length === 0) {
+                    return "";
+                  }
+                  const chipsToDisplay = selectedItemsArray.map(
+                    (individualItemValue) => {
+                      const matchedOption = options.find(
+                        (candidateOption) =>
+                          String(getOptionValue(candidateOption)) ===
+                          String(individualItemValue),
+                      );
+                      return matchedOption
+                        ? getOptionLabel(matchedOption)
+                        : String(individualItemValue);
+                    },
+                  );
 
                   return (
-                    <Box className={styles.chipsContainer}>
-                      {visibleItems.map((itemVal) => {
-                        const matched = options.find(
-                          (opt) => getOptionValue(opt) === itemVal,
-                        );
-                        const itemLabel = matched
-                          ? getOptionLabel(matched)
-                          : String(itemVal);
-                        return (
-                          <Chip
-                            key={String(itemVal)}
-                            label={itemLabel}
-                            size="small"
-                            className={styles.chip}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                            onDelete={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              if (typeof window !== "undefined") {
-                                window.getSelection()?.removeAllRanges();
-                              }
-                              const next = arr.filter((v) => v !== itemVal);
-                              field.onChange(next);
-                            }}
-                            onMouseDown={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                            }}
-                          />
-                        );
-                      })}
-                      {hiddenCount > 0 && (
-                        <span className={styles.moreCounter}>
-                          {isSpanish
-                            ? `(+${hiddenCount} más)`
-                            : `(+${hiddenCount} More)`}
-                        </span>
-                      )}
-                    </Box>
+                    <ChipList
+                      items={chipsToDisplay}
+                      className={styles.formChipList}
+                    />
                   );
                 }
 
                 const matchedOption = options.find(
-                  (opt) => getOptionValue(opt) === selected,
+                  (candidateOption) =>
+                    String(getOptionValue(candidateOption)) ===
+                    String(selectedValue),
                 );
-                return matchedOption
-                  ? getOptionLabel(matchedOption)
-                  : String(selected ?? "");
+                if (matchedOption) {
+                  return getOptionLabel(matchedOption);
+                }
+                if (
+                  selectedValue === "" ||
+                  selectedValue === null ||
+                  selectedValue === undefined
+                ) {
+                  return "";
+                }
+                return String(selectedValue);
               }}
             >
               {isLoading ? (
@@ -229,26 +213,32 @@ export const FormSelectField = ({
                   />
                 </Stack>
               ) : options.length > 0 ? (
-                options.map((option) => {
-                  const optVal = getOptionValue(option);
-                  const optLabel = getOptionLabel(option);
-                  const isSelected = multiple
-                    ? multipleArr.includes(optVal as never)
-                    : field.value === optVal;
+                options.map((candidateOption) => {
+                  const candidateOptionValue =
+                    getOptionValue(candidateOption);
+                  const candidateOptionLabel =
+                    getOptionLabel(candidateOption);
+                  const isOptionSelected = multiple
+                    ? selectedValuesList.some(
+                        (selectedItem) =>
+                          String(selectedItem) ===
+                          String(candidateOptionValue),
+                      )
+                    : String(field.value) === String(candidateOptionValue);
                   return (
                     <MenuItem
-                      key={String(optVal)}
-                      value={optVal}
-                      selected={isSelected}
+                      key={String(candidateOptionValue)}
+                      value={candidateOptionValue}
+                      selected={isOptionSelected}
                     >
                       {multiple && (
                         <Checkbox
                           size="small"
-                          checked={isSelected}
+                          checked={isOptionSelected}
                           sx={{ mr: 1, p: 0 }}
                         />
                       )}
-                      {optLabel}
+                      {candidateOptionLabel}
                     </MenuItem>
                   );
                 })

@@ -49,7 +49,7 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
   const logout = async () => {
     setAnchorElement(null);
     await authService.signOut();
-    showSnackbar("Signed out successfully.", "success");
+    showSnackbar(translate("signedOutSuccessfully"), "success");
     router.replace("/login");
   };
 
@@ -96,7 +96,16 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
               priority
             />
           </IconButton>
-          <Typography className={styles.profileName}>{displayName}</Typography>
+          <Tooltip
+            title={displayName}
+            placement="bottom"
+            arrow={false}
+            slotProps={{
+              tooltip: { className: styles.emailTooltip },
+            }}
+          >
+            <Typography className={styles.profileName}>{displayName}</Typography>
+          </Tooltip>
           <IconButton
             className={styles.arrowButton}
             aria-label={isMenuOpen ? "Close profile options" : "Open profile options"}
@@ -112,7 +121,7 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
         </Box>
       </Toolbar>
       <Menu
-        anchorEl={rightContentRef.current}
+        anchorEl={anchorElement}
         open={isMenuOpen}
         onClose={() => setAnchorElement(null)}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -131,9 +140,18 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
         }}
       >
         <Box className={styles.profileDetails}>
-          <Typography className={styles.profileDetailsName}>
-            {displayName}
-          </Typography>
+          <Tooltip
+            title={displayName}
+            placement="bottom-start"
+            arrow={false}
+            slotProps={{
+              tooltip: { className: styles.emailTooltip },
+            }}
+          >
+            <Typography className={styles.profileDetailsName}>
+              {displayName}
+            </Typography>
+          </Tooltip>
           <Tooltip
             title={user?.email ?? ""}
             placement="bottom-start"

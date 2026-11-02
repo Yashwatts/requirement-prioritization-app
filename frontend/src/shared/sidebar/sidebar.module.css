@@ -34,9 +34,9 @@
   background: #ffffff;
 }
 
-.railItem.Mui-selected,
-.railItem.Mui-selected:hover {
-  background: #e8f0fe !important;
+.railItem:global(.Mui-selected),
+.railItem:global(.Mui-selected):hover {
+  background-color: #e8f0fe !important;
   color: #01579b !important;
 }
 
@@ -69,9 +69,9 @@
   align-items: center !important;
 }
 
-.expandedItem.Mui-selected,
-.expandedItem.Mui-selected:hover {
-  background: #e8f0fe !important;
+.expandedItem:global(.Mui-selected),
+.expandedItem:global(.Mui-selected):hover {
+  background-color: #e8f0fe !important;
 }
 
 .expandedIcon {

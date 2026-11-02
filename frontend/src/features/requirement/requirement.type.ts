@@ -11,7 +11,7 @@ export interface FetchImpactUsersParams {
 }
 
 export interface CalculateImpactParams {
-  benefited_institutions: string[];
+  benefited_institutions: (string | number)[];
   obligation: boolean;
   exist_solution_alternative: boolean;
   domain_in_charge_id: number;
@@ -43,6 +43,13 @@ export interface PaginatedRequirements {
   totalPages: number;
 }
 
+export interface ImpactUserItem {
+  id: number;
+  name: string;
+  from: number;
+  to: number;
+}
+
 export interface UserImpactRange {
   id?: number;
   from: number;
@@ -58,7 +65,7 @@ export interface UserImpactRanges {
 
 export interface DomainImpactUsers {
   domain_uuid: string;
-  impact_users: UserImpactRanges;
+  impact_users: ImpactUserItem[] | UserImpactRanges;
 }
 
 export type AsyncStatus = "idle" | "loading" | "succeeded" | "failed";

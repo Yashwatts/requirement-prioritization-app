@@ -1,9 +1,20 @@
 "use client";
 
-import { useMemo, type ReactNode } from "react";
-import { Box, Chip } from "@mui/material";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { Box, Chip, Typography } from "@mui/material";
 import { Tooltip } from "@/shared/tooltip/tooltip";
 import styles from "./chip-list.module.css";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export interface ChipListProps {
   items?: (string | number)[] | null;
@@ -13,7 +24,7 @@ export interface ChipListProps {
 
 export const ChipList = ({
   items,
-  emptyFallback = <span>-</span>,
+  emptyFallback = <Typography component="span">-</Typography>,
   className,
 }: ChipListProps) => {
   const validItems = useMemo(
@@ -24,36 +35,160 @@ export const ChipList = ({
     [items],
   );
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const chipRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const counterRef = useRef<HTMLDivElement | null>(null);
+
+  const [visibleCount, setVisibleCount] = useState<number>(() =>
+    Math.min(1, validItems.length),
+  );
+
+  const calculateVisible = useCallback(() => {
+    if (!containerRef.current || validItems.length <= 1) {
+      setVisibleCount(validItems.length);
+      return;
+    }
+
+    const containerWidth = containerRef.current.clientWidth;
+    if (containerWidth <= 0) return;
+
+    const gapBetweenChips = 6;
+    const totalItemsCount = validItems.length;
+
+    const chipWidths = validItems.map(
+      (_, index) => chipRefs.current[index]?.offsetWidth ?? 0,
+    );
+    const counterChipWidth = counterRef.current?.offsetWidth ?? 32;
+
+    if (chipWidths.some((chipWidth) => chipWidth === 0)) {
+      return;
+    }
+
+    // Check if all chips fit together without a counter chip
+    const totalWidthForAllChips =
+      chipWidths.reduce(
+        (accumulatedWidth, currentChipWidth) =>
+          accumulatedWidth + currentChipWidth,
+        0,
+      ) +
+      (totalItemsCount - 1) * gapBetweenChips;
+
+    if (totalWidthForAllChips <= containerWidth) {
+      setVisibleCount(totalItemsCount);
+      return;
+    }
+
+    // Find the largest number of full chips that fit alongside the +n counter chip
+    let maxFittingChipCount = 1;
+    let accumulatedChipsWidth = 0;
+
+    for (
+      let candidateCount = 1;
+      candidateCount < totalItemsCount;
+      candidateCount++
+    ) {
+      accumulatedChipsWidth += chipWidths[candidateCount - 1];
+      const totalWidthWithCounter =
+        accumulatedChipsWidth +
+        candidateCount * gapBetweenChips +
+        counterChipWidth;
+
+      if (totalWidthWithCounter <= containerWidth) {
+        maxFittingChipCount = candidateCount;
+      } else {
+        break;
+      }
+    }
+
+    setVisibleCount(maxFittingChipCount);
+  }, [validItems]);
+
+  useIsomorphicLayoutEffect(() => {
+    if (validItems.length <= 1) {
+      setVisibleCount(validItems.length);
+      return;
+    }
+
+    calculateVisible();
+    const animationFrameId = requestAnimationFrame(calculateVisible);
+
+    if (!containerRef.current) {
+      return () => cancelAnimationFrame(animationFrameId);
+    }
+
+    const observer = new ResizeObserver(() => {
+      calculateVisible();
+    });
+
+    observer.observe(containerRef.current);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
+    };
+  }, [validItems, calculateVisible]);
+
   if (validItems.length === 0) {
     return <>{emptyFallback}</>;
   }
 
-  const firstItem = validItems[0];
-  const extraCount = validItems.length - 1;
+  const visibleItems = validItems.slice(0, visibleCount);
+  const hiddenItems = validItems.slice(visibleCount);
+  const hasHidden = hiddenItems.length > 0;
+
+  const content = (
+    <Box
+      ref={containerRef}
+      className={`${styles.multiChipCell} ${className ?? ""}`.trim()}
+    >
+      {visibleItems.map((item, index) => (
+        <Chip
+          key={index}
+          className={
+            !hasHidden && visibleItems.length === 1
+              ? styles.primaryChipSingle
+              : styles.primaryChip
+          }
+          label={item}
+        />
+      ))}
+      {hasHidden && (
+        <Chip
+          className={styles.counterChip}
+          label={`+${hiddenItems.length}`}
+        />
+      )}
+    </Box>
+  );
 
   return (
-    <Tooltip
-      variant="light"
-      placement="bottom-start"
-      title={
-        <Box className={styles.chipsTooltipContainer}>
-          {validItems.map((item, idx) => (
-            <Chip key={idx} className={styles.tooltipChip} label={item} />
+    <>
+      {hasHidden ? (
+        <Tooltip placement="bottom-start" title={hiddenItems.join(", ")}>
+          {content}
+        </Tooltip>
+      ) : (
+        content
+      )}
+
+      {validItems.length > 1 && (
+        <Box className={styles.measureContainer} aria-hidden="true">
+          {validItems.map((item, index) => (
+            <Chip
+              key={index}
+              ref={(element) => {
+                chipRefs.current[index] = element as HTMLDivElement | null;
+              }}
+              className={styles.measureChip}
+              label={item}
+            />
           ))}
+          <Chip
+            ref={counterRef}
+            className={styles.counterChip}
+            label={`+${validItems.length}`}
+          />
         </Box>
-      }
-    >
-      <Box className={`${styles.multiChipCell} ${className ?? ""}`.trim()}>
-        <Chip
-          className={
-            extraCount > 0 ? styles.primaryChip : styles.primaryChipSingle
-          }
-          label={firstItem}
-        />
-        {extraCount > 0 && (
-          <Chip className={styles.counterChip} label={`+${extraCount}`} />
-        )}
-      </Box>
-    </Tooltip>
+      )}
+    </>
   );
 };

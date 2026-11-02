@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button, CircularProgress, Typography } from "@mui/material";
 import googleIcon from "@/assets/svg/google-icon.svg";
 import { useSnackbar } from "@/shared/snackbar/use-snackbar";
+import { useLocalization } from "@/localize";
 import { authService } from "@/features/auth/auth.service";
 import {
   getFirebaseAuthErrorMessage,
@@ -22,6 +23,7 @@ export const GoogleLoginButton = ({
 }: GoogleLoginButtonProps) => {
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
+  const { translate } = useLocalization();
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
@@ -32,7 +34,7 @@ export const GoogleLoginButton = ({
     try {
       setLoading(true);
       await authService.signInWithGoogle();
-      showSnackbar("Signed in successfully.", "success");
+      showSnackbar(translate("signedInSuccessfully"), "success");
       router.replace("/dashboard");
     } catch (error) {
       const message = getFirebaseAuthErrorMessage(error);

@@ -84,13 +84,13 @@
 }
 
 .field :global(.MuiSelect-select) {
-  padding: 6px 36px 6px 14px !important;
-  min-height: 26px !important;
-  max-height: 68px !important;
+  padding: 4px 68px 4px 14px !important;
+  min-height: 28px !important;
+  max-height: 40px !important;
   box-sizing: border-box !important;
   display: flex !important;
   align-items: center !important;
-  flex-wrap: wrap !important;
+  flex-wrap: nowrap !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
   color: #424242 !important;
@@ -110,61 +110,22 @@
   color: #757575 !important;
 }
 
-.chipsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  align-items: center;
+.formChipList {
   width: 100%;
-  max-height: 56px;
+  max-width: 100%;
   overflow: hidden;
-  padding: 2px 0;
+  cursor: pointer !important;
 }
 
-.chip {
-  height: 24px !important;
-  border-radius: 4px !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  color: #212121 !important;
-  background-color: #f0f2f5 !important;
-  border: 1px solid #e0e0e0 !important;
-  max-width: calc(100% - 8px) !important;
-}
-
-.chip :global(.MuiChip-label) {
-  padding-left: 8px !important;
-  padding-right: 4px !important;
-  color: #212121 !important;
-}
-
-.chip :global(.MuiChip-deleteIcon) {
-  font-size: 14px !important;
-  color: #757575 !important;
-  margin-right: 4px !important;
-  transition: color 0.15s ease-in-out;
-}
-
-.chip :global(.MuiChip-deleteIcon:hover) {
-  color: #e53935 !important;
-}
-
-.moreCounter {
-  font-family: "Open Sans", sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: #616161;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  margin-left: 4px;
-  line-height: 24px;
+.formChipList :global(.MuiChip-root) {
+  cursor: pointer !important;
 }
 
 .clearButton {
   position: absolute !important;
-  right: 34px !important;
+  right: 36px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
   padding: 2px !important;
   color: #757575 !important;
   z-index: 2 !important;
@@ -246,5 +207,3 @@
 .menuPaper::-webkit-scrollbar-thumb:hover {
   background-color: #bdbdbd;
 }
-
-

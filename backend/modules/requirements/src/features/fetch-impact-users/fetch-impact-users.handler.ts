@@ -30,43 +30,49 @@ export class FetchImpactUsersHandler implements IQueryHandler<FetchImpactUsersQu
       filter.domain_uuid = resolvedUuid;
     }
 
-    const rows = await this.impactUsersRepository.find(filter, {
+    const impactUserRecords = await this.impactUsersRepository.find(filter, {
       orderBy: { impact_number_users_level: 'ASC' },
     });
 
-    const grouped = new Map<
+    const groupedDomainImpactMap = new Map<
       string,
       {
         domain_uuid: string;
-        impact_users: {
-          LOW?: { id: number; from: number; to: number };
-          MEDIUM?: { id: number; from: number; to: number };
-          HIGH?: { id: number; from: number; to: number };
-          VERY_HIGH?: { id: number; from: number; to: number };
-        };
+        impact_users: Array<{
+          id: number;
+          name: string;
+          from: number;
+          to: number;
+        }>;
       }
     >();
 
-    for (const row of rows) {
-      if (!grouped.has(row.domain_uuid)) {
-        grouped.set(row.domain_uuid, {
-          domain_uuid: row.domain_uuid,
-          impact_users: {},
+    for (const impactUserRecord of impactUserRecords) {
+      if (!groupedDomainImpactMap.has(impactUserRecord.domain_uuid)) {
+        groupedDomainImpactMap.set(impactUserRecord.domain_uuid, {
+          domain_uuid: impactUserRecord.domain_uuid,
+          impact_users: [],
         });
       }
 
-      const domainImpactGroup = grouped.get(row.domain_uuid)!;
-      const levelKey = UserImpactLevel[row.impact_number_users_level] as
-        keyof typeof domainImpactGroup.impact_users | undefined;
+      const domainImpactGroup = groupedDomainImpactMap.get(
+        impactUserRecord.domain_uuid,
+      )!;
+      const levelKey =
+        typeof impactUserRecord.impact_number_users_level === 'number'
+          ? UserImpactLevel[impactUserRecord.impact_number_users_level]
+          : impactUserRecord.impact_number_users_level;
+
       if (levelKey) {
-        domainImpactGroup.impact_users[levelKey] = {
-          id: row.id,
-          from: row.quantity.from,
-          to: row.quantity.to,
-        };
+        domainImpactGroup.impact_users.push({
+          id: impactUserRecord.id,
+          name: String(levelKey),
+          from: impactUserRecord.quantity?.from ?? 0,
+          to: impactUserRecord.quantity?.to ?? 0,
+        });
       }
     }
 
-    return Array.from(grouped.values());
+    return Array.from(groupedDomainImpactMap.values());
   }
 }

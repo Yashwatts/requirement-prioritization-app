@@ -9,6 +9,7 @@
   min-height: calc(100vh - 64px);
   margin-left: 72px;
   padding: 32px;
+  box-sizing: border-box;
   transition: margin-left 160ms ease;
 }
 

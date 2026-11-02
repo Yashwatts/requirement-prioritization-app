@@ -162,10 +162,46 @@
   max-height: 20px !important;
   display: flex !important;
   align-items: center !important;
+  gap: 4px !important;
+}
+
+.datePickerTextField :global(.MuiInputAdornment-root .MuiIconButton-root) {
+  margin: 0 !important;
+}
+
+.datePickerTextField :global(.clearButton) {
+  opacity: 1 !important;
+  visibility: visible !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  padding: 2px !important;
+  margin: 0 !important;
+  color: #757575 !important;
+  border-radius: 50% !important;
+  background-color: transparent !important;
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out !important;
+}
+
+.datePickerTextField :global(.clearButton:hover) {
+  color: #424242 !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.datePickerTextField :global(.clearButton svg),
+.datePickerTextField :global(svg[data-testid="CloseIcon"]),
+.datePickerTextField :global(svg[data-testid="ClearIcon"]) {
+  width: 16px !important;
+  height: 16px !important;
+  font-size: 16px !important;
+  color: #757575 !important;
+  display: block !important;
 }
 
 .calendarButton,
-.datePickerTextField :global(.MuiInputAdornment-root .MuiIconButton-root) {
+.datePickerTextField :global(button[data-mui-picker-open-button="true"]) {
   padding: 0 !important;
   margin: 0 !important;
   width: 20px !important;
@@ -176,12 +212,12 @@
 }
 
 .calendarButton:hover,
-.datePickerTextField :global(.MuiInputAdornment-root .MuiIconButton-root:hover) {
+.datePickerTextField :global(button[data-mui-picker-open-button="true"]:hover) {
   background-color: transparent !important;
 }
 
 .calendarButton svg,
-.datePickerTextField :global(.MuiInputAdornment-root .MuiIconButton-root svg) {
+.datePickerTextField :global(button[data-mui-picker-open-button="true"] svg) {
   width: 20px !important;
   height: 20px !important;
   font-size: 20px !important;
@@ -239,6 +275,7 @@
   font-weight: 600 !important;
   line-height: 24px !important;
   color: #424242 !important;
+  text-transform: capitalize !important;
 }
 
 .datePickerPopper :global(.MuiPickersCalendarHeader-switchViewButton) {
@@ -272,6 +309,7 @@
   font-size: 12px !important;
   font-weight: 400 !important;
   color: #757575 !important;
+  text-transform: uppercase !important;
 }
 
 .datePickerPopper :global(.MuiDayCalendar-monthContainer) {

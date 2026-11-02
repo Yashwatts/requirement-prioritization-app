@@ -36,7 +36,7 @@ const SingleTextCell = ({ text }: SingleTextCellProps) => {
   if (!val) return <span>-</span>;
 
   return (
-    <Tooltip variant="light" placement="bottom-start" title={val}>
+    <Tooltip placement="bottom-start" title={val}>
       <Box component="span" className={styles.singleFieldText}>
         {val}
       </Box>
@@ -52,8 +52,8 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "name",
         header: translate("name"),
-        size: 200,
-        maxSize: 200,
+        size: 250,
+        maxSize: 250,
         muiTableHeadCellProps: {
           className: styles.nameHeaderCell,
         },
@@ -65,19 +65,19 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "code",
         header: translate("code"),
-        size: 110,
-        maxSize: 110,
+        size: 140,
+        maxSize: 140,
       },
       {
         accessorKey: "requestingInstitution",
         header: translate("requestingInstitution"),
-        size: 200,
-        maxSize: 200,
+        size: 250,
+        maxSize: 250,
         muiTableHeadCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         muiTableBodyCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         Cell: ({ row }) => (
           <SingleTextCell text={row.original.requestingInstitution} />
@@ -86,14 +86,14 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "requestedBy",
         header: translate("requestedBy"),
-        size: 200,
-        maxSize: 200,
+        size: 250,
+        maxSize: 250,
         enableSorting: false,
         muiTableHeadCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         muiTableBodyCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         Cell: ({ row }) => {
           const list = row.original.requestedByList;
@@ -109,33 +109,33 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "domain",
         header: translate("domain"),
-        size: 190,
-        maxSize: 200,
+        size: 250,
+        maxSize: 250,
         muiTableHeadCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         muiTableBodyCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         Cell: ({ row }) => <SingleTextCell text={row.original.domain} />,
       },
       {
         accessorKey: "type",
         header: translate("type"),
-        size: 120,
-        maxSize: 120,
+        size: 150,
+        maxSize: 150,
       },
       {
         accessorKey: "totalBenefitedInstitutions",
         header: translate("benefitedInstitutions"),
-        size: 200,
-        maxSize: 200,
+        size: 250,
+        maxSize: 250,
         enableSorting: false,
         muiTableHeadCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         muiTableBodyCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         Cell: ({ row }) => {
           const list = row.original.benefitedInstitutions ?? [];
@@ -151,14 +151,14 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "studyModalities",
         header: translate("studyModality"),
-        size: 180,
-        maxSize: 180,
+        size: 220,
+        maxSize: 220,
         enableSorting: false,
         muiTableHeadCellProps: {
-          className: styles.cellMaxWidth180,
+          className: styles.cellMaxWidth220,
         },
         muiTableBodyCellProps: {
-          className: styles.cellMaxWidth180,
+          className: styles.cellMaxWidth220,
         },
         Cell: ({ row }) => {
           const modalities = row.original.studyModalities ?? [];
@@ -168,16 +168,32 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "isObligatory",
         header: translate("mandatory"),
-        size: 120,
-        maxSize: 120,
+        size: 160,
+        maxSize: 160,
+        muiTableHeadCellProps: {
+          align: "center",
+          className: styles.centerAlignHeadCell,
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+          className: styles.centerAlignCell,
+        },
         Cell: ({ row }) =>
           row.original.isObligatory ? translate("yes") : translate("no"),
       },
       {
         accessorKey: "hasAlternativeSolution",
         header: translate("alternativeSolutionExists"),
-        size: 170,
-        maxSize: 170,
+        size: 260,
+        maxSize: 260,
+        muiTableHeadCellProps: {
+          align: "center",
+          className: styles.centerAlignHeadCell,
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+          className: styles.centerAlignCell,
+        },
         Cell: ({ row }) =>
           row.original.hasAlternativeSolution
             ? translate("yes")
@@ -186,14 +202,30 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "impactUsers",
         header: translate("userImpact"),
-        size: 130,
-        maxSize: 130,
+        size: 190,
+        maxSize: 190,
+        muiTableHeadCellProps: {
+          align: "center",
+          className: styles.centerAlignHeadCell,
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+          className: styles.centerAlignCell,
+        },
       },
       {
         accessorKey: "impact",
         header: translate("impact"),
-        size: 110,
-        maxSize: 110,
+        size: 140,
+        maxSize: 140,
+        muiTableHeadCellProps: {
+          align: "center",
+          className: styles.centerAlignHeadCell,
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+          className: styles.centerAlignCell,
+        },
         Cell: ({ cell }) => (
           <Chip
             className={styles.chip}
@@ -204,32 +236,56 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "complexityEffort",
         header: translate("complexityAndEffort"),
-        size: 160,
-        maxSize: 160,
+        size: 240,
+        maxSize: 240,
+        muiTableHeadCellProps: {
+          align: "center",
+          className: styles.centerAlignHeadCell,
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+          className: styles.centerAlignCell,
+        },
       },
       {
         accessorKey: "clientPriority",
         header: translate("clientPriority"),
-        size: 130,
-        maxSize: 130,
+        size: 170,
+        maxSize: 170,
+        muiTableHeadCellProps: {
+          align: "center",
+          className: styles.centerAlignHeadCell,
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+          className: styles.centerAlignCell,
+        },
       },
       {
         accessorKey: "status",
         header: translate("status"),
-        size: 120,
-        maxSize: 120,
+        size: 160,
+        maxSize: 160,
+        muiTableHeadCellProps: {
+          align: "center",
+          className: styles.centerAlignHeadCell,
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+          className: styles.centerAlignCell,
+        },
       },
       {
         accessorKey: "collaboratorDomains",
         header: translate("collaboratorDomains"),
-        size: 200,
-        maxSize: 200,
+        size: 250,
+        maxSize: 250,
         enableSorting: false,
         muiTableHeadCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         muiTableBodyCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         Cell: ({ row }) => {
           const domains = row.original.collaboratorDomains ?? [];
@@ -239,14 +295,14 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "followerDomains",
         header: translate("followerDomains"),
-        size: 200,
-        maxSize: 200,
+        size: 250,
+        maxSize: 250,
         enableSorting: false,
         muiTableHeadCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         muiTableBodyCellProps: {
-          className: styles.cellMaxWidth200,
+          className: styles.cellMaxWidth250,
         },
         Cell: ({ row }) => {
           const domains = row.original.followerDomains ?? [];
@@ -256,28 +312,30 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
       {
         accessorKey: "startDate",
         header: translate("startDate"),
-        size: 130,
-        maxSize: 130,
+        size: 160,
+        maxSize: 160,
         Cell: ({ row }) => row.original.startDate ?? "-",
       },
       {
         accessorKey: "finishDate",
         header: translate("finishDate"),
-        size: 130,
-        maxSize: 130,
+        size: 160,
+        maxSize: 160,
         Cell: ({ row }) => row.original.finishDate ?? "-",
       },
       {
         accessorKey: "description",
         header: translate("description"),
-        size: 110,
-        minSize: 110,
-        maxSize: 110,
+        size: 140,
+        minSize: 140,
+        maxSize: 140,
         enableSorting: false,
         muiTableHeadCellProps: {
+          align: "center",
           className: styles.descriptionHeaderCell,
         },
         muiTableBodyCellProps: {
+          align: "center",
           className: styles.descriptionBodyCell,
         },
         Cell: ({ row }) => {
@@ -289,19 +347,26 @@ export const useColumns = (): MRT_ColumnDef<RequirementTableRow>[] => {
           return (
             <Box className={styles.descriptionWrapper}>
               <Tooltip
-                variant="rich"
-                placement="bottom"
+                variant="info"
+                placement="bottom-end"
+                enterTouchDelay={0}
+                leaveDelay={100}
                 title={
-                  hasContent ? (
-                    <Box
-                      className={styles.tooltipContent}
-                      dangerouslySetInnerHTML={{ __html: raw }}
-                    />
-                  ) : (
-                    <Typography className={styles.emptyTooltip}>
-                      {translate("noDescription")}
+                  <Box className={styles.tooltipBox}>
+                    <Typography className={styles.tooltipTitle}>
+                      {translate("description")}
                     </Typography>
-                  )
+                    {hasContent ? (
+                      <Box
+                        className={styles.tooltipMessage}
+                        dangerouslySetInnerHTML={{ __html: raw }}
+                      />
+                    ) : (
+                      <Typography className={styles.tooltipMessage}>
+                        {translate("noDescription")}
+                      </Typography>
+                    )}
+                  </Box>
                 }
               >
                 <Box className={styles.descriptionTouchArea}>

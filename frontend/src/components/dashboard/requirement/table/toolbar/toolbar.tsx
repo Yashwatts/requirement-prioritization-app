@@ -54,12 +54,18 @@ export const Toolbar = ({ search, onSearchChange }: ToolbarProps) => {
         slotProps={{
           input: {
             startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
+              <InputAdornment
+                position="start"
+                className={styles.searchStartAdornment}
+              >
+                <SearchIcon className={styles.searchIcon} />
               </InputAdornment>
             ),
             endAdornment: searchInput ? (
-              <InputAdornment position="end">
+              <InputAdornment
+                position="end"
+                className={styles.searchEndAdornment}
+              >
                 <IconButton
                   aria-label={translate("clearSearch")}
                   className={styles.clearSearchButton}

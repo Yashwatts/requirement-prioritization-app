@@ -66,5 +66,19 @@
   "discardDialogText": "You have unsaved changes in this form. If you leave now, all modifications will be lost. Are you sure you want to discard your changes?",
   "cancel": "Cancel",
   "discard": "Discard",
-  "logout": "Log out"
+  "logout": "Log out",
+  "close": "Close",
+  "signedInSuccessfully": "Signed in successfully.",
+  "signedOutSuccessfully": "Signed out successfully.",
+  "requirementRegistrationCancelled": "Requirement registration cancelled",
+  "requirementRegisteredSuccessfully": "Requirement registered successfully",
+  "fillRequiredFieldsWarning": "Please fill all required fields correctly.",
+  "unableToCreateRequirement": "Unable to create requirement. Please check your inputs.",
+  "authPopupClosed": "Sign in was cancelled (popup window was closed).",
+  "authPopupBlocked": "Sign-in popup was blocked by your browser. Please allow popups for this site.",
+  "authCancelledPopupRequest": "Sign-in request was cancelled. Only one popup can be active at a time.",
+  "authNetworkError": "Network connection error. Please check your internet connection.",
+  "authUserDisabled": "This user account has been disabled. Please contact support.",
+  "authUnauthorizedDomain": "This Google account is not authorized to access the application. Please use an approved account.",
+  "authUnexpectedError": "An unexpected error occurred during authentication. Please try again."
 }

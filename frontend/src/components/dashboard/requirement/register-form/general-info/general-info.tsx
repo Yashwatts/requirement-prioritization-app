@@ -69,7 +69,7 @@ export const GeneralInfo = ({
                   tabIndex={-1}
                   onClick={() =>
                     setValue("name", "", {
-                      shouldValidate: true,
+                      shouldValidate: false,
                       shouldDirty: true,
                     })
                   }

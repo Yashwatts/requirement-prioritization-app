@@ -133,7 +133,14 @@ export const fetchImpactUsers = createAsyncThunk<
     const response = await api.get<DomainImpactUsers[]>("/impact-users", {
       params: queryParams,
     });
-    return response.data ?? [];
+    const rawData = response.data;
+    if (Array.isArray(rawData)) {
+      return rawData;
+    }
+    if (rawData && typeof rawData === "object") {
+      return [rawData as unknown as DomainImpactUsers];
+    }
+    return [];
   } catch (error) {
     return rejectWithValue(extractErrorMessage(error));
   }

@@ -49,12 +49,27 @@ export const Pagination = ({
           value={limit}
           size="small"
           IconComponent={ArrowDropDownIcon}
+          MenuProps={{
+            slotProps: {
+              paper: {
+                className: styles.menuPaper,
+              },
+            },
+          }}
           onChange={(event) => onLimitChange(Number(event.target.value))}
         >
-          <MenuItem value={10}>10</MenuItem>
-          <MenuItem value={20}>20</MenuItem>
-          <MenuItem value={50}>50</MenuItem>
-          <MenuItem value={100}>100</MenuItem>
+          <MenuItem className={styles.menuItem} value={10}>
+            10
+          </MenuItem>
+          <MenuItem className={styles.menuItem} value={20}>
+            20
+          </MenuItem>
+          <MenuItem className={styles.menuItem} value={50}>
+            50
+          </MenuItem>
+          <MenuItem className={styles.menuItem} value={100}>
+            100
+          </MenuItem>
         </Select>
       </Box>
 
@@ -64,7 +79,7 @@ export const Pagination = ({
 
       <Box className={styles.arrowsGroup}>
         <Tooltip title={translate("previousPage")}>
-          <Box component="span">
+          <Box className={styles.tooltipWrapper}>
             <IconButton
               className={styles.pageButton}
               disabled={page <= 1 || isLoading}
@@ -75,7 +90,7 @@ export const Pagination = ({
           </Box>
         </Tooltip>
         <Tooltip title={translate("nextPage")}>
-          <Box component="span">
+          <Box className={styles.tooltipWrapper}>
             <IconButton
               className={styles.pageButton}
               disabled={page >= totalPages || total === 0 || isLoading}

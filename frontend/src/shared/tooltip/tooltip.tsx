@@ -17,42 +17,20 @@ export interface TooltipProps extends Omit<MuiTooltipProps, "children"> {
 export const Tooltip = ({
   children,
   variant = "default",
-  arrow,
+  arrow = false,
   classes,
   slotProps,
   ...rest
 }: TooltipProps) => {
-  if (variant === "default") {
-    return (
-      <MuiTooltip
-        arrow={arrow}
-        classes={classes}
-        slotProps={slotProps}
-        {...rest}
-      >
-        {children}
-      </MuiTooltip>
-    );
-  }
-
-  const tooltipClass =
-    variant === "rich"
-      ? styles.richTooltip
-      : variant === "info"
-        ? styles.infoTooltip
-        : styles.lightTooltip;
-
-  const resolvedArrow = arrow !== undefined ? arrow : variant !== "info";
+  const isInfo = variant === "info";
+  const tooltipClass = isInfo ? styles.infoTooltip : styles.defaultTooltip;
 
   return (
     <MuiTooltip
-      arrow={resolvedArrow}
+      arrow={arrow}
       classes={{
         popper: [styles.popper, classes?.popper].filter(Boolean).join(" "),
         tooltip: [tooltipClass, classes?.tooltip].filter(Boolean).join(" "),
-        arrow: resolvedArrow
-          ? [styles.lightArrow, classes?.arrow].filter(Boolean).join(" ")
-          : classes?.arrow,
         ...classes,
       }}
       slotProps={slotProps}

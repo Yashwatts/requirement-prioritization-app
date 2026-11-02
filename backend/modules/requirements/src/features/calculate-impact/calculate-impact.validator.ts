@@ -5,7 +5,7 @@ import { mapImpactLevelToNumber } from '../../domain/requirement/mappers/require
 export class CalculateImpactValidator {
   @IsArray()
   @IsOptional()
-  benefited_institutions?: string[];
+  benefited_institutions?: (number | string)[];
 
   @IsBoolean()
   obligation!: boolean;

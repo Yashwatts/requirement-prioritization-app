@@ -6,7 +6,7 @@
   min-height: calc(100vh - 192px);
   margin-top: 24px;
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 8px !important;
   background: #ffffff;
 }
 
@@ -15,7 +15,7 @@
   border: 1px solid #e0e0e0 !important;
   border-radius: 8px !important;
   background: #ffffff;
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 .mrtPaper {
@@ -23,12 +23,14 @@
   min-width: 0;
   box-shadow: none !important;
   background: transparent !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
 }
 
 .tableContainer {
   width: 100% !important;
-  height: 582px !important;
-  max-height: 582px !important;
+  height: auto !important;
+  max-height: calc(100vh - 364px) !important;
   overflow-x: auto !important;
   overflow-y: auto !important;
 }
@@ -63,25 +65,34 @@
   width: 64px !important;
   min-width: 64px !important;
   max-width: 64px !important;
+  height: 56px !important;
+  max-height: 56px !important;
+  box-sizing: border-box !important;
   padding: 0 !important;
   text-align: center !important;
   vertical-align: middle !important;
   background-color: #eeeeee !important;
   background: #eeeeee !important;
+  border-bottom: 1px solid #e0e0e0 !important;
 }
 
 .checkboxHeadCell :global(.Mui-TableHeadCell-Content) {
   justify-content: center !important;
   align-items: center !important;
+  height: 100% !important;
 }
 
 .checkboxCell {
   width: 64px !important;
   min-width: 64px !important;
   max-width: 64px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  box-sizing: border-box !important;
   padding: 0 !important;
   text-align: center !important;
   vertical-align: middle !important;
+  border-bottom: 1px solid #e0e0e0 !important;
 }
 
 .checkboxCell :global(.Mui-TableHeadCell-Content) {
@@ -109,21 +120,28 @@
   background: #eeeeee !important;
 }
 
-.table :global(thead tr) {
+.table :global(thead tr),
+.tableHeadRow {
   position: sticky !important;
   top: 0 !important;
   opacity: 1 !important;
+  height: 56px !important;
+  max-height: 56px !important;
+  box-sizing: border-box !important;
   background-color: #eeeeee !important;
   background: #eeeeee !important;
 }
 
-.table :global(.MuiTableCell-head) {
+.table :global(.MuiTableCell-head),
+.tableHeadCell {
   position: sticky !important;
   top: 0 !important;
   z-index: 10 !important;
   opacity: 1 !important;
   height: 56px !important;
-  padding: 10px 16px !important;
+  max-height: 56px !important;
+  box-sizing: border-box !important;
+  padding: 0 16px !important;
   background-color: #eeeeee !important;
   background: #eeeeee !important;
   border-bottom: 1px solid #e0e0e0 !important;
@@ -138,16 +156,82 @@
   vertical-align: middle !important;
 }
 
-.tableHeadCell :global(.Mui-TableHeadCell-Content),
-.tableHeadCell :global(.Mui-TableHeadCell-Content-Labels) {
+.table :global(.MuiTableCell-head) :global(.Mui-TableHeadCell-Content),
+.tableHeadCell :global(.Mui-TableHeadCell-Content) {
   width: 100% !important;
-  height: 36px !important;
+  height: 100% !important;
+  max-height: 55px !important;
+  display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
   white-space: nowrap !important;
 }
 
+.table :global(.MuiTableCell-head) :global(.Mui-TableHeadCell-Content-Labels),
+.tableHeadCell :global(.Mui-TableHeadCell-Content-Labels) {
+  height: 100% !important;
+  max-height: 55px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  white-space: nowrap !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.table :global(.MuiTableCell-head) :global(.Mui-TableHeadCell-Content-Wrapper),
+.tableHeadCell :global(.Mui-TableHeadCell-Content-Wrapper) {
+  display: block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 0 !important;
+  flex-shrink: 1 !important;
+}
+
+.table :global(.MuiTableCell-head[class*="centerAlignHeadCell"]),
+.table :global(.MuiTableCell-head[class*="descriptionHeaderCell"]),
+.table :global(.MuiTableCell-head[align="center"]) {
+  text-align: center !important;
+}
+
+.table :global(.MuiTableCell-head[class*="centerAlignHeadCell"]) :global(.Mui-TableHeadCell-Content),
+.table :global(.MuiTableCell-head[class*="descriptionHeaderCell"]) :global(.Mui-TableHeadCell-Content),
+.table :global(.MuiTableCell-head[align="center"]) :global(.Mui-TableHeadCell-Content) {
+  justify-content: center !important;
+}
+
+.table :global(.MuiTableCell-head[class*="centerAlignHeadCell"]) :global(.Mui-TableHeadCell-Content-Labels),
+.table :global(.MuiTableCell-head[class*="descriptionHeaderCell"]) :global(.Mui-TableHeadCell-Content-Labels),
+.table :global(.MuiTableCell-head[align="center"]) :global(.Mui-TableHeadCell-Content-Labels) {
+  justify-content: center !important;
+}
+
+.table :global(.MuiTableCell-head[class*="centerAlignHeadCell"]) :global(.Mui-TableHeadCell-Content-Wrapper),
+.table :global(.MuiTableCell-head[class*="descriptionHeaderCell"]) :global(.Mui-TableHeadCell-Content-Wrapper),
+.table :global(.MuiTableCell-head[align="center"]) :global(.Mui-TableHeadCell-Content-Wrapper) {
+  text-align: center !important;
+}
+
+.table :global(.MuiTableCell-head) :global(.MuiBadge-root),
+.tableHeadCell :global(.MuiBadge-root) {
+  flex-shrink: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
 .table :global(.MuiTableSortLabel-root) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  transform: none !important;
+  width: 18px !important;
+  min-width: 18px !important;
+  height: 18px !important;
+  padding: 0 !important;
+  margin: 0 !important;
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 12px !important;
@@ -161,6 +245,19 @@
   height: 18px !important;
   color: #424242 !important;
   opacity: 0.6 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.table :global(.MuiTableSortLabel-iconDirectionAsc),
+.table :global(.MuiTableSortLabel-icon[class*="iconDirectionAsc"]) {
+  transform: rotate(180deg) !important;
+}
+
+.table :global(.MuiTableSortLabel-iconDirectionDesc),
+.table :global(.MuiTableSortLabel-icon[class*="iconDirectionDesc"]) {
+  transform: rotate(0deg) !important;
 }
 
 .table :global(.MuiTableSortLabel-root:hover .MuiTableSortLabel-icon) {
@@ -173,9 +270,20 @@
   color: #01579b !important;
 }
 
-.table :global(.MuiTableCell-body) {
+.table :global(tbody tr),
+.table :global(.MuiTableRow-root),
+.tableBodyRow {
   height: 52px !important;
-  padding: 10px 16px !important;
+  max-height: 52px !important;
+  box-sizing: border-box !important;
+}
+
+.table :global(.MuiTableCell-body),
+.tableBodyCell {
+  height: 52px !important;
+  max-height: 52px !important;
+  box-sizing: border-box !important;
+  padding: 0 16px !important;
   border-bottom: 1px solid #e0e0e0 !important;
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
@@ -204,9 +312,10 @@
   width: 121px !important;
   max-width: 121px !important;
   height: 56px !important;
+  max-height: 56px !important;
+  box-sizing: border-box !important;
   background-color: #eeeeee !important;
   background: #eeeeee !important;
-  /* border-left: 1px solid #e0e0e0 !important; */
   border-bottom: 1px solid #e0e0e0 !important;
   padding: 0 !important;
   vertical-align: middle !important;
@@ -230,67 +339,181 @@
   width: 121px !important;
   max-width: 121px !important;
   height: 52px !important;
+  max-height: 52px !important;
+  box-sizing: border-box !important;
   padding: 0 !important;
-  background-color: #ffffff !important;
-  /* border-left: 1px solid #e0e0e0 !important; */
   border-bottom: 1px solid #e0e0e0 !important;
   vertical-align: middle !important;
 }
 
-.table :global(.MuiTableRow-root:nth-of-type(even)) :global(td:last-child),
-.table :global(.MuiTableRow-root:nth-of-type(even)) .pinnedActionsBodyCell {
+/* Default unselected odd rows: white background */
+.table :global(tbody tr:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"]) td:last-child),
+.table :global(tbody tr:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"]) td[data-pinned="right"]),
+.table :global(tbody tr:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"]) td[data-pinned="true"]),
+.table :global(.MuiTableRow-root:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) .pinnedActionsBodyCell {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  --mrt-pinned-cell-background-color: #ffffff !important;
+}
+
+/* Default unselected even rows: #f7f9fc */
+.table :global(.MuiTableRow-root:nth-of-type(even):not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td:last-child),
+.table :global(.MuiTableRow-root:nth-of-type(even):not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root:nth-of-type(even):not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td[data-pinned="true"]),
+.table :global(.MuiTableRow-root:nth-of-type(even):not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) .pinnedActionsBodyCell {
   background-color: #f7f9fc !important;
+  background: #f7f9fc !important;
+  --mrt-pinned-cell-background-color: #f7f9fc !important;
 }
 
-/* Unselected row hover: all cells including checkbox and pinned actions change color together */
-.table :global(tbody tr:hover),
-.table :global(.MuiTableRow-root:hover),
-.table :global(.MuiTableRow-root:nth-of-type(even):hover),
-.table :global(.MuiTableRow-root:nth-of-type(odd):hover),
-.tableBodyRow:hover {
+/* Unselected row hover: all cells including checkbox and pinned actions change to #f0f4f8 */
+.table :global(tbody tr:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])),
+.table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])),
+.table :global(.MuiTableRow-root:nth-of-type(even):hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])),
+.table :global(.MuiTableRow-root:nth-of-type(odd):hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])),
+.tableBodyRow:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"]) {
   background-color: #f0f4f8 !important;
   background: #f0f4f8 !important;
+  --mrt-pinned-cell-background-color: #f0f4f8 !important;
 }
 
-.table :global(tbody tr:hover) :global(td),
-.table :global(.MuiTableRow-root:hover) :global(.MuiTableCell-body),
-.table :global(.MuiTableRow-root:hover) .checkboxCell,
-.table :global(.MuiTableRow-root:hover) .pinnedActionsBodyCell {
+.table :global(tbody tr:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td),
+.table :global(tbody tr:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td[data-pinned]),
+.table :global(tbody tr:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td[data-pinned="right"]),
+.table :global(tbody tr:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td:last-child),
+.table :global(tbody tr:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) .checkboxCell,
+.table :global(tbody tr:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) .pinnedActionsBodyCell,
+.table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(.MuiTableCell-body),
+.table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td),
+.table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td:last-child),
+.table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) .checkboxCell,
+.table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) .pinnedActionsBodyCell {
   background-color: #f0f4f8 !important;
   background: #f0f4f8 !important;
+  --mrt-pinned-cell-background-color: #f0f4f8 !important;
 }
 
-/* Selected row: dark color #e3edf5 for all rows (both odd and even) */
+/* Selected row: dark color #e3edf5 for ALL cells including pinned actions and last-child */
 .table :global(.MuiTableRow-root.Mui-selected),
 .table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)),
 .table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)),
-.table :global(.MuiTableRow-root[data-selected="true"]) {
+.table :global(.MuiTableRow-root[data-selected="true"]),
+.table :global(.MuiTableRow-root[aria-selected="true"]),
+.table :global(tbody tr.Mui-selected),
+.table :global(tbody tr[data-selected="true"]),
+.table :global(tbody tr[aria-selected="true"]) {
   background-color: #e3edf5 !important;
   background: #e3edf5 !important;
+  --mrt-pinned-cell-background-color: #e3edf5 !important;
 }
 
 .table :global(.MuiTableRow-root.Mui-selected) :global(.MuiTableCell-body),
 .table :global(.MuiTableRow-root.Mui-selected) :global(td),
+.table :global(.MuiTableRow-root.Mui-selected) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root.Mui-selected) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root.Mui-selected) :global(td:last-child),
 .table :global(.MuiTableRow-root.Mui-selected) .checkboxCell,
-.table :global(.MuiTableRow-root.Mui-selected) .pinnedActionsBodyCell {
+.table :global(.MuiTableRow-root.Mui-selected) .pinnedActionsBodyCell,
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)) :global(td),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)) :global(td:last-child),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)) .checkboxCell,
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)) .pinnedActionsBodyCell,
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)) :global(td),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)) :global(td:last-child),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)) .checkboxCell,
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)) .pinnedActionsBodyCell,
+.table :global(.MuiTableRow-root[data-selected="true"]) :global(.MuiTableCell-body),
+.table :global(.MuiTableRow-root[data-selected="true"]) :global(td),
+.table :global(.MuiTableRow-root[data-selected="true"]) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root[data-selected="true"]) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root[data-selected="true"]) :global(td:last-child),
+.table :global(.MuiTableRow-root[data-selected="true"]) .checkboxCell,
+.table :global(.MuiTableRow-root[data-selected="true"]) .pinnedActionsBodyCell,
+.table :global(.MuiTableRow-root[aria-selected="true"]) :global(.MuiTableCell-body),
+.table :global(.MuiTableRow-root[aria-selected="true"]) :global(td),
+.table :global(.MuiTableRow-root[aria-selected="true"]) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root[aria-selected="true"]) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root[aria-selected="true"]) :global(td:last-child),
+.table :global(.MuiTableRow-root[aria-selected="true"]) .checkboxCell,
+.table :global(.MuiTableRow-root[aria-selected="true"]) .pinnedActionsBodyCell,
+.table :global(tbody tr.Mui-selected) :global(td),
+.table :global(tbody tr.Mui-selected) :global(td[data-pinned]),
+.table :global(tbody tr.Mui-selected) :global(td[data-pinned="right"]),
+.table :global(tbody tr.Mui-selected) :global(td:last-child),
+.table :global(tbody tr.Mui-selected) .checkboxCell,
+.table :global(tbody tr.Mui-selected) .pinnedActionsBodyCell,
+.table :global(tbody tr[data-selected="true"]) :global(td),
+.table :global(tbody tr[data-selected="true"]) :global(td[data-pinned]),
+.table :global(tbody tr[data-selected="true"]) :global(td[data-pinned="right"]),
+.table :global(tbody tr[data-selected="true"]) :global(td:last-child),
+.table :global(tbody tr[data-selected="true"]) .checkboxCell,
+.table :global(tbody tr[data-selected="true"]) .pinnedActionsBodyCell,
+.table :global(tbody tr[aria-selected="true"]) :global(td),
+.table :global(tbody tr[aria-selected="true"]) :global(td[data-pinned]),
+.table :global(tbody tr[aria-selected="true"]) :global(td[data-pinned="right"]),
+.table :global(tbody tr[aria-selected="true"]) :global(td:last-child),
+.table :global(tbody tr[aria-selected="true"]) .checkboxCell,
+.table :global(tbody tr[aria-selected="true"]) .pinnedActionsBodyCell {
   background-color: #e3edf5 !important;
   background: #e3edf5 !important;
+  --mrt-pinned-cell-background-color: #e3edf5 !important;
 }
 
 /* Selected row on hover: slightly deeper shade #d4e4f0 */
 .table :global(.MuiTableRow-root.Mui-selected:hover),
 .table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even):hover),
-.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd):hover) {
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd):hover),
+.table :global(.MuiTableRow-root[data-selected="true"]:hover),
+.table :global(.MuiTableRow-root[aria-selected="true"]:hover),
+.table :global(tbody tr.Mui-selected:hover),
+.table :global(tbody tr[data-selected="true"]:hover),
+.table :global(tbody tr[aria-selected="true"]:hover) {
   background-color: #d4e4f0 !important;
   background: #d4e4f0 !important;
+  --mrt-pinned-cell-background-color: #d4e4f0 !important;
 }
 
 .table :global(.MuiTableRow-root.Mui-selected:hover) :global(.MuiTableCell-body),
 .table :global(.MuiTableRow-root.Mui-selected:hover) :global(td),
+.table :global(.MuiTableRow-root.Mui-selected:hover) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root.Mui-selected:hover) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root.Mui-selected:hover) :global(td:last-child),
 .table :global(.MuiTableRow-root.Mui-selected:hover) .checkboxCell,
-.table :global(.MuiTableRow-root.Mui-selected:hover) .pinnedActionsBodyCell {
+.table :global(.MuiTableRow-root.Mui-selected:hover) .pinnedActionsBodyCell,
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even):hover) :global(td),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even):hover) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even):hover) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even):hover) :global(td:last-child),
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even):hover) .checkboxCell,
+.table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even):hover) .pinnedActionsBodyCell,
+.table :global(.MuiTableRow-root[data-selected="true"]:hover) :global(.MuiTableCell-body),
+.table :global(.MuiTableRow-root[data-selected="true"]:hover) :global(td),
+.table :global(.MuiTableRow-root[data-selected="true"]:hover) :global(td[data-pinned]),
+.table :global(.MuiTableRow-root[data-selected="true"]:hover) :global(td[data-pinned="right"]),
+.table :global(.MuiTableRow-root[data-selected="true"]:hover) :global(td:last-child),
+.table :global(.MuiTableRow-root[data-selected="true"]:hover) .checkboxCell,
+.table :global(.MuiTableRow-root[data-selected="true"]:hover) .pinnedActionsBodyCell,
+.table :global(tbody tr.Mui-selected:hover) :global(td),
+.table :global(tbody tr.Mui-selected:hover) :global(td[data-pinned]),
+.table :global(tbody tr.Mui-selected:hover) :global(td[data-pinned="right"]),
+.table :global(tbody tr.Mui-selected:hover) :global(td:last-child),
+.table :global(tbody tr.Mui-selected:hover) .checkboxCell,
+.table :global(tbody tr.Mui-selected:hover) .pinnedActionsBodyCell,
+.table :global(tbody tr[data-selected="true"]:hover) :global(td),
+.table :global(tbody tr[data-selected="true"]:hover) :global(td[data-pinned]),
+.table :global(tbody tr[data-selected="true"]:hover) :global(td[data-pinned="right"]),
+.table :global(tbody tr[data-selected="true"]:hover) :global(td:last-child),
+.table :global(tbody tr[data-selected="true"]:hover) .checkboxCell,
+.table :global(tbody tr[data-selected="true"]:hover) .pinnedActionsBodyCell {
   background-color: #d4e4f0 !important;
   background: #d4e4f0 !important;
+  --mrt-pinned-cell-background-color: #d4e4f0 !important;
 }
 
 
@@ -309,4 +532,6 @@
   min-height: 56px !important;
   height: 56px !important;
   padding: 0 !important;
+  border-bottom-left-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
 }

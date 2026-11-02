@@ -24,6 +24,7 @@ import { Fallback } from "./fallback/fallback";
 import { RowActions } from "./row-actions/row-actions";
 import { Pagination } from "./pagination/pagination";
 import { COLUMN_SORT_MAP, useColumns } from "./columns/columns";
+import { useLocalization } from "@/localize";
 
 export interface TableProps {
   onCreateNew: () => void;
@@ -32,6 +33,7 @@ export interface TableProps {
 export const Table = ({ onCreateNew }: TableProps) => {
   const dispatch = useAppDispatch();
   const { showSnackbar } = useSnackbar();
+  const { translate } = useLocalization();
 
   const {
     requirements,
@@ -51,9 +53,9 @@ export const Table = ({ onCreateNew }: TableProps) => {
 
   useEffect(() => {
     if (status === "failed" && error) {
-      showSnackbar(error, "error");
+      showSnackbar(translate("unableToLoadRequirements"), "error");
     }
-  }, [status, error, showSnackbar]);
+  }, [status, error, showSnackbar, translate]);
 
   useEffect(() => {
     dispatch(

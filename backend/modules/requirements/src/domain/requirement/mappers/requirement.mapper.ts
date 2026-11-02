@@ -237,31 +237,36 @@ export function mapNumberToImpactLevel(impactLevelCode: number): string {
 export function mapImpactLevelToNumber(level: unknown): number {
   if (typeof level === 'number') return level;
   if (!level) return UserImpactLevel.LOW;
-  const normalizedImpactLevel =
-    typeof level === 'string' ? level.trim().toLowerCase() : '';
-  if (
-    normalizedImpactLevel.startsWith('very high') ||
-    normalizedImpactLevel.includes('very high')
-  ) {
-    return UserImpactLevel.VERY_HIGH;
-  }
-  if (
-    normalizedImpactLevel.startsWith('high') ||
-    normalizedImpactLevel.includes('high')
-  ) {
-    return UserImpactLevel.HIGH;
-  }
-  if (
-    normalizedImpactLevel.startsWith('medium') ||
-    normalizedImpactLevel.includes('medium')
-  ) {
-    return UserImpactLevel.MEDIUM;
-  }
-  if (
-    normalizedImpactLevel.startsWith('low') ||
-    normalizedImpactLevel.includes('low')
-  ) {
-    return UserImpactLevel.LOW;
+  if (typeof level === 'string') {
+    const trimmed = level.trim();
+    if (/^\d+$/.test(trimmed)) {
+      return Number(trimmed);
+    }
+    const normalizedImpactLevel = trimmed.toLowerCase();
+    if (
+      normalizedImpactLevel.startsWith('very high') ||
+      normalizedImpactLevel.includes('very high')
+    ) {
+      return UserImpactLevel.VERY_HIGH;
+    }
+    if (
+      normalizedImpactLevel.startsWith('high') ||
+      normalizedImpactLevel.includes('high')
+    ) {
+      return UserImpactLevel.HIGH;
+    }
+    if (
+      normalizedImpactLevel.startsWith('medium') ||
+      normalizedImpactLevel.includes('medium')
+    ) {
+      return UserImpactLevel.MEDIUM;
+    }
+    if (
+      normalizedImpactLevel.startsWith('low') ||
+      normalizedImpactLevel.includes('low')
+    ) {
+      return UserImpactLevel.LOW;
+    }
   }
   return UserImpactLevel.LOW;
 }
