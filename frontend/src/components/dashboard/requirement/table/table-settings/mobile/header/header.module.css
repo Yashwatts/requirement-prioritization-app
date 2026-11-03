@@ -1,0 +1,57 @@
+.header {
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  padding: 8px 16px 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f7f9fc;
+  box-sizing: border-box;
+}
+
+.minimizedHeader {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.title {
+  color: #424242 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  line-height: 32px !important;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.actionButton {
+  width: 36px !important;
+  height: 36px !important;
+  padding: 8px !important;
+  color: #424242 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+}
+
+.actionButton:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.actionIcon {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 20px !important;
+  color: #424242 !important;
+}
+

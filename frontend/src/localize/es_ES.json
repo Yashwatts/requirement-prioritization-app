@@ -53,6 +53,8 @@
   "filters": "Filtros",
   "filterRequirements": "Filtrar requerimientos",
   "tableSettings": "Configuraciones de tabla",
+  "setting": "Configuración",
+  "position": "Posición",
   "visibleColumns": "Columnas visibles",
   "hiddenColumns": "Columnas no visibles",
   "save": "Guardar",

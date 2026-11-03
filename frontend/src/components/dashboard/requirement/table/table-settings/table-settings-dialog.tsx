@@ -9,6 +9,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  useMediaQuery,
 } from "@mui/material";
 import syncAltIcon from "@/assets/svg/sync-alt-icon.svg";
 import { useLocalization } from "@/localize";
@@ -20,6 +21,7 @@ import type {
   TableSettingsDialogProps,
 } from "@/types/table-settings.types";
 import { ColumnListPanel } from "./column-list-panel/column-list-panel";
+import { TableSettingsDrawer } from "./mobile/table-settings-drawer";
 import styles from "./table-settings-dialog.module.css";
 
 interface TableSettingsContentProps {
@@ -335,14 +337,22 @@ const TableSettingsContent = ({
   );
 };
 
-export const TableSettingsDialog = ({
-  open,
-  onClose,
-  availableColumns,
-  columnOrder,
-  columnVisibility,
-  onSave,
-}: TableSettingsDialogProps) => {
+export const TableSettingsDialog = (props: TableSettingsDialogProps) => {
+  const isMobile = useMediaQuery("(max-width: 600px)");
+
+  if (isMobile) {
+    return <TableSettingsDrawer {...props} />;
+  }
+
+  const {
+    open,
+    onClose,
+    availableColumns,
+    columnOrder,
+    columnVisibility,
+    onSave,
+  } = props;
+
   return (
     <Dialog
       open={open}
