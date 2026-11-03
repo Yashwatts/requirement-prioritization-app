@@ -14,40 +14,40 @@ export class Requirement {
   status: RequirementState;
   name!: string;
   description!: string;
-  requesting_institution_id!: number;
-  requested_by: string[];
-  benefited_institutions: string[];
-  total_benefited_institutions: number;
+  requestingInstitutionId!: number;
+  requestedBy: string[];
+  benefitedInstitutions: string[];
+  totalBenefitedInstitutions: number;
   obligation!: boolean;
-  exist_solution_alternative!: boolean;
-  study_modality!: StudyModality;
-  impact_number_users_id!: number;
+  existSolutionAlternative!: boolean;
+  studyModality!: StudyModality;
+  impactNumberUsersId!: number;
   impact!: number;
-  complexity_and_effort!: ComplexityEffort;
-  client_priority!: ClientPriority;
-  domain_in_charge_id!: number;
-  domains_collaborators: string[];
-  followers_domains: string[];
-  development_time_in_sprints: number | null;
-  start_date: Date | null;
-  end_date: Date | null;
+  complexityAndEffort!: ComplexityEffort;
+  clientPriority!: ClientPriority;
+  domainInChargeId!: number;
+  domainsCollaborators: string[];
+  followersDomains: string[];
+  developmentTimeInSprints: number | null;
+  startDate: Date | null;
+  endDate: Date | null;
   type!: RequirementType;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
 
   constructor() {
     this.uuid = randomUUID();
     this.status = RequirementState.REGISTERED;
-    this.requested_by = [];
-    this.benefited_institutions = [];
-    this.domains_collaborators = [];
-    this.followers_domains = [];
-    this.total_benefited_institutions = 0;
-    this.development_time_in_sprints = null;
-    this.start_date = null;
-    this.end_date = null;
-    this.created_at = new Date();
-    this.updated_at = new Date();
+    this.requestedBy = [];
+    this.benefitedInstitutions = [];
+    this.domainsCollaborators = [];
+    this.followersDomains = [];
+    this.totalBenefitedInstitutions = 0;
+    this.developmentTimeInSprints = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
   }
 
   static create({
@@ -87,22 +87,22 @@ export class Requirement {
     requirement.code = Math.floor(100000 + Math.random() * 900000);
     requirement.name = name;
     requirement.description = description;
-    requirement.requesting_institution_id = requesting_institution_id;
-    requirement.requested_by = [...requested_by];
-    requirement.benefited_institutions = [...benefited_institutions];
-    requirement.total_benefited_institutions = benefited_institutions.length;
+    requirement.requestingInstitutionId = requesting_institution_id;
+    requirement.requestedBy = [...requested_by];
+    requirement.benefitedInstitutions = [...benefited_institutions];
+    requirement.totalBenefitedInstitutions = benefited_institutions.length;
     requirement.obligation = obligation;
-    requirement.exist_solution_alternative = exist_solution_alternative;
-    requirement.study_modality = study_modality;
-    requirement.impact_number_users_id = impact_number_users_id;
-    requirement.complexity_and_effort = complexity_and_effort;
-    requirement.domain_in_charge_id = domain_in_charge_id;
-    requirement.domains_collaborators = [...domains_collaborators];
-    requirement.followers_domains = [...followers_domains];
+    requirement.existSolutionAlternative = exist_solution_alternative;
+    requirement.studyModality = study_modality;
+    requirement.impactNumberUsersId = impact_number_users_id;
+    requirement.complexityAndEffort = complexity_and_effort;
+    requirement.domainInChargeId = domain_in_charge_id;
+    requirement.domainsCollaborators = [...domains_collaborators];
+    requirement.followersDomains = [...followers_domains];
     requirement.status = status;
-    requirement.development_time_in_sprints = development_time_in_sprints;
-    requirement.start_date = start_date;
-    requirement.end_date = end_date;
+    requirement.developmentTimeInSprints = development_time_in_sprints;
+    requirement.startDate = start_date;
+    requirement.endDate = end_date;
     requirement.type = type;
 
     const userImpact =
@@ -110,28 +110,41 @@ export class Requirement {
       impact_users_value ??
       impact_number_users_id;
     requirement.impact = requirement.calculateImpact(userImpact);
-    requirement.client_priority =
+    requirement.clientPriority =
       client_priority ?? requirement.calculateClientPriority();
-    requirement.created_at = new Date();
-    requirement.updated_at = new Date();
+    requirement.createdAt = new Date();
+    requirement.updatedAt = new Date();
 
     return requirement;
   }
 
-  public static calculateImpactValue(params: {
-    total_benefited_institutions: number;
+  public static calculateImpactValue(parameters: {
+    total_benefited_institutions?: number;
+    totalBenefitedInstitutions?: number;
     obligation: boolean;
-    exist_solution_alternative: boolean;
-    user_impact_value: number;
+    exist_solution_alternative?: boolean;
+    existSolutionAlternative?: boolean;
+    user_impact_value?: number;
+    userImpactValue?: number;
   }): number {
-    const obligationValue = params.obligation ? 8 : 0;
-    const alternativeSolutionValue = params.exist_solution_alternative ? 0 : 8;
+    const totalBenefitedInstitutions =
+      parameters.totalBenefitedInstitutions ??
+      parameters.total_benefited_institutions ??
+      0;
+    const obligationValue = parameters.obligation ? 8 : 0;
+    const hasAlternativeSolution =
+      parameters.existSolutionAlternative ??
+      parameters.exist_solution_alternative ??
+      false;
+    const alternativeSolutionValue = hasAlternativeSolution ? 0 : 8;
+    const userImpactValue =
+      parameters.userImpactValue ?? parameters.user_impact_value ?? 0;
 
     return (
-      params.total_benefited_institutions +
+      totalBenefitedInstitutions +
       obligationValue +
       alternativeSolutionValue +
-      params.user_impact_value
+      userImpactValue
     );
   }
 
@@ -149,12 +162,12 @@ export class Requirement {
     return ClientPriority.HIGH;
   }
 
-  private calculateImpact(impact_users_value: number): number {
+  private calculateImpact(userImpactValue: number): number {
     return Requirement.calculateImpactValue({
-      total_benefited_institutions: this.total_benefited_institutions,
+      totalBenefitedInstitutions: this.totalBenefitedInstitutions,
       obligation: this.obligation,
-      exist_solution_alternative: this.exist_solution_alternative,
-      user_impact_value: impact_users_value,
+      existSolutionAlternative: this.existSolutionAlternative,
+      userImpactValue: userImpactValue,
     });
   }
 
@@ -163,8 +176,8 @@ export class Requirement {
   }
 
   modifyClientPriority(clientPriority: ClientPriority): void {
-    this.client_priority = clientPriority;
-    this.updated_at = new Date();
+    this.clientPriority = clientPriority;
+    this.updatedAt = new Date();
   }
 
   private static validateCreation({

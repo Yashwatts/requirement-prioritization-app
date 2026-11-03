@@ -28,12 +28,14 @@ export const RequirementEntity = new EntitySchema<Requirement>({
       default: 1,
     },
 
-    benefited_institutions: {
+    benefitedInstitutions: {
       type: 'json',
+      fieldName: 'benefited_institutions',
     },
 
-    requesting_institution_id: {
+    requestingInstitutionId: {
       type: 'integer',
+      fieldName: 'requesting_institution_id',
     },
 
     name: {
@@ -41,66 +43,78 @@ export const RequirementEntity = new EntitySchema<Requirement>({
       length: 250,
     },
 
-    domains_collaborators: {
+    domainsCollaborators: {
       type: 'json',
+      fieldName: 'domains_collaborators',
     },
 
-    domain_in_charge_id: {
+    domainInChargeId: {
       type: 'integer',
+      fieldName: 'domain_in_charge_id',
     },
 
-    followers_domains: {
+    followersDomains: {
       type: 'json',
+      fieldName: 'followers_domains',
     },
 
     obligation: {
       type: 'boolean',
     },
 
-    exist_solution_alternative: {
+    existSolutionAlternative: {
       type: 'boolean',
+      fieldName: 'exist_solution_alternative',
     },
 
-    impact_number_users_id: {
+    impactNumberUsersId: {
       type: 'integer',
+      fieldName: 'impact_number_users_id',
     },
 
-    study_modality: {
+    studyModality: {
       type: 'smallint',
+      fieldName: 'study_modality',
     },
 
     impact: {
       type: 'integer',
     },
 
-    client_priority: {
+    clientPriority: {
       type: 'smallint',
+      fieldName: 'client_priority',
     },
 
-    requested_by: {
+    requestedBy: {
       type: 'json',
+      fieldName: 'requested_by',
     },
 
     description: {
       type: 'text',
     },
 
-    complexity_and_effort: {
+    complexityAndEffort: {
       type: 'smallint',
+      fieldName: 'complexity_and_effort',
     },
 
-    development_time_in_sprints: {
+    developmentTimeInSprints: {
       type: 'integer',
+      fieldName: 'development_time_in_sprints',
       nullable: true,
     },
 
-    start_date: {
+    startDate: {
       type: 'timestamp',
+      fieldName: 'start_date',
       nullable: true,
     },
 
-    end_date: {
+    endDate: {
       type: 'timestamp',
+      fieldName: 'end_date',
       nullable: true,
     },
 
@@ -108,18 +122,21 @@ export const RequirementEntity = new EntitySchema<Requirement>({
       type: 'smallint',
     },
 
-    total_benefited_institutions: {
+    totalBenefitedInstitutions: {
       type: 'integer',
+      fieldName: 'total_benefited_institutions',
       default: 0,
     },
 
-    created_at: {
+    createdAt: {
       type: 'timestamp',
+      fieldName: 'created_at',
       onCreate: () => new Date(),
     },
 
-    updated_at: {
+    updatedAt: {
       type: 'timestamp',
+      fieldName: 'updated_at',
       onCreate: () => new Date(),
       onUpdate: () => new Date(),
     },

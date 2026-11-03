@@ -206,9 +206,11 @@ export const Table = ({ onCreateNew }: TableProps) => {
               "mrt-row-select": {
                 size: 64,
                 muiTableHeadCellProps: {
+                  align: "center",
                   className: styles.checkboxHeadCell,
                 },
                 muiTableBodyCellProps: {
+                  align: "center",
                   className: styles.checkboxCell,
                 },
                 Header: ({ table }) => (

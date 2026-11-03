@@ -79,7 +79,22 @@
 .checkboxHeadCell :global(.Mui-TableHeadCell-Content) {
   justify-content: center !important;
   align-items: center !important;
+  width: 100% !important;
   height: 100% !important;
+}
+
+.checkboxHeadCell :global(.Mui-TableHeadCell-Content-Labels) {
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  gap: 0 !important;
+}
+
+.checkboxHeadCell :global(.Mui-TableHeadCell-Content-Wrapper) {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
 }
 
 .checkboxCell {
@@ -190,28 +205,46 @@
   flex-shrink: 1 !important;
 }
 
+.table :global(.MuiTableCell-head[class*="checkboxHeadCell"]),
 .table :global(.MuiTableCell-head[class*="centerAlignHeadCell"]),
 .table :global(.MuiTableCell-head[class*="descriptionHeaderCell"]),
 .table :global(.MuiTableCell-head[align="center"]) {
   text-align: center !important;
+  padding: 0 !important;
 }
 
+.table :global(.MuiTableCell-head[class*="checkboxHeadCell"]) :global(.Mui-TableHeadCell-Content),
 .table :global(.MuiTableCell-head[class*="centerAlignHeadCell"]) :global(.Mui-TableHeadCell-Content),
 .table :global(.MuiTableCell-head[class*="descriptionHeaderCell"]) :global(.Mui-TableHeadCell-Content),
 .table :global(.MuiTableCell-head[align="center"]) :global(.Mui-TableHeadCell-Content) {
   justify-content: center !important;
 }
 
+.table :global(.MuiTableCell-head[class*="checkboxHeadCell"]) :global(.Mui-TableHeadCell-Content-Labels),
 .table :global(.MuiTableCell-head[class*="centerAlignHeadCell"]) :global(.Mui-TableHeadCell-Content-Labels),
 .table :global(.MuiTableCell-head[class*="descriptionHeaderCell"]) :global(.Mui-TableHeadCell-Content-Labels),
 .table :global(.MuiTableCell-head[align="center"]) :global(.Mui-TableHeadCell-Content-Labels) {
   justify-content: center !important;
 }
 
+.table :global(.MuiTableCell-head[class*="checkboxHeadCell"]) :global(.Mui-TableHeadCell-Content-Wrapper),
 .table :global(.MuiTableCell-head[class*="centerAlignHeadCell"]) :global(.Mui-TableHeadCell-Content-Wrapper),
 .table :global(.MuiTableCell-head[class*="descriptionHeaderCell"]) :global(.Mui-TableHeadCell-Content-Wrapper),
 .table :global(.MuiTableCell-head[align="center"]) :global(.Mui-TableHeadCell-Content-Wrapper) {
   text-align: center !important;
+}
+
+.table :global(.MuiTableCell-body[class*="checkboxCell"]),
+.table :global(.MuiTableCell-body).checkboxCell {
+  text-align: center !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+}
+
+.table :global(.MuiTableCell-body[class*="checkboxCell"]) :global(.MuiCheckbox-root),
+.table :global(.MuiTableCell-body).checkboxCell :global(.MuiCheckbox-root) {
+  margin: 0 auto !important;
+  display: inline-flex !important;
 }
 
 .table :global(.MuiTableCell-head) :global(.MuiBadge-root),
@@ -346,7 +379,6 @@
   vertical-align: middle !important;
 }
 
-/* Default unselected odd rows: white background */
 .table :global(tbody tr:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"]) td:last-child),
 .table :global(tbody tr:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"]) td[data-pinned="right"]),
 .table :global(tbody tr:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"]) td[data-pinned="true"]),
@@ -356,7 +388,6 @@
   --mrt-pinned-cell-background-color: #ffffff !important;
 }
 
-/* Default unselected even rows: #f7f9fc */
 .table :global(.MuiTableRow-root:nth-of-type(even):not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td:last-child),
 .table :global(.MuiTableRow-root:nth-of-type(even):not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td[data-pinned="right"]),
 .table :global(.MuiTableRow-root:nth-of-type(even):not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])) :global(td[data-pinned="true"]),
@@ -366,7 +397,6 @@
   --mrt-pinned-cell-background-color: #f7f9fc !important;
 }
 
-/* Unselected row hover: all cells including checkbox and pinned actions change to #f0f4f8 */
 .table :global(tbody tr:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])),
 .table :global(.MuiTableRow-root:hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])),
 .table :global(.MuiTableRow-root:nth-of-type(even):hover:not(.Mui-selected):not([data-selected="true"]):not([aria-selected="true"])),
@@ -395,7 +425,6 @@
   --mrt-pinned-cell-background-color: #f0f4f8 !important;
 }
 
-/* Selected row: dark color #e3edf5 for ALL cells including pinned actions and last-child */
 .table :global(.MuiTableRow-root.Mui-selected),
 .table :global(.MuiTableRow-root.Mui-selected:nth-of-type(even)),
 .table :global(.MuiTableRow-root.Mui-selected:nth-of-type(odd)),

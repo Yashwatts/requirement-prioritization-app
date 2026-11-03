@@ -1,5 +1,5 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { FindOptions, QueryOrder, raw } from '@mikro-orm/core';
+import { QueryOrder, raw } from '@mikro-orm/core';
 import { Requirement } from '../../domain/requirement/requirement';
 import { ListRequirementsQuery } from './list-requirements.query';
 import { RequirementRepository } from '../../infrastructure/repositories/requirement.repository';
@@ -51,7 +51,7 @@ export class ListRequirementsHandler implements IQueryHandler<
             },
           },
           {
-            [raw('code::text')]: {
+            [raw('requirementTable.code::text')]: {
               $ilike: `%${search}%`,
             },
           },
@@ -88,50 +88,95 @@ export class ListRequirementsHandler implements IQueryHandler<
     ]);
 
     const safeSortBy = VALID_SORT_COLUMNS.has(sort_by) ? sort_by : 'created_at';
-    const isAsc = String(sort_order ?? '')
+    const isAscending = String(sort_order ?? '')
       .toUpperCase()
       .includes('ASC');
-    const safeSortOrder = isAsc
+    const safeSortOrder = isAscending
       ? QueryOrder.ASC_NULLS_FIRST
       : QueryOrder.DESC_NULLS_LAST;
 
-    const schema = process.env.DB_REQUIREMENTS_SCHEMA ?? 'requirements';
+    const databaseSchema =
+      process.env.DB_REQUIREMENTS_SCHEMA ?? 'requirements';
 
-    const ALPHABETICAL_SORT_MAP: Record<string, string> = {
-      complexity_and_effort: `(CASE complexity_and_effort WHEN 1 THEN 'XS' WHEN 2 THEN 'S' WHEN 3 THEN 'M' WHEN 4 THEN 'L' WHEN 5 THEN 'XL' ELSE NULL END)`,
-      client_priority: `(CASE client_priority WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' ELSE NULL END)`,
-      status: `(CASE status WHEN 1 THEN 'Registered' WHEN 2 THEN 'Flow' ELSE NULL END)`,
-      type: `(CASE type WHEN 1 THEN 'Internal' WHEN 2 THEN 'External' WHEN 3 THEN 'Client' ELSE NULL END)`,
-      obligation: `(CASE obligation WHEN true THEN 'Yes' ELSE 'No' END)`,
-      exist_solution_alternative: `(CASE exist_solution_alternative WHEN true THEN 'Yes' ELSE 'No' END)`,
-      domain_in_charge_id: `(SELECT d.name FROM "${schema}"."domains" d WHERE d.id = domain_in_charge_id)`,
-      requesting_institution_id: `(SELECT i.name FROM "${schema}"."institutions" i WHERE i.id = requesting_institution_id)`,
-      impact_number_users_id: `(CASE (SELECT iud.impact_number_users_level FROM "${schema}"."impact_users_domains" iud WHERE iud.id = impact_number_users_id) WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' WHEN 4 THEN 'Very High' ELSE NULL END)`,
+    const queryBuilder =
+      this.requirementRepository.createQueryBuilder('requirementTable');
+    const knexConnection = this.requirementRepository
+      .getEntityManager()
+      .getKnex();
+
+    queryBuilder.where(criteria);
+
+    const INLINE_CASE_SORT_MAP: Record<string, string> = {
+      complexity_and_effort: `(CASE requirementTable.complexity_and_effort WHEN 1 THEN 'XS' WHEN 2 THEN 'S' WHEN 3 THEN 'M' WHEN 4 THEN 'L' WHEN 5 THEN 'XL' ELSE NULL END)`,
+      client_priority: `(CASE requirementTable.client_priority WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' ELSE NULL END)`,
+      status: `(CASE requirementTable.status WHEN 1 THEN 'Registered' WHEN 2 THEN 'Flow' ELSE NULL END)`,
+      type: `(CASE requirementTable.type WHEN 1 THEN 'Internal' WHEN 2 THEN 'External' WHEN 3 THEN 'Client' ELSE NULL END)`,
+      obligation: `(CASE requirementTable.obligation WHEN true THEN 'Yes' ELSE 'No' END)`,
+      exist_solution_alternative: `(CASE requirementTable.exist_solution_alternative WHEN true THEN 'Yes' ELSE 'No' END)`,
     };
 
-    const customSortSql = ALPHABETICAL_SORT_MAP[safeSortBy];
-    const sortTarget: string = customSortSql
-      ? raw<Requirement, string>(customSortSql)
-      : safeSortBy;
+    if (safeSortBy === 'domain_in_charge_id') {
+      queryBuilder.leftJoin(
+        knexConnection(`${databaseSchema}.domains`),
+        'domainTable',
+        {
+          'domainTable.id': raw('requirementTable.domain_in_charge_id'),
+        },
+      );
+      queryBuilder.orderBy({
+        'domainTable.name': safeSortOrder,
+        'requirementTable.id': 'DESC',
+      });
+    } else if (safeSortBy === 'requesting_institution_id') {
+      queryBuilder.leftJoin(
+        knexConnection(`${databaseSchema}.institutions`),
+        'institutionTable',
+        {
+          'institutionTable.id': raw(
+            'requirementTable.requesting_institution_id',
+          ),
+        },
+      );
+      queryBuilder.orderBy({
+        'institutionTable.name': safeSortOrder,
+        'requirementTable.id': 'DESC',
+      });
+    } else if (safeSortBy === 'impact_number_users_id') {
+      queryBuilder.leftJoin(
+        knexConnection(`${databaseSchema}.impact_users_domains`),
+        'impactUsersDomainTable',
+        {
+          'impactUsersDomainTable.id': raw(
+            'requirementTable.impact_number_users_id',
+          ),
+        },
+      );
+      queryBuilder.orderBy({
+        [raw(
+          "(CASE impactUsersDomainTable.impact_number_users_level WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' WHEN 4 THEN 'Very High' ELSE NULL END)",
+        )]: safeSortOrder,
+        'requirementTable.id': 'DESC',
+      });
+    } else if (INLINE_CASE_SORT_MAP[safeSortBy]) {
+      queryBuilder.orderBy({
+        [raw(INLINE_CASE_SORT_MAP[safeSortBy])]: safeSortOrder,
+        'requirementTable.id': 'DESC',
+      });
+    } else {
+      queryBuilder.orderBy({
+        [`requirementTable.${safeSortBy}`]: safeSortOrder,
+        ...(safeSortBy !== 'id' ? { 'requirementTable.id': 'DESC' } : {}),
+      });
+    }
 
-    const options: FindOptions<Requirement> = {
-      limit,
-      offset: (page - 1) * limit,
-      orderBy: {
-        [sortTarget]: safeSortOrder,
-        ...(safeSortBy !== 'id' ? { id: 'DESC' } : {}),
-      },
-    };
+    queryBuilder.limit(limit).offset((page - 1) * limit);
 
-    const [requirements, total] = await this.requirementRepository.findAndCount(
-      criteria,
-      options,
-    );
+    const [requirements, total] = await queryBuilder.getResultAndCount();
 
     const institutionIds = Array.from(
       new Set(
         requirements
-          .map((requirement) => requirement.requesting_institution_id)
+          .map((requirement) => requirement.requestingInstitutionId)
           .filter((id): id is number => typeof id === 'number'),
       ),
     );
@@ -139,7 +184,7 @@ export class ListRequirementsHandler implements IQueryHandler<
     const domainIds = Array.from(
       new Set(
         requirements
-          .map((requirement) => requirement.domain_in_charge_id)
+          .map((requirement) => requirement.domainInChargeId)
           .filter((id): id is number => typeof id === 'number'),
       ),
     );
@@ -159,9 +204,9 @@ export class ListRequirementsHandler implements IQueryHandler<
 
     const rows: RequirementDetail[] = requirements.map((requirement) => {
       const institution = institutionMap.get(
-        requirement.requesting_institution_id,
+        requirement.requestingInstitutionId,
       );
-      const domain = domainMap.get(requirement.domain_in_charge_id);
+      const domain = domainMap.get(requirement.domainInChargeId);
 
       return {
         id: requirement.id,
@@ -170,7 +215,7 @@ export class ListRequirementsHandler implements IQueryHandler<
         status: requirement.status,
         name: requirement.name,
         description: requirement.description,
-        requesting_institution_id: requirement.requesting_institution_id,
+        requesting_institution_id: requirement.requestingInstitutionId,
         requesting_institution_name: institution?.name ?? null,
         requesting_institution: institution
           ? {
@@ -179,17 +224,17 @@ export class ListRequirementsHandler implements IQueryHandler<
               name: institution.name,
             }
           : null,
-        requested_by: requirement.requested_by,
-        benefited_institutions: requirement.benefited_institutions,
-        total_benefited_institutions: requirement.total_benefited_institutions,
+        requested_by: requirement.requestedBy,
+        benefited_institutions: requirement.benefitedInstitutions,
+        total_benefited_institutions: requirement.totalBenefitedInstitutions,
         obligation: requirement.obligation,
-        exist_solution_alternative: requirement.exist_solution_alternative,
-        study_modality: requirement.study_modality,
-        impact_number_users_id: requirement.impact_number_users_id,
+        exist_solution_alternative: requirement.existSolutionAlternative,
+        study_modality: requirement.studyModality,
+        impact_number_users_id: requirement.impactNumberUsersId,
         impact: requirement.impact,
-        complexity_and_effort: requirement.complexity_and_effort,
-        client_priority: requirement.client_priority,
-        domain_in_charge_id: requirement.domain_in_charge_id,
+        complexity_and_effort: requirement.complexityAndEffort,
+        client_priority: requirement.clientPriority,
+        domain_in_charge_id: requirement.domainInChargeId,
         domain_in_charge_name: domain?.name ?? null,
         domain_in_charge: domain
           ? {
@@ -199,30 +244,26 @@ export class ListRequirementsHandler implements IQueryHandler<
               abbreviation: domain.abbreviation,
             }
           : null,
-        domains_collaborators: requirement.domains_collaborators,
-        followers_domains: requirement.followers_domains,
-        development_time_in_sprints: requirement.development_time_in_sprints,
-        start_date: requirement.start_date,
-        end_date: requirement.end_date,
+        domains_collaborators: requirement.domainsCollaborators,
+        followers_domains: requirement.followersDomains,
+        development_time_in_sprints: requirement.developmentTimeInSprints,
+        start_date: requirement.startDate,
+        end_date: requirement.endDate,
         type: requirement.type,
-        created_at: requirement.created_at,
-        updated_at: requirement.updated_at,
+        created_at: requirement.createdAt,
+        updated_at: requirement.updatedAt,
       };
     });
 
-    const mappedRequirements = rows.map((detail) =>
-      toRequirementTableRow(detail),
-    );
-    const totalPages =
-      Math.ceil(total / limit) > 0 ? Math.ceil(total / limit) : 1;
+    const mappedRows = rows.map(toRequirementTableRow);
 
     return {
+      requirements: mappedRows,
+      rows: mappedRows,
       total,
-      limit,
       page,
-      totalPages,
-      requirements: mappedRequirements,
-      rows: mappedRequirements,
+      limit,
+      totalPages: Math.ceil(total / limit),
     };
   }
 }
