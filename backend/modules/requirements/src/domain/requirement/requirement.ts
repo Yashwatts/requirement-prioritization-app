@@ -4,11 +4,8 @@ import { ComplexityEffort } from './enums/complexity-effort.enum';
 import { RequirementState } from './enums/requirement-state.enum';
 import { RequirementType } from './enums/requirement-type.enum';
 import { StudyModality } from './enums/study-modality.enum';
-import {
-  CreateRequirementInterface,
-  UpdateRequirementInterface,
-} from './interfaces/requirement';
 import { InvalidRequirement } from './exceptions/exceptions';
+import { CreateRequirementInterface } from './interfaces/requirement';
 
 export class Requirement {
   id!: number;
@@ -167,58 +164,6 @@ export class Requirement {
 
   modifyClientPriority(clientPriority: ClientPriority): void {
     this.client_priority = clientPriority;
-    this.updated_at = new Date();
-  }
-
-  update(params: UpdateRequirementInterface): void {
-    Requirement.validateCreation({
-      name: params.name,
-      description: params.description,
-      requested_by: params.requested_by,
-      benefited_institutions: params.benefited_institutions,
-      start_date: params.start_date,
-      end_date: params.end_date,
-    });
-
-    this.name = params.name;
-    this.description = params.description;
-    this.requesting_institution_id = params.requesting_institution_id;
-    this.requested_by = [...params.requested_by];
-    this.benefited_institutions = [...params.benefited_institutions];
-    this.total_benefited_institutions = params.benefited_institutions.length;
-    this.obligation = params.obligation;
-    this.exist_solution_alternative = params.exist_solution_alternative;
-    this.study_modality = params.study_modality;
-    this.impact_number_users_id = params.impact_number_users_id;
-    this.complexity_and_effort = params.complexity_and_effort;
-    this.domain_in_charge_id = params.domain_in_charge_id;
-    if (params.domains_collaborators) {
-      this.domains_collaborators = [...params.domains_collaborators];
-    }
-    if (params.followers_domains) {
-      this.followers_domains = [...params.followers_domains];
-    }
-    if (params.status !== undefined) {
-      this.status = params.status;
-    }
-    this.development_time_in_sprints =
-      params.development_time_in_sprints ?? null;
-    this.start_date = params.start_date ?? null;
-    this.end_date = params.end_date ?? null;
-    this.type = params.type;
-
-    const userImpact =
-      params.user_impact_range?.getAverageQuantity() ??
-      params.impact_users_value;
-
-    if (userImpact !== undefined) {
-      this.impact = this.calculateImpact(userImpact);
-      this.client_priority =
-        params.client_priority ?? this.calculateClientPriority();
-    } else if (params.client_priority !== undefined) {
-      this.client_priority = params.client_priority;
-    }
-
     this.updated_at = new Date();
   }
 

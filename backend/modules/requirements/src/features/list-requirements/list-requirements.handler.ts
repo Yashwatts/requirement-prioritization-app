@@ -88,7 +88,9 @@ export class ListRequirementsHandler implements IQueryHandler<
     ]);
 
     const safeSortBy = VALID_SORT_COLUMNS.has(sort_by) ? sort_by : 'created_at';
-    const isAsc = String(sort_order ?? '').toUpperCase().includes('ASC');
+    const isAsc = String(sort_order ?? '')
+      .toUpperCase()
+      .includes('ASC');
     const safeSortOrder = isAsc
       ? QueryOrder.ASC_NULLS_FIRST
       : QueryOrder.DESC_NULLS_LAST;
@@ -107,15 +109,16 @@ export class ListRequirementsHandler implements IQueryHandler<
       impact_number_users_id: `(CASE (SELECT iud.impact_number_users_level FROM "${schema}"."impact_users_domains" iud WHERE iud.id = impact_number_users_id) WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' WHEN 4 THEN 'Very High' ELSE NULL END)`,
     };
 
-    const sortTarget = ALPHABETICAL_SORT_MAP[safeSortBy]
-      ? raw(ALPHABETICAL_SORT_MAP[safeSortBy])
+    const customSortSql = ALPHABETICAL_SORT_MAP[safeSortBy];
+    const sortTarget: string = customSortSql
+      ? raw<Requirement, string>(customSortSql)
       : safeSortBy;
 
     const options: FindOptions<Requirement> = {
       limit,
       offset: (page - 1) * limit,
       orderBy: {
-        [sortTarget as unknown as string]: safeSortOrder,
+        [sortTarget]: safeSortOrder,
         ...(safeSortBy !== 'id' ? { id: 'DESC' } : {}),
       },
     };
