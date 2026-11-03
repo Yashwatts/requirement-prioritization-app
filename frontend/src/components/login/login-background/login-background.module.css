@@ -10,9 +10,27 @@
   background-color: #eff5ff;
 }
 
-.svg {
+.desktopSvg {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.mobileSvg {
+  display: none !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 600px) {
+  .desktopSvg {
+    display: none !important;
+  }
+
+  .mobileSvg {
+    display: block !important;
+  }
 }

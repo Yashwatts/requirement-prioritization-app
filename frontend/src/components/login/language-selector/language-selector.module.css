@@ -56,3 +56,12 @@
 .languageMenuItem:global(.Mui-selected):hover {
   background-color: #f4f2f8;
 }
+
+@media (max-width: 600px) {
+  .translationContainer {
+    margin-left: 0;
+    margin-top: 10px;
+    align-self: center;
+    justify-content: center;
+  }
+}

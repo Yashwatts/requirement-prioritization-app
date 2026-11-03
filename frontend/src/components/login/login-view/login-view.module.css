@@ -15,8 +15,8 @@
 .container {
   position: relative;
   z-index: 1;
-  width: 810px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 810px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -25,9 +25,10 @@
 
 .card {
   display: flex;
-  width: 810px;
-  max-width: 100%;
-  height: 256px;
+  width: 100%;
+  max-width: 810px;
+  min-height: 256px;
+  height: auto;
   padding: 48px;
   justify-content: flex-start;
   align-items: flex-start;
@@ -40,10 +41,11 @@
 
 .leftSection {
   display: flex;
-  width: 352px;
+  width: 100%;
+  max-width: 352px;
+  min-width: 0;
   flex-direction: column;
   align-items: flex-start;
-  flex-shrink: 0;
   padding-bottom: 24px;
   margin-top: 10px;
   gap: 8px;
@@ -67,7 +69,8 @@
 }
 
 .title {
-  width: 352px !important;
+  width: 100% !important;
+  max-width: 352px !important;
   color: #212121 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 22px !important;
@@ -79,7 +82,8 @@
 }
 
 .subtext {
-  width: 352px !important;
+  width: 100% !important;
+  max-width: 352px !important;
   color: #757575 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 12px !important;
@@ -92,19 +96,21 @@
 
 .rightSection {
   display: flex;
-  width: 352px;
+  width: 100%;
+  max-width: 352px;
+  min-width: 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-self: center;
   gap: 16px;
-  flex-shrink: 0;
   background: transparent;
   box-sizing: border-box;
 }
 
 .loginText {
-  width: 300px !important;
+  width: 100% !important;
+  max-width: 300px !important;
   color: #212121 !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 18px !important;
@@ -116,32 +122,80 @@
   padding: 0 !important;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 600px) {
   .main {
     padding: 24px 16px;
   }
 
-  .card {
-    height: auto;
-    padding: 32px 24px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 32px;
+  .container {
+    width: 328px;
+    max-width: calc(100vw - 32px);
+    align-items: center;
   }
 
-  .leftSection,
-  .rightSection,
-  .title,
-  .subtext,
-  .loginText {
-    width: 100%;
+  .card {
+    width: 328px;
+    max-width: 100%;
+    height: auto;
+    min-height: 310px;
+    padding: 32px 16px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border-radius: 30px;
   }
 
   .leftSection {
+    width: 296px;
+    max-width: 100%;
+    padding-bottom: 24px;
     margin-top: 0;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .iconWrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #f7faff;
+    margin: 0 auto;
+  }
+
+  .title {
+    width: 296px !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    font-size: 22px !important;
+    font-weight: 400 !important;
+    line-height: 32px !important;
+    color: #212121 !important;
+  }
+
+  .subtext {
+    width: 296px !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 20px !important;
+    color: #757575 !important;
   }
 
   .rightSection {
-    align-items: stretch;
+    width: 296px;
+    max-width: 100%;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .loginText {
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    line-height: 24px !important;
+    color: #212121 !important;
   }
 }
