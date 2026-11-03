@@ -22,9 +22,14 @@ import styles from "./toolbar.module.css";
 export interface ToolbarProps {
   search: string;
   onSearchChange: (newSearch: string) => void;
+  onOpenSettings?: () => void;
 }
 
-export const Toolbar = ({ search, onSearchChange }: ToolbarProps) => {
+export const Toolbar = ({
+  search,
+  onSearchChange,
+  onOpenSettings,
+}: ToolbarProps) => {
   const { translate } = useLocalization();
   const [searchInput, setSearchInput] = useState(search);
 
@@ -97,7 +102,10 @@ export const Toolbar = ({ search, onSearchChange }: ToolbarProps) => {
           </Button>
         </Tooltip>
         <Tooltip title={translate("tableSettings")}>
-          <IconButton className={styles.toolbarIconButton}>
+          <IconButton
+            className={styles.toolbarIconButton}
+            onClick={onOpenSettings}
+          >
             <SettingsOutlinedIcon />
           </IconButton>
         </Tooltip>

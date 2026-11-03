@@ -3,8 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Box, Checkbox, Paper } from "@mui/material";
 import MaterialReactTable, {
+  type MRT_ColumnOrderState,
   type MRT_RowSelectionState,
   type MRT_SortingState,
+  type MRT_VisibilityState,
 } from "material-react-table";
 import styles from "./table.module.css";
 import { useSnackbar } from "@/shared/snackbar/use-snackbar";
@@ -17,6 +19,7 @@ import {
   setSortBy,
   setSortOrder,
 } from "@/features/requirement/requirement.slice";
+import { saveTableSettings } from "@/features/table-settings/table-settings.slice";
 import type { RequirementTableRow } from "@/types/requirement.types";
 import { Header } from "./header/header";
 import { Toolbar } from "./toolbar/toolbar";
@@ -24,6 +27,8 @@ import { Fallback } from "./fallback/fallback";
 import { RowActions } from "./row-actions/row-actions";
 import { Pagination } from "./pagination/pagination";
 import { COLUMN_SORT_MAP, useColumns } from "./columns/columns";
+import { TableSettingsDialog } from "./table-settings/table-settings-dialog";
+import type { ColumnConfigItem } from "@/types/table-settings.types";
 import { useLocalization } from "@/localize";
 
 export interface TableProps {
@@ -48,8 +53,50 @@ export const Table = ({ onCreateNew }: TableProps) => {
     error,
   } = useAppSelector((state) => state.requirements);
 
+  const { user } = useAppSelector((state) => state.auth);
+  const currentUserId = user?.uid ?? "guest";
+  const savedSettings = useAppSelector(
+    (state) => state.tableSettings.userSettings[currentUserId],
+  );
+
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
   const columns = useColumns();
+
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [columnOrder, setColumnOrder] = useState<MRT_ColumnOrderState>(
+    () => savedSettings?.columnOrder ?? [],
+  );
+  const [columnVisibility, setColumnVisibility] =
+    useState<MRT_VisibilityState>(() => savedSettings?.columnVisibility ?? {});
+
+  useEffect(() => {
+    if (savedSettings) {
+      if (savedSettings.columnOrder && savedSettings.columnOrder.length > 0) {
+        setColumnOrder(savedSettings.columnOrder);
+      }
+      if (savedSettings.columnVisibility) {
+        setColumnVisibility(savedSettings.columnVisibility);
+      }
+    }
+  }, [savedSettings]);
+
+  const availableColumns = useMemo<ColumnConfigItem[]>(() => {
+    return columns.map((col) => ({
+      id: col.accessorKey as string,
+      label:
+        typeof col.header === "string"
+          ? col.header
+          : (col.accessorKey as string),
+    }));
+  }, [columns]);
+
+  const defaultColumnOrder = useMemo<string[]>(() => {
+    return [
+      "mrt-row-select",
+      ...columns.map((col) => col.accessorKey as string),
+      "mrt-row-actions",
+    ];
+  }, [columns]);
 
   useEffect(() => {
     if (status === "failed" && error) {
@@ -127,6 +174,7 @@ export const Table = ({ onCreateNew }: TableProps) => {
         <Toolbar
           search={search}
           onSearchChange={(newSearch) => dispatch(setSearch(newSearch))}
+          onOpenSettings={() => setSettingsOpen(true)}
         />
 
         <Box className={styles.tableFrame}>
@@ -203,10 +251,14 @@ export const Table = ({ onCreateNew }: TableProps) => {
               showAlertBanner: status === "failed",
               rowSelection,
               sorting,
+              columnOrder: columnOrder.length > 0 ? columnOrder : undefined,
+              columnVisibility,
               columnPinning: {
                 right: ["mrt-row-actions"],
               },
             }}
+            onColumnOrderChange={setColumnOrder}
+            onColumnVisibilityChange={setColumnVisibility}
             muiTableProps={{ className: styles.table, stickyHeader: true }}
             muiTableHeadCellProps={{ className: styles.tableHeadCell }}
             muiTableBodyCellProps={{ className: styles.tableBodyCell }}
@@ -237,6 +289,25 @@ export const Table = ({ onCreateNew }: TableProps) => {
           />
         </Box>
       </Paper>
+
+      <TableSettingsDialog
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        availableColumns={availableColumns}
+        columnOrder={columnOrder.length > 0 ? columnOrder : defaultColumnOrder}
+        columnVisibility={columnVisibility}
+        onSave={(newOrder, newVisibility) => {
+          setColumnOrder(newOrder);
+          setColumnVisibility(newVisibility);
+          dispatch(
+            saveTableSettings({
+              userId: currentUserId,
+              columnOrder: newOrder,
+              columnVisibility: newVisibility,
+            }),
+          );
+        }}
+      />
     </Box>
   );
 };
