@@ -4,14 +4,30 @@ import { DomainRepository } from '../../infrastructure/repositories/domain.repos
 import { UserImpactLevel } from '../../domain/requirement/enums/user-impact-level.enum';
 import { FetchImpactUsersQuery } from './fetch-impact-users.query';
 
+export interface ImpactUserItem {
+  id: number;
+  name: string;
+  from: number;
+  to: number;
+}
+
+export interface ImpactUsersResponse {
+  domain_uuid: string;
+  impact_users: ImpactUserItem[];
+}
+
 @QueryHandler(FetchImpactUsersQuery)
-export class FetchImpactUsersHandler implements IQueryHandler<FetchImpactUsersQuery> {
+export class FetchImpactUsersHandler
+  implements IQueryHandler<FetchImpactUsersQuery, ImpactUsersResponse[]>
+{
   constructor(
     private readonly impactUsersRepository: ImpactUsersRepository,
     private readonly domainRepository: DomainRepository,
   ) {}
 
-  async execute(query: FetchImpactUsersQuery) {
+  async execute(
+    query: FetchImpactUsersQuery,
+  ): Promise<ImpactUsersResponse[]> {
     let resolvedUuid = query.domainUuid;
 
     if (!resolvedUuid && query.domainId) {
@@ -34,18 +50,7 @@ export class FetchImpactUsersHandler implements IQueryHandler<FetchImpactUsersQu
       orderBy: { impact_number_users_level: 'ASC' },
     });
 
-    const groupedDomainImpactMap = new Map<
-      string,
-      {
-        domain_uuid: string;
-        impact_users: Array<{
-          id: number;
-          name: string;
-          from: number;
-          to: number;
-        }>;
-      }
-    >();
+    const groupedDomainImpactMap = new Map<string, ImpactUsersResponse>();
 
     for (const impactUserRecord of impactUserRecords) {
       if (!groupedDomainImpactMap.has(impactUserRecord.domain_uuid)) {
