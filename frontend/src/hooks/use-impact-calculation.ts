@@ -27,12 +27,11 @@ export interface UseImpactCalculationReturn {
   watchedDomain?: string;
 }
 
-const getLevelNameFromImpactId = (
+export const getLevelNameFromImpactId = (
   selectedImpactUserId: string | number,
   allDomainImpactUsers: DomainImpactUsers[] | undefined,
 ): string | undefined => {
   if (
-    !allDomainImpactUsers ||
     selectedImpactUserId === "" ||
     selectedImpactUserId === undefined ||
     selectedImpactUserId === null
@@ -41,28 +40,30 @@ const getLevelNameFromImpactId = (
   }
   const numericImpactUserId = Number(selectedImpactUserId);
 
-  for (const domainImpactGroup of allDomainImpactUsers) {
-    if (Array.isArray(domainImpactGroup.impact_users)) {
-      const matchedImpactUser = domainImpactGroup.impact_users.find(
-        (impactUserItem) => Number(impactUserItem.id) === numericImpactUserId,
-      );
-      if (matchedImpactUser) {
-        return matchedImpactUser.name.toUpperCase();
-      }
-    } else if (domainImpactGroup.impact_users) {
-      const impactUsersByLevel =
-        domainImpactGroup.impact_users as unknown as Record<
-          string,
-          { id?: number }
-        >;
-      for (const [impactLevelKey, impactUserDetails] of Object.entries(
-        impactUsersByLevel,
-      )) {
-        if (
-          impactUserDetails &&
-          Number(impactUserDetails.id) === numericImpactUserId
-        ) {
-          return impactLevelKey.toUpperCase();
+  if (allDomainImpactUsers && allDomainImpactUsers.length > 0) {
+    for (const domainImpactGroup of allDomainImpactUsers) {
+      if (Array.isArray(domainImpactGroup.impact_users)) {
+        const matchedImpactUser = domainImpactGroup.impact_users.find(
+          (impactUserItem) => Number(impactUserItem.id) === numericImpactUserId,
+        );
+        if (matchedImpactUser) {
+          return matchedImpactUser.name.toUpperCase();
+        }
+      } else if (domainImpactGroup.impact_users) {
+        const impactUsersByLevel =
+          domainImpactGroup.impact_users as unknown as Record<
+            string,
+            { id?: number }
+          >;
+        for (const [impactLevelKey, impactUserDetails] of Object.entries(
+          impactUsersByLevel,
+        )) {
+          if (
+            impactUserDetails &&
+            Number(impactUserDetails.id) === numericImpactUserId
+          ) {
+            return impactLevelKey.toUpperCase();
+          }
         }
       }
     }
@@ -101,10 +102,30 @@ export const useImpactCalculation = ({
   useEffect(() => {
     if (
       !watchedImpactUsers ||
-      !watchedDomain ||
       !apiDomains ||
       !apiImpactUsers
     ) {
+      return;
+    }
+
+    if (!watchedDomain) {
+      const currentLevelName = getLevelNameFromImpactId(
+        watchedImpactUsers,
+        apiImpactUsers,
+      );
+      const LEVEL_TO_DEFAULT_ID_MAP: Record<string, number> = {
+        LOW: 1,
+        MEDIUM: 2,
+        HIGH: 3,
+        VERY_HIGH: 4,
+      };
+      const defaultImpactId = currentLevelName
+        ? LEVEL_TO_DEFAULT_ID_MAP[currentLevelName]
+        : undefined;
+
+      if (defaultImpactId && Number(watchedImpactUsers) !== defaultImpactId) {
+        setValue("impactUsers", defaultImpactId, { shouldValidate: false });
+      }
       return;
     }
 

@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={openSans.variable}>
-      <body className={openSans.className}>
+      <body className={openSans.className} suppressHydrationWarning>
         <StoreProvider>
           <SnackbarProvider>{children}</SnackbarProvider>
         </StoreProvider>

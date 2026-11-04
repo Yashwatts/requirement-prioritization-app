@@ -57,6 +57,7 @@
   "position": "Position",
   "visibleColumns": "Visible columns",
   "hiddenColumns": "Hidden columns",
+  "swapColumns": "Swap columns",
   "save": "Save",
   "moreActions": "More actions",
   "viewRequirement": "View requirement",
@@ -85,5 +86,9 @@
   "authNetworkError": "Network connection error. Please check your internet connection.",
   "authUserDisabled": "This user account has been disabled. Please contact support.",
   "authUnauthorizedDomain": "This Google account is not authorized to access the application. Please use an approved account.",
-  "authUnexpectedError": "An unexpected error occurred during authentication. Please try again."
+  "authUnexpectedError": "An unexpected error occurred during authentication. Please try again.",
+  "insertLink": "Insert Link",
+  "linkText": "Link Text",
+  "url": "URL",
+  "unlink": "Unlink"
 }

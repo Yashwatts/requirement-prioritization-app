@@ -47,7 +47,29 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: #424242;
+}
+
+.syncIconButton {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  padding: 6px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #424242 !important;
+  background-color: transparent !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, transform 0.1s ease !important;
+}
+
+.syncIconButton:hover {
+  background-color: rgba(66, 66, 66, 0.08) !important;
+}
+
+.syncIconButton:active {
+  transform: scale(0.92) !important;
 }
 
 .syncIcon {

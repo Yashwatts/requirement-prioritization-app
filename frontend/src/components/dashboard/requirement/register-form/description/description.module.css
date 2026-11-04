@@ -135,6 +135,7 @@
 .editorBody :global(.tiptap a) {
   color: #01579b;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .helperText {

@@ -57,6 +57,7 @@
   "position": "Posición",
   "visibleColumns": "Columnas visibles",
   "hiddenColumns": "Columnas no visibles",
+  "swapColumns": "Intercambiar columnas",
   "save": "Guardar",
   "moreActions": "Más acciones",
   "viewRequirement": "Ver requerimiento",
@@ -85,5 +86,9 @@
   "authNetworkError": "Error de conexión de red. Por favor comprueba tu conexión a internet.",
   "authUserDisabled": "Esta cuenta de usuario ha sido inhabilitada. Por favor contacta al soporte.",
   "authUnauthorizedDomain": "Esta cuenta de Google no está autorizada para acceder a la aplicación. Por favor utiliza una cuenta autorizada.",
-  "authUnexpectedError": "Ocurrió un error inesperado durante la autenticación. Por favor intenta nuevamente."
+  "authUnexpectedError": "Ocurrió un error inesperado durante la autenticación. Por favor intenta nuevamente.",
+  "insertLink": "Insertar enlace",
+  "linkText": "Texto del enlace",
+  "url": "URL",
+  "unlink": "Eliminar enlace"
 }

@@ -13,7 +13,7 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LinkIcon from "@mui/icons-material/Link";
 import CodeIcon from "@mui/icons-material/Code";
-import { LinkPopover } from "../link-popover/link-popover";
+import { LinkDialog } from "../link-dialog/link-dialog";
 import styles from "./toolbar.module.css";
 
 const FONT_OPTIONS = [
@@ -32,7 +32,7 @@ interface ToolbarProps {
 export const Toolbar = ({ editor }: ToolbarProps) => {
   const [fontAnchor, setFontAnchor] = useState<null | HTMLElement>(null);
   const [headingAnchor, setHeadingAnchor] = useState<null | HTMLElement>(null);
-  const [linkAnchor, setLinkAnchor] = useState<null | HTMLElement>(null);
+  const [linkDialogOpen, setLinkDialogOpen] = useState(false);
   const [currentFont, setCurrentFont] = useState("Sans Serif");
 
   if (!editor) return null;
@@ -275,7 +275,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
             className={`${styles.linkCodeButton} ${
               editor.isActive("link") ? styles.activeButton : ""
             }`}
-            onClick={(event) => setLinkAnchor(event.currentTarget)}
+            onClick={() => setLinkDialogOpen(true)}
             onMouseDown={(event) => event.preventDefault()}
             aria-label="Link"
           >
@@ -300,10 +300,10 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
         </Box>
       </Box>
 
-      <LinkPopover
+      <LinkDialog
+        open={linkDialogOpen}
         editor={editor}
-        anchorEl={linkAnchor}
-        onClose={() => setLinkAnchor(null)}
+        onClose={() => setLinkDialogOpen(false)}
       />
     </>
   );

@@ -127,6 +127,7 @@ export const useRegisterRequirementForm = ({
   });
 
   const watchedDomain = watch("domain");
+  const watchedImpactUsers = watch("impactUsers");
 
   const {
     apiInstitutions,
@@ -145,6 +146,7 @@ export const useRegisterRequirementForm = ({
   } = useRequirementOptions({
     open,
     watchedDomain,
+    watchedImpactUsers,
   });
 
   useImpactCalculation({
@@ -184,16 +186,8 @@ export const useRegisterRequirementForm = ({
       domains_collaborators: values.collaboratorDomains,
       followers_domains: values.followerDomains,
       status: values.status,
-      start_date: values.startDate
-        ? values.startDate.length === 8
-          ? `20${values.startDate}`
-          : values.startDate
-        : undefined,
-      end_date: values.finishDate
-        ? values.finishDate.length === 8
-          ? `20${values.finishDate}`
-          : values.finishDate
-        : undefined,
+      start_date: values.startDate || undefined,
+      end_date: values.finishDate || undefined,
       type: values.type,
     };
 

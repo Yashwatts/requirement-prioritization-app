@@ -36,12 +36,30 @@ const TipTapCanvas = ({
           openOnClick: false,
           autolink: true,
           defaultProtocol: "https",
+          HTMLAttributes: {
+            target: "_blank",
+            rel: "noopener noreferrer",
+          },
         },
         underline: {},
       }),
       TextStyle,
       FontFamily,
     ],
+    editorProps: {
+      handleClick(view, pos, event) {
+        if (event.ctrlKey || event.metaKey) {
+          const target = event.target as HTMLElement | null;
+          const anchor = target?.closest("a");
+          if (anchor && anchor.href) {
+            event.preventDefault();
+            window.open(anchor.href, "_blank", "noopener,noreferrer");
+            return true;
+          }
+        }
+        return false;
+      },
+    },
     content: value ?? "",
     immediatelyRender: false,
     onUpdate: ({ editor: currentEditor }) => {
@@ -78,6 +96,17 @@ const TipTapCanvas = ({
       <Box className={`${styles.editor} ${error ? styles.editorError : ""}`}>
         <Box
           className={styles.editorBody}
+          onClickCapture={(event) => {
+            if (event.ctrlKey || event.metaKey) {
+              const target = event.target as HTMLElement | null;
+              const anchor = target?.closest("a");
+              if (anchor && anchor.href) {
+                event.preventDefault();
+                event.stopPropagation();
+                window.open(anchor.href, "_blank", "noopener,noreferrer");
+              }
+            }
+          }}
           onClick={() => {
             if (editor && !editor.isFocused) {
               editor.commands.focus();

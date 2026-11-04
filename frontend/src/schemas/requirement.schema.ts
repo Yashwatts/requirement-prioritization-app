@@ -52,9 +52,7 @@ export const requirementFormSchema = z
       .optional()
       .refine((dateString) => {
         if (!dateString) return true;
-        const normalized =
-          dateString.length === 8 ? `20${dateString}` : dateString;
-        return !isNaN(Date.parse(normalized));
+        return !isNaN(Date.parse(dateString));
       }, "Start date must be a valid date"),
 
     finishDate: z
@@ -62,9 +60,7 @@ export const requirementFormSchema = z
       .optional()
       .refine((dateString) => {
         if (!dateString) return true;
-        const normalized =
-          dateString.length === 8 ? `20${dateString}` : dateString;
-        return !isNaN(Date.parse(normalized));
+        return !isNaN(Date.parse(dateString));
       }, "Finish date must be a valid date"),
 
     description: z
@@ -76,15 +72,7 @@ export const requirementFormSchema = z
   .refine(
     (formValues) => {
       if (formValues.startDate && formValues.finishDate) {
-        const startStr =
-          formValues.startDate.length === 8
-            ? `20${formValues.startDate}`
-            : formValues.startDate;
-        const finishStr =
-          formValues.finishDate.length === 8
-            ? `20${formValues.finishDate}`
-            : formValues.finishDate;
-        return new Date(finishStr) >= new Date(startStr);
+        return new Date(formValues.finishDate) >= new Date(formValues.startDate);
       }
       return true;
     },

@@ -13,10 +13,12 @@ import type {
   DomainImpactUsers,
   UserImpactRanges,
 } from "@/features/requirement/requirement.type";
+import { getLevelNameFromImpactId } from "./use-impact-calculation";
 
 export interface UseRequirementOptionsParameters {
   open: boolean;
   watchedDomain?: string;
+  watchedImpactUsers?: string | number;
 }
 
 export interface UseRequirementOptionsReturn {
@@ -66,6 +68,7 @@ const formatImpactLabel = (
 export const useRequirementOptions = ({
   open,
   watchedDomain,
+  watchedImpactUsers,
 }: UseRequirementOptionsParameters): UseRequirementOptionsReturn => {
   const dispatch = useAppDispatch();
 
@@ -129,15 +132,39 @@ export const useRequirementOptions = ({
   );
 
   const impactOptions = useMemo((): { label: string; value: number }[] => {
-    if (!watchedDomain || !apiDomains || !apiImpactUsers) {
+    const getDefaultOptionsForCurrentSelection = () => {
+      if (watchedImpactUsers && apiImpactUsers) {
+        const levelName = getLevelNameFromImpactId(
+          watchedImpactUsers,
+          apiImpactUsers,
+        );
+        if (levelName) {
+          return DEFAULT_IMPACT_OPTIONS.map((defaultOption) => {
+            const optionLevel = defaultOption.label
+              .toUpperCase()
+              .replace(" ", "_");
+            if (optionLevel === levelName) {
+              return {
+                ...defaultOption,
+                value: Number(watchedImpactUsers),
+              };
+            }
+            return defaultOption;
+          });
+        }
+      }
       return DEFAULT_IMPACT_OPTIONS;
+    };
+
+    if (!watchedDomain || !apiDomains || !apiImpactUsers) {
+      return getDefaultOptionsForCurrentSelection();
     }
 
     const resolvedDomain = apiDomains.find(
       (domainItem) => domainItem.name === watchedDomain,
     );
     if (!resolvedDomain) {
-      return DEFAULT_IMPACT_OPTIONS;
+      return getDefaultOptionsForCurrentSelection();
     }
 
     const domainImpactGroup = apiImpactUsers.find(
@@ -185,7 +212,7 @@ export const useRequirementOptions = ({
         value: VERY_HIGH?.id ?? 4,
       },
     ];
-  }, [watchedDomain, apiDomains, apiImpactUsers]);
+  }, [watchedDomain, watchedImpactUsers, apiDomains, apiImpactUsers]);
 
   return {
     apiInstitutions,

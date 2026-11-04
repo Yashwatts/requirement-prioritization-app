@@ -10,6 +10,7 @@ import updateLocale from "dayjs/plugin/updateLocale";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import "dayjs/locale/en";
 import "dayjs/locale/es";
+import { useLocalization } from "@/localize";
 import type { RequirementFormValues } from "@/schemas/requirement.schema";
 import styles from "./form-date-picker.module.css";
 
@@ -24,6 +25,7 @@ export interface FormDatePickerProps {
   helperText?: string;
   error?: string;
   className?: string;
+  format?: string;
 }
 
 export const FormDatePicker = ({
@@ -32,8 +34,13 @@ export const FormDatePicker = ({
   helperText,
   error,
   className,
+  format,
 }: FormDatePickerProps) => {
   const { control } = useFormContext<RequirementFormValues>();
+  const { locale } = useLocalization();
+
+  const dateFormat =
+    format ?? (locale === "es-ES" ? "YYYY-MM-DD" : "DD-MM-YYYY");
 
   return (
     <Box className={`${styles.fieldWrapper} ${className ?? ""}`.trim()}>
@@ -43,7 +50,12 @@ export const FormDatePicker = ({
         render={({ field: { value, onChange, onBlur } }) => {
           const dateValue = (() => {
             if (!value || typeof value !== "string") return null;
-            const parsed = dayjs(value, ["YYYY-MM-DD", "YY-MM-DD"]);
+            const parsed = dayjs(value, [
+              "YYYY-MM-DD",
+              "DD-MM-YYYY",
+              "YY-MM-DD",
+              "DD-MM-YY",
+            ]);
             if (parsed.isValid()) return parsed;
             const fallback = dayjs(value);
             return fallback.isValid() ? fallback : null;
@@ -53,7 +65,7 @@ export const FormDatePicker = ({
             <DatePicker
               label={label}
               value={dateValue}
-              format="YY-MM-DD"
+              format={dateFormat}
               dayOfWeekFormatter={(date: Dayjs) =>
                 date.format("dd")[0].toUpperCase()
               }

@@ -135,40 +135,32 @@ export const ChipList = ({
   const hiddenItems = validItems.slice(visibleCount);
   const hasHidden = hiddenItems.length > 0;
 
-  const content = (
-    <Box
-      ref={containerRef}
-      className={`${styles.multiChipCell} ${className ?? ""}`.trim()}
-    >
-      {visibleItems.map((item, index) => (
-        <Chip
-          key={index}
-          className={
-            !hasHidden && visibleItems.length === 1
-              ? styles.primaryChipSingle
-              : styles.primaryChip
-          }
-          label={item}
-        />
-      ))}
-      {hasHidden && (
-        <Chip
-          className={styles.counterChip}
-          label={`+${hiddenItems.length}`}
-        />
-      )}
-    </Box>
-  );
-
   return (
     <>
-      {hasHidden ? (
-        <Tooltip placement="bottom-start" title={hiddenItems.join(", ")}>
-          {content}
-        </Tooltip>
-      ) : (
-        content
-      )}
+      <Box
+        ref={containerRef}
+        className={`${styles.multiChipCell} ${className ?? ""}`.trim()}
+      >
+        {visibleItems.map((item, index) => (
+          <Chip
+            key={index}
+            className={
+              !hasHidden && visibleItems.length === 1
+                ? styles.primaryChipSingle
+                : styles.primaryChip
+            }
+            label={item}
+          />
+        ))}
+        {hasHidden && (
+          <Tooltip placement="bottom-start" title={hiddenItems.join(", ")}>
+            <Chip
+              className={styles.counterChip}
+              label={`+${hiddenItems.length}`}
+            />
+          </Tooltip>
+        )}
+      </Box>
 
       {validItems.length > 1 && (
         <Box className={styles.measureContainer} aria-hidden="true">

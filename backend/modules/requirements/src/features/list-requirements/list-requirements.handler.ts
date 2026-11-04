@@ -50,7 +50,7 @@ export class ListRequirementsHandler implements IQueryHandler<
             },
           },
           {
-            [raw('requirementTable.code::text')]: {
+            [raw('"requirementTable"."code"::text')]: {
               $ilike: `%${search}%`,
             },
           },
@@ -106,12 +106,12 @@ export class ListRequirementsHandler implements IQueryHandler<
     queryBuilder.where(criteria);
 
     const INLINE_CASE_SORT_MAP: Record<string, string> = {
-      complexity_and_effort: `(CASE requirementTable.complexity_and_effort WHEN 1 THEN 'XS' WHEN 2 THEN 'S' WHEN 3 THEN 'M' WHEN 4 THEN 'L' WHEN 5 THEN 'XL' ELSE NULL END)`,
-      client_priority: `(CASE requirementTable.client_priority WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' ELSE NULL END)`,
-      status: `(CASE requirementTable.status WHEN 1 THEN 'Registered' WHEN 2 THEN 'Flow' ELSE NULL END)`,
-      type: `(CASE requirementTable.type WHEN 1 THEN 'Internal' WHEN 2 THEN 'External' WHEN 3 THEN 'Client' ELSE NULL END)`,
-      obligation: `(CASE requirementTable.obligation WHEN true THEN 'Yes' ELSE 'No' END)`,
-      exist_solution_alternative: `(CASE requirementTable.exist_solution_alternative WHEN true THEN 'Yes' ELSE 'No' END)`,
+      complexity_and_effort: `(CASE "requirementTable"."complexity_and_effort" WHEN 1 THEN 'XS' WHEN 2 THEN 'S' WHEN 3 THEN 'M' WHEN 4 THEN 'L' WHEN 5 THEN 'XL' ELSE NULL END)`,
+      client_priority: `(CASE "requirementTable"."client_priority" WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' ELSE NULL END)`,
+      status: `(CASE "requirementTable"."status" WHEN 1 THEN 'Registered' WHEN 2 THEN 'Flow' ELSE NULL END)`,
+      type: `(CASE "requirementTable"."type" WHEN 1 THEN 'Internal' WHEN 2 THEN 'External' WHEN 3 THEN 'Client' ELSE NULL END)`,
+      obligation: `(CASE "requirementTable"."obligation" WHEN true THEN 'Yes' ELSE 'No' END)`,
+      exist_solution_alternative: `(CASE "requirementTable"."exist_solution_alternative" WHEN true THEN 'Yes' ELSE 'No' END)`,
     };
 
     if (safeSortBy === 'domain_in_charge_id') {
@@ -119,7 +119,7 @@ export class ListRequirementsHandler implements IQueryHandler<
         knexConnection(`${databaseSchema}.domains`),
         'domainTable',
         {
-          'domainTable.id': raw('requirementTable.domain_in_charge_id'),
+          'domainTable.id': raw('"requirementTable"."domain_in_charge_id"'),
         },
       );
       queryBuilder.orderBy({
@@ -132,7 +132,7 @@ export class ListRequirementsHandler implements IQueryHandler<
         'institutionTable',
         {
           'institutionTable.id': raw(
-            'requirementTable.requesting_institution_id',
+            '"requirementTable"."requesting_institution_id"',
           ),
         },
       );
@@ -146,13 +146,13 @@ export class ListRequirementsHandler implements IQueryHandler<
         'impactUsersDomainTable',
         {
           'impactUsersDomainTable.id': raw(
-            'requirementTable.impact_number_users_id',
+            '"requirementTable"."impact_number_users_id"',
           ),
         },
       );
       queryBuilder.orderBy({
         [raw(
-          "(CASE impactUsersDomainTable.impact_number_users_level WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' WHEN 4 THEN 'Very High' ELSE NULL END)",
+          `(CASE "impactUsersDomainTable"."impact_number_users_level" WHEN 1 THEN 'Low' WHEN 2 THEN 'Medium' WHEN 3 THEN 'High' WHEN 4 THEN 'Very High' ELSE NULL END)`,
         )]: safeSortOrder,
         'requirementTable.id': 'DESC',
       });

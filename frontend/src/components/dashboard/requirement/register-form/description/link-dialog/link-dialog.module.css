@@ -1,0 +1,116 @@
+.dialogPaper {
+  width: 100% !important;
+  max-width: 440px !important;
+  border-radius: 8px !important;
+  background-color: #ffffff !important;
+  padding: 24px !important;
+  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2),
+    0px 24px 38px 3px rgba(0, 0, 0, 0.14),
+    0px 9px 46px 8px rgba(0, 0, 0, 0.12) !important;
+  margin: 16px !important;
+  box-sizing: border-box !important;
+}
+
+.title {
+  padding: 0 0 20px 0 !important;
+  margin: 0 !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  line-height: 28px !important;
+  color: #212121 !important;
+}
+
+.content {
+  padding: 0 !important;
+  margin: 0 0 24px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  overflow: visible !important;
+}
+
+.inputRoot {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #424242 !important;
+  border-radius: 8px !important;
+}
+
+.inputLabel {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #757575 !important;
+}
+
+.helperText {
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 12px !important;
+  color: #757575 !important;
+  margin: 4px 0 0 0 !important;
+}
+
+.actions {
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+}
+
+.cancelButton {
+  min-width: 64px !important;
+  height: 36px !important;
+  padding: 6px 12px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.07px !important;
+  color: #424242 !important;
+  text-transform: uppercase !important;
+  background-color: transparent !important;
+  border-radius: 6px !important;
+}
+
+.cancelButton:hover {
+  background-color: rgba(66, 66, 66, 0.04) !important;
+}
+
+.saveButton {
+  min-width: 64px !important;
+  height: 36px !important;
+  padding: 6px 16px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.07px !important;
+  color: #01579b !important;
+  text-transform: uppercase !important;
+  background-color: transparent !important;
+  border-radius: 6px !important;
+}
+
+.saveButton:hover {
+  background-color: rgba(1, 87, 155, 0.04) !important;
+}
+
+.unlinkButton {
+  min-width: 64px !important;
+  height: 36px !important;
+  padding: 6px 12px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.07px !important;
+  color: #d32f2f !important;
+  text-transform: uppercase !important;
+  background-color: transparent !important;
+  border-radius: 6px !important;
+  margin-right: auto !important;
+}
+
+.unlinkButton:hover {
+  background-color: rgba(211, 47, 47, 0.04) !important;
+}
+

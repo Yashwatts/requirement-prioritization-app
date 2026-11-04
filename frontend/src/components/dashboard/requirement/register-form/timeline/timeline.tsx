@@ -27,14 +27,7 @@ export const Timeline = () => {
 
     return {
       ...baseLocaleText,
-      fieldYearPlaceholder: (params: { digitAmount?: number }) =>
-        params.digitAmount === 2
-          ? locale === "es-ES"
-            ? "AA"
-            : "YY"
-          : locale === "es-ES"
-            ? "AAAA"
-            : "YYYY",
+      fieldYearPlaceholder: () => (locale === "es-ES" ? "AAAA" : "YYYY"),
     };
   }, [locale]);
 

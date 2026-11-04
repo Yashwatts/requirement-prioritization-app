@@ -188,6 +188,13 @@ export const FormSelectField = ({
                 ) {
                   return "";
                 }
+                if (name === "impactUsers") {
+                  const numericVal = Number(selectedValue);
+                  if (numericVal === 1) return "Low";
+                  if (numericVal === 2) return "Medium";
+                  if (numericVal === 3) return "High";
+                  if (numericVal === 4) return "Very High";
+                }
                 return String(selectedValue);
               }}
             >
