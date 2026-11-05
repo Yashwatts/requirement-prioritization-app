@@ -1,5 +1,6 @@
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
+import { FilterQuery, FindOptions } from '@mikro-orm/core';
 import { Requirement } from '@modules/requirements/src/domain/requirement/requirement';
 
 @Injectable()
@@ -8,15 +9,8 @@ export class RequirementRepository extends EntityRepository<Requirement> {
     super(em, Requirement);
   }
 
-  async findByIdOrUuid(id: string | number): Promise<Requirement | null> {
-    const isNumeric = typeof id === 'number' || /^\d+$/.test(String(id));
-    if (isNumeric) {
-      const numericCodeOrId = Number(id);
-      return this.findOne({
-        $or: [{ id: numericCodeOrId }, { code: numericCodeOrId }],
-      });
-    }
-    return this.findOne({ uuid: String(id) });
+  async findByUuid(uuid: string): Promise<Requirement | null> {
+    return this.findOne({ uuid });
   }
 
   async save(requirement: Requirement | Requirement[]): Promise<void> {
@@ -24,8 +18,10 @@ export class RequirementRepository extends EntityRepository<Requirement> {
     await this.em.flush();
   }
 
-  async remove(requirement: Requirement): Promise<void> {
-    this.em.remove(requirement);
-    await this.em.flush();
+  async search(
+    criteria: FilterQuery<Requirement>,
+    options: FindOptions<Requirement>,
+  ): Promise<[Requirement[], number]> {
+    return this.findAndCount(criteria, options);
   }
 }

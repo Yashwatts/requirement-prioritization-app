@@ -8,7 +8,7 @@ export class ModifyClientPriorityHandler implements ICommandHandler<ModifyClient
   constructor(private readonly requirementRepository: RequirementRepository) {}
 
   async execute(command: ModifyClientPriorityCommand): Promise<void> {
-    const requirement = await this.requirementRepository.findByIdOrUuid(
+    const requirement = await this.requirementRepository.findByUuid(
       command.requirementId,
     );
 
@@ -16,7 +16,7 @@ export class ModifyClientPriorityHandler implements ICommandHandler<ModifyClient
       throw new RequirementNotFound();
     }
 
-    requirement.modifyClientPriority(command.payload.client_priority);
+    requirement.modifyClientPriority(command.priorityData.client_priority);
     await this.requirementRepository.save(requirement);
   }
 }

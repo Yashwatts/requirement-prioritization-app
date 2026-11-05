@@ -36,10 +36,9 @@ export const BeneficiariesScope = ({
 
       <Box className={styles.twoColumns}>
         <FormSelectField
-          name="studyModalities"
+          name="studyModality"
           label={translate("studyModality")}
           options={STUDY_MODALITIES}
-          multiple
         />
         <FormSelectField
           name="isObligatory"

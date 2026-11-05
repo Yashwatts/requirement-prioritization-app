@@ -1,7 +1,7 @@
 export enum ComplexityEffort {
-  XS = 1,
-  S = 2,
-  M = 3,
-  L = 4,
-  XL = 5,
+  XS = 'XS',
+  S = 'S',
+  M = 'M',
+  L = 'L',
+  XL = 'XL',
 }

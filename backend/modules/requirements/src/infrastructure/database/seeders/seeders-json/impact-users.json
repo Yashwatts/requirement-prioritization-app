@@ -1,0 +1,363 @@
+[
+  {
+    "domain_uuid": "d40d5b7d-735e-5e84-932d-74d8dd1d1e43",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "d40d5b7d-735e-5e84-932d-74d8dd1d1e43",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 25 }
+  },
+  {
+    "domain_uuid": "d40d5b7d-735e-5e84-932d-74d8dd1d1e43",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 25, "to": 50 }
+  },
+  {
+    "domain_uuid": "d40d5b7d-735e-5e84-932d-74d8dd1d1e43",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 50, "to": 100 }
+  },
+  {
+    "domain_uuid": "4313afe3-d273-576f-bdba-fd06c6bbe02e",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "4313afe3-d273-576f-bdba-fd06c6bbe02e",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 25 }
+  },
+  {
+    "domain_uuid": "4313afe3-d273-576f-bdba-fd06c6bbe02e",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 25, "to": 50 }
+  },
+  {
+    "domain_uuid": "4313afe3-d273-576f-bdba-fd06c6bbe02e",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 50, "to": 100 }
+  },
+  {
+    "domain_uuid": "6745c6f3-3546-57a0-988f-9351ace75e95",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 15 }
+  },
+  {
+    "domain_uuid": "6745c6f3-3546-57a0-988f-9351ace75e95",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 15, "to": 35 }
+  },
+  {
+    "domain_uuid": "6745c6f3-3546-57a0-988f-9351ace75e95",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 35, "to": 65 }
+  },
+  {
+    "domain_uuid": "6745c6f3-3546-57a0-988f-9351ace75e95",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 65, "to": 100 }
+  },
+  {
+    "domain_uuid": "3196aa9c-9016-52c2-929b-0ed1a909dff6",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 15 }
+  },
+  {
+    "domain_uuid": "3196aa9c-9016-52c2-929b-0ed1a909dff6",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 15, "to": 35 }
+  },
+  {
+    "domain_uuid": "3196aa9c-9016-52c2-929b-0ed1a909dff6",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 35, "to": 60 }
+  },
+  {
+    "domain_uuid": "3196aa9c-9016-52c2-929b-0ed1a909dff6",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 60, "to": 100 }
+  },
+  {
+    "domain_uuid": "5da5d727-66cd-5ab2-a8bc-2610174d7638",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "5da5d727-66cd-5ab2-a8bc-2610174d7638",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 30 }
+  },
+  {
+    "domain_uuid": "5da5d727-66cd-5ab2-a8bc-2610174d7638",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 30, "to": 60 }
+  },
+  {
+    "domain_uuid": "5da5d727-66cd-5ab2-a8bc-2610174d7638",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 60, "to": 100 }
+  },
+  {
+    "domain_uuid": "050d712f-ff4b-5958-ad61-6c5a8b9203b3",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "050d712f-ff4b-5958-ad61-6c5a8b9203b3",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 20 }
+  },
+  {
+    "domain_uuid": "050d712f-ff4b-5958-ad61-6c5a8b9203b3",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 20, "to": 45 }
+  },
+  {
+    "domain_uuid": "050d712f-ff4b-5958-ad61-6c5a8b9203b3",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 45, "to": 80 }
+  },
+  {
+    "domain_uuid": "56aa8d89-2faf-5d52-bf76-a0058fa24cdc",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 25 }
+  },
+  {
+    "domain_uuid": "56aa8d89-2faf-5d52-bf76-a0058fa24cdc",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 25, "to": 50 }
+  },
+  {
+    "domain_uuid": "56aa8d89-2faf-5d52-bf76-a0058fa24cdc",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 50, "to": 75 }
+  },
+  {
+    "domain_uuid": "56aa8d89-2faf-5d52-bf76-a0058fa24cdc",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 75, "to": 100 }
+  },
+  {
+    "domain_uuid": "cec8cfe2-22b0-53c7-8cef-8e4e64a6e929",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 25 }
+  },
+  {
+    "domain_uuid": "cec8cfe2-22b0-53c7-8cef-8e4e64a6e929",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 25, "to": 50 }
+  },
+  {
+    "domain_uuid": "cec8cfe2-22b0-53c7-8cef-8e4e64a6e929",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 50, "to": 75 }
+  },
+  {
+    "domain_uuid": "cec8cfe2-22b0-53c7-8cef-8e4e64a6e929",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 75, "to": 100 }
+  },
+  {
+    "domain_uuid": "46870ab1-bdda-591b-980c-4430f92035a5",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "46870ab1-bdda-591b-980c-4430f92035a5",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 25 }
+  },
+  {
+    "domain_uuid": "46870ab1-bdda-591b-980c-4430f92035a5",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 25, "to": 50 }
+  },
+  {
+    "domain_uuid": "46870ab1-bdda-591b-980c-4430f92035a5",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 50, "to": 90 }
+  },
+  {
+    "domain_uuid": "70e67789-b68e-52e5-979c-156bd452a084",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 15 }
+  },
+  {
+    "domain_uuid": "70e67789-b68e-52e5-979c-156bd452a084",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 15, "to": 30 }
+  },
+  {
+    "domain_uuid": "70e67789-b68e-52e5-979c-156bd452a084",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 30, "to": 55 }
+  },
+  {
+    "domain_uuid": "70e67789-b68e-52e5-979c-156bd452a084",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 55, "to": 95 }
+  },
+  {
+    "domain_uuid": "ef1c554e-44f6-5472-8f77-e51f432ca1b5",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "ef1c554e-44f6-5472-8f77-e51f432ca1b5",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 25 }
+  },
+  {
+    "domain_uuid": "ef1c554e-44f6-5472-8f77-e51f432ca1b5",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 25, "to": 50 }
+  },
+  {
+    "domain_uuid": "ef1c554e-44f6-5472-8f77-e51f432ca1b5",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 50, "to": 85 }
+  },
+  {
+    "domain_uuid": "543350f3-5ca6-5723-8e63-267923fef3fe",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "543350f3-5ca6-5723-8e63-267923fef3fe",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 20 }
+  },
+  {
+    "domain_uuid": "543350f3-5ca6-5723-8e63-267923fef3fe",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 20, "to": 40 }
+  },
+  {
+    "domain_uuid": "543350f3-5ca6-5723-8e63-267923fef3fe",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 40, "to": 75 }
+  },
+  {
+    "domain_uuid": "c4234e32-58bb-5a6e-a9a8-8b3449c085fc",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 20 }
+  },
+  {
+    "domain_uuid": "c4234e32-58bb-5a6e-a9a8-8b3449c085fc",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 20, "to": 45 }
+  },
+  {
+    "domain_uuid": "c4234e32-58bb-5a6e-a9a8-8b3449c085fc",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 45, "to": 75 }
+  },
+  {
+    "domain_uuid": "c4234e32-58bb-5a6e-a9a8-8b3449c085fc",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 75, "to": 100 }
+  },
+  {
+    "domain_uuid": "617fed1f-5c35-4053-8d34-c71f1bb73f65",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 15 }
+  },
+  {
+    "domain_uuid": "617fed1f-5c35-4053-8d34-c71f1bb73f65",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 15, "to": 30 }
+  },
+  {
+    "domain_uuid": "617fed1f-5c35-4053-8d34-c71f1bb73f65",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 30, "to": 55 }
+  },
+  {
+    "domain_uuid": "617fed1f-5c35-4053-8d34-c71f1bb73f65",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 55, "to": 90 }
+  },
+  {
+    "domain_uuid": "54b20361-87cb-44be-8401-6a508d5725b2",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "54b20361-87cb-44be-8401-6a508d5725b2",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 25 }
+  },
+  {
+    "domain_uuid": "54b20361-87cb-44be-8401-6a508d5725b2",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 25, "to": 50 }
+  },
+  {
+    "domain_uuid": "54b20361-87cb-44be-8401-6a508d5725b2",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 50, "to": 85 }
+  },
+  {
+    "domain_uuid": "fab4d8fd-2a7a-4637-99cd-d573592d6eee",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 15 }
+  },
+  {
+    "domain_uuid": "fab4d8fd-2a7a-4637-99cd-d573592d6eee",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 15, "to": 35 }
+  },
+  {
+    "domain_uuid": "fab4d8fd-2a7a-4637-99cd-d573592d6eee",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 35, "to": 65 }
+  },
+  {
+    "domain_uuid": "fab4d8fd-2a7a-4637-99cd-d573592d6eee",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 65, "to": 100 }
+  },
+  {
+    "domain_uuid": "47afa8e4-2d70-4bc7-bda8-bd09266cdbd1",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "47afa8e4-2d70-4bc7-bda8-bd09266cdbd1",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 25 }
+  },
+  {
+    "domain_uuid": "47afa8e4-2d70-4bc7-bda8-bd09266cdbd1",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 25, "to": 50 }
+  },
+  {
+    "domain_uuid": "47afa8e4-2d70-4bc7-bda8-bd09266cdbd1",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 50, "to": 90 }
+  },
+  {
+    "domain_uuid": "c3af87be-ccb1-4bd6-922d-1251a428f844",
+    "impact_number_users_level": "LOW",
+    "quantity": { "from": 0, "to": 10 }
+  },
+  {
+    "domain_uuid": "c3af87be-ccb1-4bd6-922d-1251a428f844",
+    "impact_number_users_level": "MEDIUM",
+    "quantity": { "from": 10, "to": 20 }
+  },
+  {
+    "domain_uuid": "c3af87be-ccb1-4bd6-922d-1251a428f844",
+    "impact_number_users_level": "HIGH",
+    "quantity": { "from": 20, "to": 40 }
+  },
+  {
+    "domain_uuid": "c3af87be-ccb1-4bd6-922d-1251a428f844",
+    "impact_number_users_level": "VERY_HIGH",
+    "quantity": { "from": 40, "to": 80 }
+  }
+]
+

@@ -1,0 +1,15 @@
+[
+  { "name": "FUNIBER", "uuid": "850de911-21ad-4943-825f-9e14ec81ed6d" },
+  { "name": "UNEATLANTICO", "uuid": "1867d2c7-5826-4e8a-898c-5c4e448e95ac" },
+  { "name": "UNIC", "uuid": "148b0f2f-9dfb-4894-a6a0-fc0fe7a74939" },
+  { "name": "UNINCOL", "uuid": "16615ae1-f207-49ec-a940-c8e970de54e4" },
+  { "name": "UNIB", "uuid": "aec4126a-756d-4097-8f0e-68c89931f579" },
+  { "name": "UNINI-MX", "uuid": "e4c211a3-936c-4c22-beaf-c8038af73368" },
+  { "name": "UNIROMANA", "uuid": "656e260c-f057-48f3-b4ff-c68b5351a2b4" },
+  { "name": "UDAS", "uuid": "9674f3a1-eb80-4f4d-826e-23a5276a355f" },
+  { "name": "Grupo Funiber", "uuid": "18d0c1c1-544b-4528-ad73-3c9733dc0697" },
+  {
+    "name": "Proyectos Europeos",
+    "uuid": "25a0eab4-ae7e-41b2-80cd-cb87a7da70d0"
+  }
+]

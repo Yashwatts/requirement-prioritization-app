@@ -10,11 +10,10 @@ export class ModifyClientPriorityController {
   @Patch()
   async handle(
     @Param('id') requirementId: string,
-    @Body() validator: ModifyClientPriorityValidator,
+    @Body() modifyClientPriorityValidator: ModifyClientPriorityValidator,
   ) {
-    await this.commandBus.execute(
-      new ModifyClientPriorityCommand(requirementId, validator),
-    );
+    const command =  new ModifyClientPriorityCommand(requirementId, modifyClientPriorityValidator)
+    await this.commandBus.execute(command);
     return {
       message: 'Client priority modified successfully',
     };

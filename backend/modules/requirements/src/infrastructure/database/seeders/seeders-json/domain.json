@@ -1,0 +1,182 @@
+[
+  {
+    "abbreviation": "FINA",
+    "name": "Financiero",
+    "translations": {
+      "en_US": "Financial",
+      "pt_BR": ""
+    },
+    "email": "ct.financiero@funiber.org",
+    "uuid": "d40d5b7d-735e-5e84-932d-74d8dd1d1e43"
+  },
+  {
+    "abbreviation": "REIN",
+    "name": "Reincorporaciones",
+    "translations": {
+      "en_US": "Reinstatements",
+      "pt_BR": ""
+    },
+    "email": "ct.reincorporaciones@funiber.org",
+    "uuid": "4313afe3-d273-576f-bdba-fd06c6bbe02e"
+  },
+  {
+    "abbreviation": "VENT",
+    "name": "Ventas",
+    "translations": {
+      "en_US": "Sales",
+      "pt_BR": ""
+    },
+    "email": "ct.ventas@funiber.org",
+    "uuid": "6745c6f3-3546-57a0-988f-9351ace75e95"
+  },
+  {
+    "abbreviation": "ADAC",
+    "name": "Administración Académica",
+    "translations": {
+      "en_US": "Academic Administration",
+      "pt_BR": ""
+    },
+    "email": "ct.administracion.academica@funiber.org",
+    "uuid": "3196aa9c-9016-52c2-929b-0ed1a909dff6"
+  },
+  {
+    "abbreviation": "LOGI",
+    "name": "Logística",
+    "translations": {
+      "en_US": "Logistics",
+      "pt_BR": ""
+    },
+    "email": "ct.logistica@funiber.org",
+    "uuid": "5da5d727-66cd-5ab2-a8bc-2610174d7638"
+  },
+  {
+    "abbreviation": "COMA",
+    "name": "Maquetación",
+    "translations": {
+      "en_US": "Contents",
+      "pt_BR": ""
+    },
+    "email": "ct.maquetacion@funiber.org",
+    "uuid": "050d712f-ff4b-5958-ad61-6c5a8b9203b3"
+  },
+  {
+    "abbreviation": "PWEB",
+    "name": "Presencia Web",
+    "translations": {
+      "en_US": "Web Presence",
+      "pt_BR": ""
+    },
+    "email": "webmaster@funiber.org",
+    "uuid": "56aa8d89-2faf-5d52-bf76-a0058fa24cdc"
+  },
+  {
+    "abbreviation": "ENMA",
+    "name": "Envios Masivos",
+    "translations": {
+      "en_US": "Email Marketing",
+      "pt_BR": ""
+    },
+    "email": "envios.masivos@funiber.org",
+    "uuid": "cec8cfe2-22b0-53c7-8cef-8e4e64a6e929"
+  },
+  {
+    "abbreviation": "DOAC",
+    "name": "Docencia Académica",
+    "translations": {
+      "en_US": "Academic Teaching",
+      "pt_BR": ""
+    },
+    "email": "ct.docencia.academica@funiber.org",
+    "uuid": "46870ab1-bdda-591b-980c-4430f92035a5"
+  },
+  {
+    "abbreviation": "GEDO",
+    "name": "Gestión Docente",
+    "translations": {
+      "en_US": "Teaching Management",
+      "pt_BR": ""
+    },
+    "email": "ct.gestion.docente@funiber.org",
+    "uuid": "70e67789-b68e-52e5-979c-156bd452a084"
+  },
+  {
+    "abbreviation": "ADOC",
+    "name": "Acción Docente",
+    "translations": {
+      "en_US": "Teaching Action",
+      "pt_BR": ""
+    },
+    "email": "ct.accion.docente@funiber.org",
+    "uuid": "ef1c554e-44f6-5472-8f77-e51f432ca1b5"
+  },
+  {
+    "abbreviation": "CALI",
+    "name": "Calidad Universitaria",
+    "translations": {
+      "en_US": "Quality",
+      "pt_BR": ""
+    },
+    "email": "",
+    "uuid": "543350f3-5ca6-5723-8e63-267923fef3fe"
+  },
+  {
+    "abbreviation": "MAON",
+    "name": "Marketing Digital",
+    "translations": {
+      "en_US": "Digital Marketing",
+      "pt_BR": ""
+    },
+    "email": "ct.marketing.online@funiber.org",
+    "uuid": "c4234e32-58bb-5a6e-a9a8-8b3449c085fc"
+  },
+  {
+    "abbreviation": "CAFO",
+    "name": "Catálogo Formativo",
+    "translations": {
+      "en_US": "Training Catalog",
+      "pt_BR": ""
+    },
+    "email": "ct.catalogo.formativo@funiber.org",
+    "uuid": "617fed1f-5c35-4053-8d34-c71f1bb73f65"
+  },
+  {
+    "abbreviation": "PLED",
+    "name": "Planificación Educativa",
+    "translations": {
+      "en_US": "Educational Planning",
+      "pt_BR": ""
+    },
+    "email": "ct.planificacion.educativa@funiber.org",
+    "uuid": "54b20361-87cb-44be-8401-6a508d5725b2"
+  },
+  {
+    "abbreviation": "REPO",
+    "name": "Reportería",
+    "translations": {
+      "en_US": "Reporting",
+      "pt_BR": ""
+    },
+    "email": "ct.reporteria@funiber.org",
+    "uuid": "fab4d8fd-2a7a-4637-99cd-d573592d6eee"
+  },
+  {
+    "abbreviation": "ESEC",
+    "name": "ESEC",
+    "translations": {
+      "en_US": "ESEC",
+      "pt_BR": ""
+    },
+    "email": "ct.esec@funiber.org",
+    "uuid": "47afa8e4-2d70-4bc7-bda8-bd09266cdbd1"
+  },
+  {
+    "abbreviation": "PREU",
+    "name": "Proyectos Europeos",
+    "translations": {
+      "en_US": "European Projects",
+      "pt_BR": ""
+    },
+    "email": "ct.proyectos.europeos@funiber.org",
+    "uuid": "c3af87be-ccb1-4bd6-922d-1251a428f844"
+  }
+]

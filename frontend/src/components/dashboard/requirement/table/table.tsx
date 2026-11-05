@@ -38,7 +38,7 @@ export interface TableProps {
 export const Table = ({ onCreateNew }: TableProps) => {
   const dispatch = useAppDispatch();
   const { showSnackbar } = useSnackbar();
-  const { translate } = useLocalization();
+  const { translate, locale } = useLocalization();
 
   const {
     requirements,
@@ -114,7 +114,7 @@ export const Table = ({ onCreateNew }: TableProps) => {
         sortOrder,
       }),
     );
-  }, [dispatch, page, limit, search, sortBy, sortOrder]);
+  }, [dispatch, page, limit, search, sortBy, sortOrder, locale]);
 
   const reduxSorting = useMemo<MRT_SortingState>(() => {
     if (!sortBy) return [];

@@ -1,9 +1,8 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
-import { QueryOrder } from '@mikro-orm/core';
-
 import { RequirementState } from '../../domain/requirement/enums/requirement-state.enum';
 import { ClientPriority } from '../../domain/requirement/enums/client-priority.enum';
+import { RequirementSort } from '../../domain/requirement/enums/requirement-sort.enum';
 
 export class ListRequirementsQueryParams {
   @IsOptional()
@@ -31,6 +30,6 @@ export class ListRequirementsQueryParams {
   sort_by: string = 'created_at';
 
   @IsOptional()
-  @IsEnum(QueryOrder)
-  sort_order: QueryOrder = QueryOrder.DESC;
+  @IsEnum(RequirementSort)
+  sort_order: RequirementSort = RequirementSort.DESC;
 }

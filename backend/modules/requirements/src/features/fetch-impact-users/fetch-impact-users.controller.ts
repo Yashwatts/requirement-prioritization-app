@@ -9,11 +9,8 @@ export class FetchImpactUsersController {
 
   @Get()
   async handleImpactUsers(
-    @Query('domain_id') domainId?: string,
     @Query('domain_uuid') domainUuid?: string,
   ): Promise<ImpactUsersResponse[]> {
-    return this.queryBus.execute(
-      new FetchImpactUsersQuery(domainId, domainUuid),
-    );
+    return this.queryBus.execute(new FetchImpactUsersQuery(domainUuid));
   }
 }

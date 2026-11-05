@@ -1,5 +1,6 @@
 import { EntitySchema } from '@mikro-orm/core';
 import { ImpactUsers } from '@modules/requirements/src/domain/requirement/impact-users/impact-users';
+import { UserImpactLevelType } from '../types/user-impact-level.type';
 
 export const ImpactUsersEntity = new EntitySchema<ImpactUsers>({
   class: ImpactUsers,
@@ -16,7 +17,8 @@ export const ImpactUsersEntity = new EntitySchema<ImpactUsers>({
       type: 'uuid',
     },
     impact_number_users_level: {
-      type: 'smallint',
+      type: UserImpactLevelType,
+      columnType: 'smallint',
     },
     quantity: {
       type: 'json',

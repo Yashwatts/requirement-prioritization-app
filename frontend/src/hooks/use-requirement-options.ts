@@ -13,6 +13,7 @@ import type {
   DomainImpactUsers,
   UserImpactRanges,
 } from "@/features/requirement/requirement.type";
+import { useLocalization } from "@/localize";
 import { getLevelNameFromImpactId } from "./use-impact-calculation";
 
 export interface UseRequirementOptionsParameters {
@@ -80,20 +81,19 @@ export const useRequirementOptions = ({
     impactUsers: apiImpactUsers,
     impactUsersStatus,
   } = useAppSelector((state) => state.requirements);
+  const { locale } = useLocalization();
 
   useEffect(() => {
     if (open) {
       if (institutionsStatus === "idle") {
         dispatch(fetchInstitutions());
       }
-      if (domainsStatus === "idle") {
-        dispatch(fetchDomains());
-      }
+      dispatch(fetchDomains());
       if (impactUsersStatus === "idle") {
         dispatch(fetchImpactUsers());
       }
     }
-  }, [open, institutionsStatus, domainsStatus, impactUsersStatus, dispatch]);
+  }, [open, locale, dispatch]);
 
   const handleInstitutionsOpen = () => {
     if (institutionsStatus === "idle") {

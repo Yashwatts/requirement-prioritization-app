@@ -1,15 +1,12 @@
-import { randomUUID } from 'node:crypto';
-
 export class Institution {
   id!: number;
-  uuid: string;
+  uuid!: string;
   name: string;
 
-  constructor(name: string, uuid?: string, id?: number) {
+  constructor(name: string, uuid?: string) {
     this.name = name;
-    this.uuid = uuid ?? randomUUID();
-    if (id !== undefined) {
-      this.id = id;
+    if (uuid) {
+      this.uuid = uuid;
     }
   }
 

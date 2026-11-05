@@ -8,8 +8,9 @@ export class RegisterRequirementController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Post()
-  async handle(@Body() validator: RegisterRequirementValidator) {
-    await this.commandBus.execute(new RegisterRequirementCommand(validator));
+  async handle(@Body() registerRequirementValidator: RegisterRequirementValidator) {
+    const command = new RegisterRequirementCommand(registerRequirementValidator) 
+    await this.commandBus.execute(command);
     return {
       message: 'Requisition registered successfully',
     };

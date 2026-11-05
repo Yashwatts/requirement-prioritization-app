@@ -10,20 +10,6 @@ export interface FetchImpactUsersParams {
   domainUuid?: string;
 }
 
-export interface CalculateImpactParams {
-  benefited_institutions: (string | number)[];
-  obligation: boolean;
-  exist_solution_alternative: boolean;
-  domain_in_charge_id: number;
-  impact_number_users_id: string | number;
-}
-
-export interface CalculateImpactResponse {
-  impact: number;
-  client_priority: number;
-  client_priority_name: "Low" | "Medium" | "High";
-}
-
 export interface ListRequirementsParams {
   search?: string;
   domain?: Domain;

@@ -5,27 +5,18 @@ import {
   IsEnum,
   IsInt,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   MaxLength,
   Min,
   MinLength,
 } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { StudyModality } from '../../domain/requirement/enums/study-modality.enum';
 import { ComplexityEffort } from '../../domain/requirement/enums/complexity-effort.enum';
 import { ClientPriority } from '../../domain/requirement/enums/client-priority.enum';
 import { RequirementState } from '../../domain/requirement/enums/requirement-state.enum';
 import { RequirementType } from '../../domain/requirement/enums/requirement-type.enum';
-import {
-  mapClientPriorityToNumber,
-  mapComplexityToNumber,
-  mapImpactLevelToNumber,
-  mapModalityToNumber,
-  mapStatusToNumber,
-  mapTypeToNumber,
-} from '../../domain/requirement/mappers/requirement.mapper';
 
 export class RegisterRequirementValidator {
   @IsString()
@@ -53,19 +44,18 @@ export class RegisterRequirementValidator {
   @IsNotEmpty()
   benefited_institutions!: string[];
 
-  @Transform(({ value }) => mapModalityToNumber(value))
   @IsEnum(StudyModality)
   study_modality!: StudyModality;
 
-  @Transform(({ value }) => mapImpactLevelToNumber(value))
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   impact_number_users_id!: number;
 
-  @IsOptional()
-  @IsNumber()
-  @Min(1)
-  impact_users_value?: number;
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  impact!: number;
 
   @IsBoolean()
   obligation!: boolean;
@@ -73,16 +63,11 @@ export class RegisterRequirementValidator {
   @IsBoolean()
   exist_solution_alternative!: boolean;
 
-  @Transform(({ value }) => mapComplexityToNumber(value))
   @IsEnum(ComplexityEffort)
   complexity_and_effort!: ComplexityEffort;
 
-  @Transform(({ value }) =>
-    value ? mapClientPriorityToNumber(value) : undefined,
-  )
-  @IsOptional()
   @IsEnum(ClientPriority)
-  client_priority?: ClientPriority;
+  client_priority!: ClientPriority;
 
   @IsInt()
   @Min(1)
@@ -110,13 +95,10 @@ export class RegisterRequirementValidator {
   @IsDateString()
   end_date?: string;
 
-  @Transform(({ value }) => mapTypeToNumber(value))
   @IsEnum(RequirementType)
   type!: RequirementType;
 
-  @Transform(({ value }) =>
-    value ? mapStatusToNumber(value) : RequirementState.REGISTERED,
-  )
+  @Transform(({ value }) => value ?? RequirementState.REGISTERED)
   @IsOptional()
   @IsEnum(RequirementState)
   status?: RequirementState;

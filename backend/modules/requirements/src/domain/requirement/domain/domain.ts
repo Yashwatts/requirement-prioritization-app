@@ -1,8 +1,6 @@
-import { randomUUID } from 'node:crypto';
-
 export class Domain {
   id!: number;
-  uuid: string;
+  uuid!: string;
   abbreviation: string;
   name: string;
   translations?: Record<string, unknown> | null;
@@ -14,15 +12,13 @@ export class Domain {
     email?: string | null,
     translations?: Record<string, unknown> | null,
     uuid?: string,
-    id?: number,
   ) {
     this.name = name;
     this.abbreviation = abbreviation;
-    this.email = email ?? null;
-    this.translations = translations ?? null;
-    this.uuid = uuid ?? randomUUID();
-    if (id !== undefined) {
-      this.id = id;
+    this.email = email || null;
+    this.translations = translations || null;
+    if (uuid) {
+      this.uuid = uuid;
     }
   }
 

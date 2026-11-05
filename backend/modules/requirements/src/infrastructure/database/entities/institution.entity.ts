@@ -1,5 +1,6 @@
 import { EntitySchema } from '@mikro-orm/core';
 import { Institution } from '@modules/requirements/src/domain/requirement/institution/institution';
+import { randomUUID } from 'node:crypto';
 
 export const InstitutionEntity = new EntitySchema<Institution>({
   class: Institution,
@@ -15,6 +16,7 @@ export const InstitutionEntity = new EntitySchema<Institution>({
     uuid: {
       type: 'uuid',
       unique: true,
+      onCreate: () => randomUUID(),
     },
     name: {
       type: 'varchar',

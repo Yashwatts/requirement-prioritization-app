@@ -1,3 +1,3 @@
-import { IQuery } from '@nestjs/cqrs';
-
-export class FetchDomainsQuery implements IQuery {}
+export class FetchDomainsQuery {
+  constructor(public readonly lang?: string) {}
+}

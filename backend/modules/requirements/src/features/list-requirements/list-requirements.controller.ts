@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Headers, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ListRequirementsQueryParams } from './list-requirements.validator';
 import { ListRequirementsQuery } from './list-requirements.query';
@@ -11,7 +11,11 @@ export class ListRequirementsController {
   @Get()
   async handle(
     @Query() queryParams: ListRequirementsQueryParams,
+    @Headers('accept-language') acceptLanguage?: string,
+    @Query('lang') queryLang?: string,
   ): Promise<ListRequirementsResult> {
-    return this.queryBus.execute(new ListRequirementsQuery(queryParams));
+    const lang = queryLang || acceptLanguage;
+    const query = new ListRequirementsQuery(queryParams, lang);
+    return this.queryBus.execute(query);
   }
 }

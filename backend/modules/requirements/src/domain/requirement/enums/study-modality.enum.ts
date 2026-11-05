@@ -1,5 +1,5 @@
 export enum StudyModality {
-  VIRTUAL = 1,
-  PRESENCIAL = 2,
-  VIRTUAL_PRESENCIAL = 3,
+  VIRTUAL = 'Virtual',
+  PRESENCIAL = 'Presencial',
+  VIRTUAL_PRESENCIAL = 'Virtual/Presencial',
 }

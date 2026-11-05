@@ -5,6 +5,11 @@ import { Domain } from '@modules/requirements/src/domain/requirement/domain/doma
 import { Institution } from '@modules/requirements/src/domain/requirement/institution/institution';
 import { ImpactUsers } from '@modules/requirements/src/domain/requirement/impact-users/impact-users';
 import { RequirementState } from '@modules/requirements/src/domain/requirement/enums/requirement-state.enum';
+import { ComplexityEffort } from '@modules/requirements/src/domain/requirement/enums/complexity-effort.enum';
+import { StudyModality } from '@modules/requirements/src/domain/requirement/enums/study-modality.enum';
+import { RequirementType } from '@modules/requirements/src/domain/requirement/enums/requirement-type.enum';
+import { UserImpactLevel } from '@modules/requirements/src/domain/requirement/enums/user-impact-level.enum';
+import { ClientPriority } from '@modules/requirements/src/domain/requirement/enums/client-priority.enum';
 
 const REQUIREMENT_TEMPLATES = [
   {
@@ -378,20 +383,46 @@ export class RequirementsSeeder extends Seeder {
 
       const obligation = requirementIndex % 2 === 0;
       const existSolutionAlternative = requirementIndex % 3 === 0;
-      const impactNumberUsersId = ((requirementIndex % 4) + 1) as 1 | 2 | 3 | 4;
+      const impactLevels = [
+        UserImpactLevel.LOW,
+        UserImpactLevel.MEDIUM,
+        UserImpactLevel.HIGH,
+        UserImpactLevel.VERY_HIGH,
+      ];
+      const targetImpactLevel =
+        impactLevels[requirementIndex % impactLevels.length];
 
       // Find exact impact range from ImpactUsers table
       const domainImpactRanges =
         domainImpactRangeMap.get(domainInCharge.uuid) ?? [];
       const userImpactRange = domainImpactRanges.find(
         (availableRange) =>
-          availableRange.impact_number_users_level === impactNumberUsersId,
+          availableRange.impact_number_users_level === targetImpactLevel,
       );
 
       const requesterName = REQUESTERS[requirementIndex % REQUESTERS.length];
-      const complexityAndEffort = (requirementIndex % 5) + 1;
-      const studyModality = (requirementIndex % 3) + 1;
-      const requirementType = (requirementIndex % 3) + 1;
+      const COMPLEXITIES = [
+        ComplexityEffort.XS,
+        ComplexityEffort.S,
+        ComplexityEffort.M,
+        ComplexityEffort.L,
+        ComplexityEffort.XL,
+      ];
+      const MODALITIES = [
+        StudyModality.VIRTUAL,
+        StudyModality.PRESENCIAL,
+        StudyModality.VIRTUAL_PRESENCIAL,
+      ];
+      const TYPES = [
+        RequirementType.INTERNAL,
+        RequirementType.EXTERNAL,
+        RequirementType.CLIENT,
+      ];
+
+      const complexityAndEffort =
+        COMPLEXITIES[requirementIndex % COMPLEXITIES.length];
+      const studyModality = MODALITIES[requirementIndex % MODALITIES.length];
+      const requirementType = TYPES[requirementIndex % TYPES.length];
       const requirementState =
         requirementIndex % 3 === 0
           ? RequirementState.FLOW
@@ -401,7 +432,14 @@ export class RequirementsSeeder extends Seeder {
       const startDate = new Date(now - requirementIndex * 86400000 * 2);
       const endDate = new Date(now + (50 - requirementIndex) * 86400000 * 3);
 
+      if (!userImpactRange) {
+        throw new Error(
+          `Impact user range not found for domain ${domainInCharge.name} and level ${targetImpactLevel}`,
+        );
+      }
+
       const requirement = Requirement.create({
+        code,
         name: `${template.name} ${existingCount + requirementIndex + 1}`,
         description: template.description,
         requesting_institution_id: requestingInstitution.id,
@@ -410,8 +448,14 @@ export class RequirementsSeeder extends Seeder {
         obligation,
         exist_solution_alternative: existSolutionAlternative,
         study_modality: studyModality,
-        impact_number_users_id: userImpactRange?.id ?? impactNumberUsersId,
-        user_impact_range: userImpactRange ?? null,
+        impact_number_users_id: userImpactRange.id,
+        impact: 10 + (requirementIndex % 30),
+        client_priority:
+          requirementIndex % 3 === 0
+            ? ClientPriority.LOW
+            : requirementIndex % 3 === 1
+              ? ClientPriority.MEDIUM
+              : ClientPriority.HIGH,
         complexity_and_effort: complexityAndEffort,
         domain_in_charge_id: domainInCharge.id,
         domains_collaborators: collaboratorDomainNames,
@@ -422,7 +466,6 @@ export class RequirementsSeeder extends Seeder {
         type: requirementType,
       });
 
-      requirement.code = code;
       requirementsToPersist.push(requirement);
     }
 

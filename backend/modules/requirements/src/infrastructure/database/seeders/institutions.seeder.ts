@@ -1,35 +1,32 @@
 import { Seeder } from '@mikro-orm/seeder';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Institution } from '@modules/requirements/src/domain/requirement/institution/institution';
+import institutionsData from './seeders-json/institution.json';
 
 export class InstitutionsSeeder extends Seeder {
   async run(entityManager: EntityManager): Promise<void> {
-    const institutionNames = [
-      'FUNIBER',
-      'UNEATLANTICO',
-      'UNIC',
-      'UNINCOL',
-      'UNIB',
-      'UNINI-MX',
-      'UNIROMANA',
-      'UDAS',
-      'Grupo Funiber',
-      'Proyectos Europeos',
-    ];
-
-    const existingInstitutions = await entityManager.find(Institution, {
-      name: { $in: institutionNames },
-    });
-    const existingNames = new Set(
-      existingInstitutions.map((institution) => institution.name),
+    const existingInstitutions = await entityManager.find(Institution, {});
+    const institutionByUuid = new Map(
+      existingInstitutions.map((institution) => [
+        institution.uuid,
+        institution,
+      ]),
     );
 
-    const newInstitutions = institutionNames
-      .filter((name) => !existingNames.has(name))
-      .map((name) => Institution.create(name));
+    for (const institutionSeed of institutionsData) {
+      const existingInstitution = institutionByUuid.get(institutionSeed.uuid);
 
-    if (newInstitutions.length > 0) {
-      await entityManager.persist(newInstitutions).flush();
+      if (existingInstitution) {
+        existingInstitution.name = institutionSeed.name;
+      } else {
+        const newInstitution = Institution.create(
+          institutionSeed.name,
+          institutionSeed.uuid,
+        );
+        entityManager.persist(newInstitution);
+      }
     }
+
+    await entityManager.flush();
   }
 }

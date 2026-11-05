@@ -4,6 +4,6 @@ import { ModifyClientPriorityValidator } from './modify-client-priority.validato
 export class ModifyClientPriorityCommand implements ICommand {
   constructor(
     public readonly requirementId: string,
-    public readonly payload: ModifyClientPriorityValidator,
+    public readonly priorityData: ModifyClientPriorityValidator,
   ) {}
 }

@@ -1,5 +1,5 @@
 export enum ClientPriority {
-  LOW = 1,
-  MEDIUM = 2,
-  HIGH = 3,
+  LOW = 'Low',
+  MEDIUM = 'Medium',
+  HIGH = 'High',
 }

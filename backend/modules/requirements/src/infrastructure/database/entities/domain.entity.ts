@@ -1,5 +1,6 @@
 import { EntitySchema } from '@mikro-orm/core';
 import { Domain } from '@modules/requirements/src/domain/requirement/domain/domain';
+import { randomUUID } from 'node:crypto';
 
 export const DomainEntity = new EntitySchema<Domain>({
   class: Domain,
@@ -15,6 +16,7 @@ export const DomainEntity = new EntitySchema<Domain>({
     uuid: {
       type: 'uuid',
       unique: true,
+      onCreate: () => randomUUID(),
     },
     abbreviation: {
       type: 'varchar',

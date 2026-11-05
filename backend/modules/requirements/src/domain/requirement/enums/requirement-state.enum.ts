@@ -1,4 +1,4 @@
 export enum RequirementState {
-  REGISTERED = 1,
-  FLOW = 2,
+  REGISTERED = 'Registered',
+  FLOW = 'Flow',
 }

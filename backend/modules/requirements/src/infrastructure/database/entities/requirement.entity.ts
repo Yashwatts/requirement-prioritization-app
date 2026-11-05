@@ -1,5 +1,11 @@
 import { EntitySchema } from '@mikro-orm/core';
 import { Requirement } from '@modules/requirements/src/domain/requirement/requirement';
+import { RequirementState } from '@modules/requirements/src/domain/requirement/enums/requirement-state.enum';
+import { ClientPriorityType } from '../types/client-priority.type';
+import { ComplexityEffortType } from '../types/complexity-effort.type';
+import { RequirementStateType } from '../types/requirement-state.type';
+import { RequirementTypeType } from '../types/requirement-type.type';
+import { StudyModalityType } from '../types/study-modality.type';
 
 export const RequirementEntity = new EntitySchema<Requirement>({
   class: Requirement,
@@ -24,8 +30,9 @@ export const RequirementEntity = new EntitySchema<Requirement>({
     },
 
     status: {
-      type: 'smallint',
-      default: 1,
+      type: RequirementStateType,
+      columnType: 'smallint',
+      default: RequirementState.REGISTERED,
     },
 
     benefitedInstitutions: {
@@ -73,7 +80,8 @@ export const RequirementEntity = new EntitySchema<Requirement>({
     },
 
     studyModality: {
-      type: 'smallint',
+      type: StudyModalityType,
+      columnType: 'smallint',
       fieldName: 'study_modality',
     },
 
@@ -82,7 +90,8 @@ export const RequirementEntity = new EntitySchema<Requirement>({
     },
 
     clientPriority: {
-      type: 'smallint',
+      type: ClientPriorityType,
+      columnType: 'smallint',
       fieldName: 'client_priority',
     },
 
@@ -96,7 +105,8 @@ export const RequirementEntity = new EntitySchema<Requirement>({
     },
 
     complexityAndEffort: {
-      type: 'smallint',
+      type: ComplexityEffortType,
+      columnType: 'smallint',
       fieldName: 'complexity_and_effort',
     },
 
@@ -119,7 +129,9 @@ export const RequirementEntity = new EntitySchema<Requirement>({
     },
 
     type: {
-      type: 'smallint',
+      type: RequirementTypeType,
+      columnType: 'smallint',
+      fieldName: 'type',
     },
 
     totalBenefitedInstitutions: {

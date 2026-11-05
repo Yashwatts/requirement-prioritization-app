@@ -7,7 +7,7 @@ export class FetchInstitutionsController {
   constructor(private readonly queryBus: QueryBus) {}
 
   @Get()
-  async handle(): Promise<unknown> {
+  async handle() {
     return this.queryBus.execute(new FetchInstitutionsQuery());
   }
 }

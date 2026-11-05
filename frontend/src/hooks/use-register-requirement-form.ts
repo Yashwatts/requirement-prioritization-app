@@ -33,7 +33,7 @@ const DEFAULT_FORM_VALUES: RequirementFormValues = {
   collaboratorDomains: [],
   followerDomains: [],
   benefitedInstitutions: [],
-  studyModalities: [],
+  studyModality: "",
   isObligatory: "" as unknown as "Yes" | "No",
   hasAlternativeSolution: "" as unknown as "Yes" | "No",
   impactUsers: "",
@@ -162,27 +162,37 @@ export const useRegisterRequirementForm = ({
     const resolvedInstitution = apiInstitutions?.find(
       (institution) => institution.name === values.requestingInstitution,
     );
+    if (!resolvedInstitution) {
+      showSnackbar("Requesting institution not found", "error");
+      return;
+    }
+
     const resolvedDomain = apiDomains?.find(
       (domainItem) => domainItem.name === values.domain,
     );
+    if (!resolvedDomain) {
+      showSnackbar("Domain in charge not found", "error");
+      return;
+    }
 
     const payload: CreateRequirementPayload = {
       name: values.name,
       description: values.description,
-      requesting_institution_id: resolvedInstitution?.id ?? 1,
+      requesting_institution_id: resolvedInstitution.id,
       requested_by: Array.isArray(values.requestedBy)
         ? values.requestedBy
         : values.requestedBy
           ? [values.requestedBy]
           : [],
       benefited_institutions: values.benefitedInstitutions,
-      study_modality: values.studyModalities,
+      study_modality: values.studyModality,
       impact_number_users_id: values.impactUsers,
+      impact: Number(values.impact),
       obligation: values.isObligatory === "Yes",
       exist_solution_alternative: values.hasAlternativeSolution === "Yes",
       complexity_and_effort: values.complexityEffort,
-      client_priority: values.clientPriorityOverride || undefined,
-      domain_in_charge_id: resolvedDomain?.id ?? 1,
+      client_priority: values.clientPriorityOverride,
+      domain_in_charge_id: resolvedDomain.id,
       domains_collaborators: values.collaboratorDomains,
       followers_domains: values.followerDomains,
       status: values.status,

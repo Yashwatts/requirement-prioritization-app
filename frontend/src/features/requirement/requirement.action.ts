@@ -5,8 +5,6 @@ import { Domain } from "@/types/domain.types";
 import { Institution } from "@/types/institution.types";
 import { CreateRequirementPayload } from "@/types/requirement.types";
 import {
-  CalculateImpactParams,
-  CalculateImpactResponse,
   DomainImpactUsers,
   FetchImpactUsersParams,
   ListRequirementsParams,
@@ -146,18 +144,3 @@ export const fetchImpactUsers = createAsyncThunk<
   }
 });
 
-export const calculateImpact = createAsyncThunk<
-  CalculateImpactResponse,
-  CalculateImpactParams,
-  { rejectValue: string }
->("requirements/calculateImpact", async (payload, { rejectWithValue }) => {
-  try {
-    const response = await api.post<CalculateImpactResponse>(
-      "/requirements/calculate-impact",
-      payload,
-    );
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(extractErrorMessage(error));
-  }
-});

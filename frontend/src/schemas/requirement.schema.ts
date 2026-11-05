@@ -22,7 +22,7 @@ export const requirementFormSchema = z
 
     benefitedInstitutions: z.array(z.string()).min(1, "required"),
 
-    studyModalities: z.array(z.string()).min(1, "required"),
+    studyModality: z.string().min(1, "required"),
 
     isObligatory: z
       .enum(["Yes", "No", ""])

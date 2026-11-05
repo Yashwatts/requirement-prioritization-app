@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Headers, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { FetchDomainsQuery } from './fetch-domains.query';
 
@@ -7,7 +7,12 @@ export class FetchDomainsController {
   constructor(private readonly queryBus: QueryBus) {}
 
   @Get()
-  async handle(): Promise<unknown> {
-    return this.queryBus.execute(new FetchDomainsQuery());
+  async handle(
+    @Headers('accept-language') acceptLanguage?: string,
+    @Query('lang') queryLang?: string,
+  ) {
+    const lang = queryLang || acceptLanguage;
+    const query = new FetchDomainsQuery(lang);
+    return this.queryBus.execute(query);
   }
 }
