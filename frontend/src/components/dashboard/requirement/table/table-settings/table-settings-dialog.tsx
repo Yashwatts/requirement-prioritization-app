@@ -9,8 +9,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
-  Tooltip,
   useMediaQuery,
 } from "@mui/material";
 import syncAltIcon from "@/assets/svg/sync-alt-icon.svg";
@@ -247,14 +245,6 @@ const TableSettingsContent = ({
     }
   };
 
-  const handleSwap = () => {
-    setVisibleColumns(hiddenColumns);
-    setHiddenColumns(visibleColumns);
-    setDraggedState(null);
-    setDragOverTarget(null);
-    setDropPosition(null);
-  };
-
   const handleSave = () => {
     const newColumnOrder = [
       "mrt-row-select",
@@ -300,23 +290,13 @@ const TableSettingsContent = ({
         />
 
         <Box className={styles.syncIconWrapper}>
-          <Tooltip title={translate("swapColumns")}>
-            <IconButton
-              type="button"
-              className={styles.syncIconButton}
-              onClick={handleSwap}
-              aria-label={translate("swapColumns")}
-              size="small"
-            >
-              <Image
-                src={syncAltIcon}
-                alt={translate("swapColumns")}
-                width={20}
-                height={20}
-                className={styles.syncIcon}
-              />
-            </IconButton>
-          </Tooltip>
+          <Image
+            src={syncAltIcon}
+            alt="Sync columns"
+            width={20}
+            height={20}
+            className={styles.syncIcon}
+          />
         </Box>
 
         <ColumnListPanel

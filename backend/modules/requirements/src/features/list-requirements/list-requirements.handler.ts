@@ -113,8 +113,7 @@ export class ListRequirementsHandler implements IQueryHandler<
     const institutions: Institution[] =
       await this.institutionRepository.findByIds(institutionIds);
 
-    const domains: Domain[] =
-      await this.domainRepository.findByIds(domainIds);
+    const domains: Domain[] = await this.domainRepository.findByIds(domainIds);
 
     const impactUsersRecords: ImpactUsers[] =
       await this.impactUsersRepository.findByIds(impactUserIds);

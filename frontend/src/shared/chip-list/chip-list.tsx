@@ -49,7 +49,24 @@ export const ChipList = ({
       return;
     }
 
-    const containerWidth = containerRef.current.clientWidth;
+    const inputRoot = containerRef.current.closest<HTMLElement>(
+      ".MuiOutlinedInput-root, .MuiInputBase-root",
+    );
+
+    let containerWidth = containerRef.current.clientWidth;
+
+    if (inputRoot) {
+      const endAdornment = inputRoot.querySelector<HTMLElement>(
+        ".MuiAutocomplete-endAdornment, .MuiSelect-icon",
+      );
+      const endAdornmentWidth = endAdornment ? endAdornment.offsetWidth : 48;
+      // 14px left padding + right adornment + 12px margin + 60px reserved for typing
+      containerWidth = Math.max(
+        0,
+        inputRoot.clientWidth - 14 - endAdornmentWidth - 12 - 60,
+      );
+    }
+
     if (containerWidth <= 0) return;
 
     const gapBetweenChips = 6;
@@ -116,11 +133,16 @@ export const ChipList = ({
       return () => cancelAnimationFrame(animationFrameId);
     }
 
+    const targetToObserve =
+      containerRef.current.closest<HTMLElement>(
+        ".MuiOutlinedInput-root, .MuiInputBase-root",
+      ) ?? containerRef.current;
+
     const observer = new ResizeObserver(() => {
       calculateVisible();
     });
 
-    observer.observe(containerRef.current);
+    observer.observe(targetToObserve);
     return () => {
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();

@@ -1,0 +1,114 @@
+.autocompleteWrapper {
+  width: 100%;
+}
+
+.autocompleteChipList {
+  width: auto !important;
+  max-width: calc(100% - 40px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  margin-right: 4px !important;
+  cursor: pointer !important;
+}
+
+.autocompleteChipList :global(.MuiChip-root) {
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+}
+
+.autocompleteWrapper :global(.MuiOutlinedInput-root) {
+  padding: 4px 68px 4px 14px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  height: 40px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  overflow: hidden !important;
+}
+
+.autocompleteWrapper :global(.MuiAutocomplete-input) {
+  padding: 0 !important;
+  min-width: 30px !important;
+  flex: 1 1 auto !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #424242 !important;
+}
+
+.autocompleteWrapper :global(.MuiAutocomplete-endAdornment) {
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.autocompleteWrapper :global(.MuiAutocomplete-popupIndicator) {
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  color: #757575 !important;
+}
+
+.autocompleteWrapper :global(.MuiAutocomplete-clearIndicator) {
+  width: 20px !important;
+  height: 20px !important;
+  padding: 2px !important;
+  color: #757575 !important;
+  margin-right: 4px !important;
+}
+
+.autocompleteWrapper :global(.MuiAutocomplete-clearIndicator:hover) {
+  color: #424242 !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.menuItemOption {
+  display: flex !important;
+  align-items: center !important;
+  padding: 6px 16px !important;
+  min-height: 36px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  color: #424242 !important;
+  cursor: pointer !important;
+  list-style: none !important;
+  box-sizing: border-box !important;
+}
+
+.menuItemOption:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.menuItemOption[aria-selected="true"] {
+  background-color: rgba(1, 87, 155, 0.08) !important;
+}
+
+.menuPaper {
+  max-height: 376px !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+  scrollbar-color: #e0e0e0 transparent;
+}
+
+.menuPaper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.menuPaper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.menuPaper::-webkit-scrollbar-thumb {
+  background-color: #e0e0e0;
+  border-radius: 3px;
+}
+
+.menuPaper::-webkit-scrollbar-thumb:hover {
+  background-color: #bdbdbd;
+}
+

@@ -267,3 +267,61 @@
   margin: 0 !important;
   padding: 0 !important;
 }
+
+@media (max-width: 600px) {
+  .appBar {
+    height: 56px !important;
+  }
+
+  .toolbar {
+    min-height: 56px !important;
+    height: 56px !important;
+    padding: 0 16px 0 0 !important;
+  }
+
+  .leftContent {
+    height: 56px !important;
+    gap: 0 !important;
+  }
+
+  .menuButton {
+    width: 48px !important;
+    height: 48px !important;
+    padding: 12px !important;
+    border-radius: 48px !important;
+    margin: 0 !important;
+  }
+
+  .title {
+    display: none !important;
+  }
+
+  .rightContent {
+    height: 56px !important;
+    gap: 0 !important;
+    padding: 0 !important;
+  }
+
+  .profileButton {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+  }
+
+  .profileButton img {
+    width: 20px !important;
+    height: 20px !important;
+    display: block !important;
+  }
+
+  .profileName {
+    display: none !important;
+  }
+
+  .arrowButton {
+    display: none !important;
+  }
+}

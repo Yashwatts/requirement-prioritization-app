@@ -28,13 +28,7 @@
 .field :global(.MuiInputBase-root),
 .field :global(.MuiInputBase-root.Mui-focused),
 .field :global(.MuiInputBase-input),
-.field :global(.MuiInputBase-input:focus),
-.field :global(.MuiSelect-select),
-.field :global(.MuiSelect-select.MuiSelect-outlined),
-.field :global(.MuiSelect-select:focus),
-.field :global(.MuiSelect-select:active),
-.field :global(.MuiSelect-select:focus-visible),
-.field :global(.MuiSelect-select[aria-expanded="true"]) {
+.field :global(.MuiInputBase-input:focus) {
   min-height: 40px !important;
   border-radius: 8px !important;
   font-family: "Open Sans", sans-serif !important;
@@ -83,64 +77,6 @@
   color: #01579b !important;
 }
 
-.field :global(.MuiSelect-select) {
-  padding: 4px 68px 4px 14px !important;
-  min-height: 28px !important;
-  max-height: 40px !important;
-  box-sizing: border-box !important;
-  display: flex !important;
-  align-items: center !important;
-  flex-wrap: nowrap !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-  color: #424242 !important;
-  background-color: #ffffff !important;
-}
-
-.field :global(.MuiSelect-select:focus),
-.field :global(.MuiSelect-select[aria-expanded="true"]) {
-  background-color: #ffffff !important;
-  outline: none !important;
-}
-
-.field :global(.MuiSelect-icon) {
-  right: 12px !important;
-  width: 20px !important;
-  height: 20px !important;
-  color: #757575 !important;
-}
-
-.formChipList {
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  cursor: pointer !important;
-}
-
-.formChipList :global(.MuiChip-root) {
-  cursor: pointer !important;
-}
-
-.clearButton {
-  position: absolute !important;
-  right: 36px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  padding: 2px !important;
-  color: #757575 !important;
-  z-index: 2 !important;
-}
-
-.clearButton:hover {
-  color: #424242 !important;
-  background-color: rgba(0, 0, 0, 0.04) !important;
-}
-
-.clearIcon {
-  width: 16px !important;
-  height: 16px !important;
-}
-
 .field :global(.MuiFormHelperText-root) {
   margin: 3px 0 0 16px !important;
   color: #9E9E9E !important;
@@ -157,9 +93,8 @@
 }
 
 .field :global(.MuiOutlinedInput-root.Mui-error:hover .MuiOutlinedInput-notchedOutline),
-.field:global(.Mui-error) :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline),
-.field :global(.MuiOutlinedInput-root.Mui-error.Mui-focused .MuiOutlinedInput-notchedOutline),
-.field:global(.Mui-error) :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+.field:global(.Mui-error) :global(.MuiOutlinedInput-notchedOutline),
+.field :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
   border-color: #e53935 !important;
 }
 
@@ -181,29 +116,4 @@
 .field:global(.Mui-error) :global(.MuiFormHelperText-root),
 .field :global(.Mui-error .MuiFormHelperText-root) {
   color: #e53935 !important;
-}
-
-.menuPaper {
-  max-height: 376px !important;
-  overflow-y: auto !important;
-  scrollbar-width: thin;
-  scrollbar-color: #e0e0e0 transparent;
-}
-
-.menuPaper::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.menuPaper::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.menuPaper::-webkit-scrollbar-thumb {
-  background-color: #e0e0e0;
-  border-radius: 3px;
-}
-
-.menuPaper::-webkit-scrollbar-thumb:hover {
-  background-color: #bdbdbd;
 }
