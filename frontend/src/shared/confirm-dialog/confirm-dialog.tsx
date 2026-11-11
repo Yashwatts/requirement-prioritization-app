@@ -44,9 +44,13 @@ export const ConfirmDialog = ({
       onClose={onCancel}
       aria-labelledby="confirm-dialog-title"
       aria-describedby="confirm-dialog-description"
+      className={styles.dialog}
       slotProps={{
         paper: {
           className: styles.dialogPaper,
+        },
+        backdrop: {
+          className: styles.backdrop,
         },
       }}
     >

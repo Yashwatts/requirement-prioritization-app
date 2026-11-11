@@ -67,6 +67,7 @@
   "previousPage": "Página anterior",
   "nextPage": "Página siguiente",
   "noResultsFound": "No se encontraron resultados. Intenta cambiar los filtros.",
+  "emptyStateNoRequirements": "Actualmente no tienes requerimientos. Para agregar uno, pulsa en “Crear nuevo” y sigue el proceso del formulario.",
   "unableToLoadRequirements": "No se pudieron cargar los requerimientos.",
   "discardDialogTitle": "Cancelar nuevo requisito",
   "discardDialogText": "¿Está seguro de que desea cancelar el nuevo requisito? Esta acción eliminará toda la información ingresada en el formulario.",

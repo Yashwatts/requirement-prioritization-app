@@ -21,3 +21,14 @@
   width: 100%;
 }
 
+@media (max-width: 600px) {
+  .container {
+    gap: 16px !important;
+  }
+
+  .twoColumns {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+

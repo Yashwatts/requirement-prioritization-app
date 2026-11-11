@@ -54,7 +54,7 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
   };
 
   return (
-    <AppBar position="static" className={styles.appBar}>
+    <AppBar position="sticky" className={styles.appBar}>
       <Toolbar className={styles.toolbar} disableGutters>
         <Box className={styles.leftContent}>
           <IconButton

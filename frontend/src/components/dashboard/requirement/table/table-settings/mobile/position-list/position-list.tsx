@@ -1,7 +1,21 @@
 "use client";
 
-import { useState, type DragEvent } from "react";
 import { Box, Typography } from "@mui/material";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { useLocalization } from "@/localize";
 import type { ColumnConfigItem } from "@/types/table-settings.types";
 import { MobilePositionItem } from "./position-item";
@@ -18,115 +32,66 @@ export const MobilePositionList = ({
 }: MobilePositionListProps) => {
   const { translate } = useLocalization();
 
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [dragOverTargetIndex, setDragOverTargetIndex] = useState<number | null>(
-    null,
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 4,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   );
-  const [dropPosition, setDropPosition] = useState<"top" | "bottom" | null>(
-    null,
-  );
 
-  const handleDragStart = (
-    dragEvent: DragEvent<HTMLDivElement>,
-    itemIndex: number,
-  ) => {
-    setDraggedIndex(itemIndex);
-    dragEvent.dataTransfer.effectAllowed = "move";
-    dragEvent.dataTransfer.setData("text/plain", String(itemIndex));
-  };
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
-  const handleDragOver = (
-    dragEvent: DragEvent<HTMLDivElement>,
-    targetItemIndex: number,
-  ) => {
-    dragEvent.preventDefault();
-    dragEvent.dataTransfer.dropEffect = "move";
+    if (over && active.id !== over.id) {
+      const sourceIndex = visibleColumns.findIndex(
+        (columnItem) => columnItem.id === active.id,
+      );
+      const targetIndex = visibleColumns.findIndex(
+        (columnItem) => columnItem.id === over.id,
+      );
 
-    if (draggedIndex === null || draggedIndex === targetItemIndex) {
-      setDragOverTargetIndex(null);
-      setDropPosition(null);
-      return;
-    }
-
-    const boundingRectangle = dragEvent.currentTarget.getBoundingClientRect();
-    const cursorOffsetY = dragEvent.clientY - boundingRectangle.top;
-    const computedPosition =
-      cursorOffsetY < boundingRectangle.height / 2 ? "top" : "bottom";
-
-    setDragOverTargetIndex(targetItemIndex);
-    setDropPosition(computedPosition);
-  };
-
-  const handleDragLeave = (dragEvent: DragEvent<HTMLDivElement>) => {
-    const relatedTarget = dragEvent.relatedTarget as Node | null;
-    if (
-      !relatedTarget ||
-      !dragEvent.currentTarget.contains(relatedTarget)
-    ) {
-      setDragOverTargetIndex(null);
-      setDropPosition(null);
-    }
-  };
-
-  const handleDrop = (
-    dragEvent: DragEvent<HTMLDivElement>,
-    targetItemIndex: number,
-  ) => {
-    dragEvent.preventDefault();
-
-    if (
-      draggedIndex !== null &&
-      draggedIndex !== targetItemIndex &&
-      dropPosition !== null
-    ) {
-      let finalTargetIndex = targetItemIndex;
-      if (dropPosition === "bottom" && draggedIndex > targetItemIndex) {
-        finalTargetIndex = targetItemIndex + 1;
-      } else if (dropPosition === "top" && draggedIndex < targetItemIndex) {
-        finalTargetIndex = targetItemIndex - 1;
+      if (sourceIndex !== -1 && targetIndex !== -1) {
+        onReorderColumns(sourceIndex, targetIndex);
       }
-      onReorderColumns(draggedIndex, finalTargetIndex);
     }
-
-    setDraggedIndex(null);
-    setDragOverTargetIndex(null);
-    setDropPosition(null);
   };
-
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-    setDragOverTargetIndex(null);
-    setDropPosition(null);
-  };
-
-  if (visibleColumns.length === 0) {
-    return null;
-  }
 
   return (
     <Box className={styles.positionSection}>
       <Typography className={styles.sectionTitle}>
         {translate("position") || "Position"}
       </Typography>
-      <Box className={styles.listContainer}>
-        {visibleColumns.map((columnItem, itemIndex) => (
-          <MobilePositionItem
-            key={columnItem.id}
-            columnItem={columnItem}
-            itemIndex={itemIndex}
-            isDragging={draggedIndex === itemIndex}
-            dropPosition={
-              dragOverTargetIndex === itemIndex ? dropPosition : null
-            }
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onDragEnd={handleDragEnd}
-          />
-        ))}
-      </Box>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={visibleColumns.map((columnItem) => columnItem.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <Box className={styles.listContainer}>
+            {visibleColumns.map((columnItem, index) => (
+              <MobilePositionItem
+                key={columnItem.id}
+                columnItem={columnItem}
+                itemIndex={index}
+              />
+            ))}
+          </Box>
+        </SortableContext>
+      </DndContext>
     </Box>
   );
 };
-

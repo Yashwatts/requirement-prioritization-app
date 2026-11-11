@@ -198,3 +198,63 @@
   font-size: 18px !important;
   color: #424242 !important;
 }
+
+@media (max-width: 600px) {
+  .desktopOnly,
+  .fontDropdownButton,
+  .headingDropdownButton {
+    display: none !important;
+  }
+
+  .toolbar {
+    width: 100% !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    padding: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 4px !important;
+    background-color: #ffffff !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  .toolbar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .toolbarDivider {
+    height: 25px !important;
+    background-color: #e0e0e0 !important;
+  }
+
+  .formatGroup {
+    width: 88px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .listGroup {
+    width: 58px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .linkCodeGroup {
+    width: 63.33px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+}

@@ -11,6 +11,7 @@
   font-weight: 600 !important;
   line-height: 20px !important;
   color: #424242 !important;
+  margin: 0 !important;
 }
 
 .listContainer {
@@ -31,8 +32,10 @@
   background: #ffffff;
   box-sizing: border-box;
   position: relative;
-  transition: background-color 150ms ease;
   user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  transition: background-color 150ms ease;
 }
 
 .positionItem:hover {
@@ -40,30 +43,10 @@
 }
 
 .positionItemDragging {
-  opacity: 0.4;
+  opacity: 0.85;
   background-color: #f0f4f8;
-}
-
-.dragOverTop::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #01579b;
-  z-index: 2;
-}
-
-.dragOverBottom::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #01579b;
-  z-index: 2;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
 }
 
 .dragHandle {
@@ -78,6 +61,7 @@
   box-sizing: border-box;
   cursor: grab;
   color: #616161;
+  touch-action: none;
 }
 
 .dragHandle:active {
@@ -101,5 +85,5 @@
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 1;
+  margin: 0 !important;
 }
-

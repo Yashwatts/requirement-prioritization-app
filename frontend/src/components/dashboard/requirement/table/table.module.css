@@ -564,3 +564,41 @@
   border-bottom-left-radius: 8px !important;
   border-bottom-right-radius: 8px !important;
 }
+
+.mobileContainer {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+  .workspace {
+    min-height: auto !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .tableFrame {
+    display: none !important;
+  }
+
+  .mobileContainer {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+  }
+
+  .mobileCardList {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+
+  .mobileSkeletonCard {
+    border-radius: 8px !important;
+    background-color: #ffffff !important;
+  }
+}

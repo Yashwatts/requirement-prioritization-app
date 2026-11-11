@@ -1,63 +1,52 @@
 "use client";
 
-import type { DragEvent } from "react";
 import { Box, Typography } from "@mui/material";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { ColumnConfigItem } from "@/types/table-settings.types";
 import styles from "./position-list.module.css";
 
 export interface MobilePositionItemProps {
   columnItem: ColumnConfigItem;
   itemIndex: number;
-  isDragging: boolean;
-  dropPosition: "top" | "bottom" | null;
-  onDragStart: (
-    dragEvent: DragEvent<HTMLDivElement>,
-    itemIndex: number,
-  ) => void;
-  onDragOver: (
-    dragEvent: DragEvent<HTMLDivElement>,
-    itemIndex: number,
-  ) => void;
-  onDragLeave: (dragEvent: DragEvent<HTMLDivElement>) => void;
-  onDrop: (dragEvent: DragEvent<HTMLDivElement>, itemIndex: number) => void;
-  onDragEnd: (dragEvent: DragEvent<HTMLDivElement>) => void;
 }
 
 export const MobilePositionItem = ({
   columnItem,
-  itemIndex,
-  isDragging,
-  dropPosition,
-  onDragStart,
-  onDragOver,
-  onDragLeave,
-  onDrop,
-  onDragEnd,
 }: MobilePositionItemProps) => {
-  const getDropIndicatorClass = () => {
-    if (dropPosition === "top") return styles.dragOverTop;
-    if (dropPosition === "bottom") return styles.dragOverBottom;
-    return "";
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: columnItem.id });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    zIndex: isDragging ? 100 : undefined,
   };
 
   return (
     <Box
-      draggable
+      ref={setNodeRef}
+      style={style}
       className={`${styles.positionItem} ${
         isDragging ? styles.positionItemDragging : ""
-      } ${getDropIndicatorClass()}`.trim()}
-      onDragStart={(dragEvent) => onDragStart(dragEvent, itemIndex)}
-      onDragOver={(dragEvent) => onDragOver(dragEvent, itemIndex)}
-      onDragLeave={onDragLeave}
-      onDrop={(dragEvent) => onDrop(dragEvent, itemIndex)}
-      onDragEnd={onDragEnd}
+      }`.trim()}
     >
-      <Box className={styles.dragHandle}>
+      <Box
+        className={styles.dragHandle}
+        {...attributes}
+        {...listeners}
+        aria-label={`Drag ${columnItem.label}`}
+      >
         <DragIndicatorIcon className={styles.dragIcon} />
       </Box>
       <Typography className={styles.itemLabel}>{columnItem.label}</Typography>
     </Box>
   );
 };
-

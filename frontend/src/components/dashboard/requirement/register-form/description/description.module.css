@@ -53,15 +53,14 @@
   cursor: text;
   box-sizing: border-box;
   margin-bottom: 24px;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
 .editorBody::-webkit-scrollbar {
-  width: 6px;
-}
-
-.editorBody::-webkit-scrollbar-thumb {
-  background-color: #e0e0e0;
-  border-radius: 3px;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .editorBody :global(.tiptap) {
@@ -149,4 +148,26 @@
 
 .helperTextError {
   color: #e53935 !important;
+}
+
+@media (max-width: 600px) {
+  .container {
+    gap: 16px !important;
+  }
+
+  .editor {
+    width: 100% !important;
+    height: 400px !important;
+    min-height: 400px !important;
+    max-height: 400px !important;
+    padding: 16px !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  .editorBody {
+    max-height: 310px !important;
+    margin-bottom: 16px !important;
+  }
 }

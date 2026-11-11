@@ -96,7 +96,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
           disableRipple
           size="small"
           type="button"
-          className={styles.fontDropdownButton}
+          className={`${styles.fontDropdownButton} ${styles.desktopOnly}`}
           onClick={(event) => setFontAnchor(event.currentTarget)}
           onMouseDown={(event) => event.preventDefault()}
           aria-label="Font family"
@@ -122,13 +122,13 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
           ))}
         </Menu>
 
-        <Box className={styles.toolbarDivider} />
+        <Box className={`${styles.toolbarDivider} ${styles.desktopOnly}`} />
 
         <Button
           disableRipple
           size="small"
           type="button"
-          className={styles.headingDropdownButton}
+          className={`${styles.headingDropdownButton} ${styles.desktopOnly}`}
           onClick={(event) => setHeadingAnchor(event.currentTarget)}
           onMouseDown={(event) => event.preventDefault()}
           aria-label="Heading selection"
@@ -179,7 +179,7 @@ export const Toolbar = ({ editor }: ToolbarProps) => {
           </MenuItem>
         </Menu>
 
-        <Box className={styles.toolbarDivider} />
+        <Box className={`${styles.toolbarDivider} ${styles.desktopOnly}`} />
 
         <Box className={styles.formatGroup}>
           <Button

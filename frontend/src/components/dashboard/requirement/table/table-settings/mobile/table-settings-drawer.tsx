@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Box, Drawer } from "@mui/material";
+import { Box } from "@mui/material";
 import type {
   ColumnConfigItem,
   TableSettingsDialogProps,
@@ -69,6 +69,16 @@ export const TableSettingsDrawer = ({
     setHiddenColumns(initialColumnLists.hiddenList);
   }, [initialColumnLists]);
 
+  useEffect(() => {
+    if (open && !minimized) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [open, minimized]);
+
   const handleReorderColumns = (
     sourceIndex: number,
     targetIndex: number,
@@ -135,42 +145,37 @@ export const TableSettingsDrawer = ({
     onClose();
   };
 
+  if (!open) {
+    return null;
+  }
+
   return (
-    <Drawer
-      anchor="right"
-      open={open}
-      onClose={handleClose}
-      hideBackdrop={minimized}
-      ModalProps={{
-        keepMounted: true,
-        disableAutoFocus: minimized,
-        disableEnforceFocus: minimized,
-      }}
-      className={`${styles.drawer} ${minimized ? styles.minimized : ""}`.trim()}
+    <Box
+      className={`${styles.container} ${minimized ? styles.minimized : ""}`.trim()}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Table settings"
     >
-      <Box className={styles.drawerContainer}>
-        <MobileSettingsHeader
-          minimized={minimized}
-          onToggleMinimize={handleToggleMinimize}
-          onClose={handleClose}
-        />
+      <MobileSettingsHeader
+        minimized={minimized}
+        onToggleMinimize={handleToggleMinimize}
+        onClose={handleClose}
+      />
 
-        {!minimized && (
-          <Box className={styles.scrollContent}>
-            <MobilePositionList
-              visibleColumns={visibleColumns}
-              onReorderColumns={handleReorderColumns}
-            />
+      {!minimized && (
+        <Box className={styles.scrollContent}>
+          <MobilePositionList
+            visibleColumns={visibleColumns}
+            onReorderColumns={handleReorderColumns}
+          />
 
-            <MobileViewList
-              allColumns={availableColumns}
-              columnVisibility={columnVisibility}
-              onToggleColumn={handleToggleColumn}
-            />
-          </Box>
-        )}
-      </Box>
-    </Drawer>
+          <MobileViewList
+            allColumns={availableColumns}
+            columnVisibility={columnVisibility}
+            onToggleColumn={handleToggleColumn}
+          />
+        </Box>
+      )}
+    </Box>
   );
 };
-

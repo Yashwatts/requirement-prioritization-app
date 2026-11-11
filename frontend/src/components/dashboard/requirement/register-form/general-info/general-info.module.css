@@ -141,3 +141,19 @@
 .textField :global(.Mui-error .MuiFormHelperText-root) {
   color: #e53935 !important;
 }
+
+@media (max-width: 600px) {
+  .container {
+    gap: 16px !important;
+  }
+
+  .twoColumns {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .domainColumns {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+}

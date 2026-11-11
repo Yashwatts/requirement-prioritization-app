@@ -6,13 +6,33 @@
   justify-content: space-between;
 }
 
-.toolbarActions {
+.searchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.actionsContainer {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.toolbarActions button {
+.buttonActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.buttonActions button,
+.viewButton,
+.filterButton,
+.downloadButton {
   min-width: 0;
   height: 36px !important;
   padding: 8px !important;
@@ -26,12 +46,16 @@
   text-transform: uppercase !important;
 }
 
-.toolbarActions button svg {
+.buttonActions button svg,
+.viewButton svg,
+.filterButton svg,
+.downloadButton svg {
   width: 20px;
   height: 20px;
   color: #01579b !important;
 }
 
+.iconActions :global(.MuiIconButton-root),
 .toolbarActions :global(.MuiIconButton-root) {
   width: 36px !important;
   height: 36px !important;
@@ -40,6 +64,7 @@
   color: #424242 !important;
 }
 
+.iconActions :global(.MuiIconButton-root) svg,
 .toolbarActions :global(.MuiIconButton-root) svg {
   width: 20px;
   height: 20px;
@@ -47,9 +72,9 @@
   fill: #424242 !important;
 }
 
-.toolbarActions .toolbarIconButton,
-.toolbarActions .toolbarIconButton :global(.MuiSvgIcon-root),
-.toolbarActions .toolbarIconButton svg {
+.toolbarIconButton,
+.toolbarIconButton :global(.MuiSvgIcon-root),
+.toolbarIconButton svg {
   color: #424242 !important;
   fill: #424242 !important;
 }
@@ -165,7 +190,7 @@
   fill: #616161 !important;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px) and (min-width: 601px) {
   .toolbar {
     height: auto;
     align-items: flex-start;
@@ -173,9 +198,89 @@
     gap: 16px;
   }
   .search {
-    width: min(300px, 100%);
+    width: min(300px, 100%) !important;
   }
 }
 
+@media (max-width: 600px) {
+  .toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr 80px !important;
+    grid-template-rows: 40px 36px !important;
+    row-gap: 8px !important;
+    column-gap: 8px !important;
+    height: 84px !important;
+    width: 100% !important;
+    margin-bottom: 16px !important;
+    box-sizing: border-box !important;
+  }
 
+  .searchContainer {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 40px !important;
+  }
 
+  .search {
+    width: 100% !important;
+    height: 40px !important;
+  }
+
+  .search :global(.MuiOutlinedInput-root) {
+    width: 100% !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+  }
+
+  .actionsContainer {
+    display: contents !important;
+  }
+
+  .iconActions {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 80px !important;
+    height: 36px !important;
+    margin-top: 2px !important;
+  }
+
+  .iconActions :global(.MuiIconButton-root) {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 8px !important;
+    border-radius: 4px !important;
+  }
+
+  .buttonActions {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    height: 36px !important;
+    width: 100% !important;
+  }
+
+  .viewButton {
+    order: 1 !important;
+    height: 36px !important;
+    padding: 8px !important;
+  }
+
+  .filterButton {
+    order: 2 !important;
+    height: 36px !important;
+    padding: 8px !important;
+  }
+
+  .downloadButton {
+    order: 3 !important;
+    height: 36px !important;
+    padding: 8px !important;
+  }
+}

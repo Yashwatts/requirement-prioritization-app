@@ -77,6 +77,7 @@ export const RegisterForm = ({
               minimized={minimized}
               onToggleMinimize={handleToggleMinimize}
               onClose={handleRequestClose}
+              isSubmitting={isSubmitting}
             />
 
             <Box className={styles.scrollContent}>

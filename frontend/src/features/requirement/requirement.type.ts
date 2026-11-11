@@ -19,6 +19,7 @@ export interface ListRequirementsParams {
   sortOrder?: SortOrder;
   page?: number;
   limit?: number;
+  append?: boolean;
 }
 
 export interface PaginatedRequirements {

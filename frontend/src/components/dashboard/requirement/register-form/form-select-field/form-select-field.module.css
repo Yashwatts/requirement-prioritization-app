@@ -117,3 +117,12 @@
 .field :global(.Mui-error .MuiFormHelperText-root) {
   color: #e53935 !important;
 }
+
+@media (max-width: 600px) {
+  .collaboratorField,
+  .followerField {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}

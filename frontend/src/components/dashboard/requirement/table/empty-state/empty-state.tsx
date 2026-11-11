@@ -19,9 +19,14 @@ export const EmptyState = () => {
           height={147}
         />
       </Box>
-      <Typography className={styles.emptyStateMessage}>
-        {translate("noResultsFound")}
-      </Typography>
+      <Box className={styles.messageContainer}>
+        <Typography className={styles.emptyStateMessage}>
+          <span className={styles.desktopText}>{translate("noResultsFound")}</span>
+          <span className={styles.mobileText}>
+            {translate("emptyStateNoRequirements")}
+          </span>
+        </Typography>
+      </Box>
     </Box>
   );
 };

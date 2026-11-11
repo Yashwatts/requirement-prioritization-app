@@ -361,3 +361,20 @@
   color: #bdbdbd !important;
   opacity: 0.6 !important;
 }
+
+@media (max-width: 600px) {
+  .fieldWrapper {
+    width: 100% !important;
+  }
+
+  .datePickerTextField {
+    width: 100% !important;
+  }
+
+  .datePickerTextField :global(.MuiPickersOutlinedInput-root),
+  .datePickerTextField :global(.MuiPickersInputBase-root),
+  .datePickerTextField :global(.MuiOutlinedInput-root),
+  .datePickerTextField :global(.MuiInputBase-root) {
+    width: 100% !important;
+  }
+}

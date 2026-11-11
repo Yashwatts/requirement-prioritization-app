@@ -1,71 +1,195 @@
+.dialog :global(.MuiBackdrop-root),
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.25) !important;
+}
+
 .dialogPaper {
   width: 100% !important;
   max-width: 440px !important;
-  padding: 24px !important;
+  padding: 0 !important;
   border-radius: 8px !important;
   background-color: #ffffff !important;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
 .title {
-  padding: 0 !important;
-  margin-bottom: 12px !important;
+  padding: 24px 24px 0 24px !important;
+  margin: 0 !important;
+  height: 28px !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 20px !important;
   font-weight: 600 !important;
   line-height: 28px !important;
-  color: #212121 !important;
+  color: #424242 !important;
+  box-sizing: content-box !important;
 }
 
 .content {
-  padding: 0 !important;
-  margin-bottom: 24px !important;
+  padding: 8px 24px 16px 24px !important;
+  margin: 0 !important;
+  height: 60px !important;
+  overflow: hidden !important;
+  box-sizing: content-box !important;
 }
 
 .text {
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
+  font-weight: 400 !important;
   line-height: 20px !important;
   color: #616161 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .actions {
-  padding: 0 !important;
+  padding: 8px 24px 16px 24px !important;
+  margin: 0 !important;
+  height: 36px !important;
   display: flex !important;
+  align-items: center !important;
   justify-content: flex-end !important;
-  gap: 12px !important;
+  gap: 8px !important;
+  box-sizing: content-box !important;
 }
 
 .cancelBtn {
-  min-width: 74px !important;
+  min-width: 82px !important;
   height: 36px !important;
-  padding: 6px 12px !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
   font-family: "Open Sans", sans-serif !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
+  line-height: 26px !important;
+  letter-spacing: 0.07px !important;
   color: #424242 !important;
   text-transform: uppercase !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
 }
 
 .cancelBtn:hover {
   background-color: rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
 }
 
 .confirmBtn {
-  min-width: 86px !important;
+  min-width: 89px !important;
   height: 36px !important;
-  padding: 6px 16px !important;
-  border-radius: 6px !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
   font-family: "Open Sans", sans-serif !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
+  line-height: 26px !important;
+  letter-spacing: 0.07px !important;
   color: #01579b !important;
-  background-color: #e3f2fd !important;
+  background-color: transparent !important;
   text-transform: uppercase !important;
   box-shadow: none !important;
+  box-sizing: border-box !important;
 }
 
 .confirmBtn:hover {
-  background-color: #bbdefb !important;
+  background-color: rgba(1, 87, 155, 0.04) !important;
   box-shadow: none !important;
+}
+
+@media (max-width: 600px) {
+  .dialog :global(.MuiDialog-container) {
+    padding: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .dialogPaper {
+    width: 358px !important;
+    max-width: 358px !important;
+    height: 196px !important;
+    min-height: 196px !important;
+    max-height: 196px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .title {
+    padding: 24px 24px 0 24px !important;
+    margin: 0 !important;
+    width: 310px !important;
+    height: 28px !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    line-height: 28px !important;
+    color: #424242 !important;
+    box-sizing: content-box !important;
+  }
+
+  .content {
+    padding: 8px 24px 16px 24px !important;
+    margin: 0 !important;
+    width: 310px !important;
+    height: 60px !important;
+    overflow: hidden !important;
+    box-sizing: content-box !important;
+  }
+
+  .text {
+    width: 310px !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 20px !important;
+    color: #616161 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .actions {
+    padding: 8px 24px 16px 24px !important;
+    margin: 0 !important;
+    width: 310px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    box-sizing: content-box !important;
+  }
+
+  .cancelBtn {
+    min-width: 82px !important;
+    height: 36px !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 26px !important;
+    letter-spacing: 0.07px !important;
+    color: #424242 !important;
+    text-transform: uppercase !important;
+    background-color: transparent !important;
+  }
+
+  .confirmBtn {
+    min-width: 89px !important;
+    height: 36px !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 26px !important;
+    letter-spacing: 0.07px !important;
+    color: #01579b !important;
+    background-color: transparent !important;
+    text-transform: uppercase !important;
+  }
 }

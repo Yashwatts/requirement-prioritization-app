@@ -26,6 +26,12 @@
   max-width: none;
 }
 
+.messageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .emptyStateMessage {
   height: 24px;
   padding: 2px 16px;
@@ -35,4 +41,64 @@
   font-weight: 400 !important;
   line-height: 20px !important;
   white-space: nowrap;
+}
+
+.desktopText {
+  display: inline;
+}
+
+.mobileText {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .emptyState {
+    width: 100% !important;
+    height: 604px !important;
+    min-height: 604px !important;
+    gap: 40px !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+  }
+
+  .messageContainer {
+    width: 100% !important;
+    max-width: 358px !important;
+    height: 60px !important;
+    padding: 10px 16px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .emptyStateMessage {
+    width: 326px !important;
+    max-width: 100% !important;
+    height: 40px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #424242 !important;
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 20px !important;
+    letter-spacing: 0 !important;
+    color: #424242 !important;
+    text-align: center !important;
+    white-space: normal !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .desktopText {
+    display: none !important;
+  }
+
+  .mobileText {
+    display: inline !important;
+    text-align: center !important;
+  }
 }

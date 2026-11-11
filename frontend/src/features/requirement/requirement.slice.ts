@@ -93,7 +93,25 @@ export const requirementSlice = createSlice({
       })
       .addCase(fetchRequirements.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.requirements = action.payload.requirements;
+        if (action.meta.arg?.append) {
+          const existingRequirementIdentifiers = new Set(
+            state.requirements.map(
+              (requirementItem) => requirementItem.id ?? requirementItem.code,
+            ),
+          );
+          const uniqueNewRequirements = action.payload.requirements.filter(
+            (requirementItem) =>
+              !existingRequirementIdentifiers.has(
+                requirementItem.id ?? requirementItem.code,
+              ),
+          );
+          state.requirements = [
+            ...state.requirements,
+            ...uniqueNewRequirements,
+          ];
+        } else {
+          state.requirements = action.payload.requirements;
+        }
         state.total = action.payload.total;
         state.totalPages = action.payload.totalPages;
         state.page = action.payload.page;

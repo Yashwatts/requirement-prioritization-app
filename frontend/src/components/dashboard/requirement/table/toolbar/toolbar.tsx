@@ -50,70 +50,91 @@ export const Toolbar = ({
 
   return (
     <Box className={styles.toolbar}>
-      <TextField
-        className={styles.search}
-        value={searchInput}
-        onChange={(event) => setSearchInput(event.target.value)}
-        placeholder={translate("search")}
-        size="small"
-        slotProps={{
-          input: {
-            startAdornment: (
-              <InputAdornment
-                position="start"
-                className={styles.searchStartAdornment}
-              >
-                <SearchIcon className={styles.searchIcon} />
-              </InputAdornment>
-            ),
-            endAdornment: searchInput ? (
-              <InputAdornment
-                position="end"
-                className={styles.searchEndAdornment}
-              >
-                <IconButton
-                  aria-label={translate("clearSearch")}
-                  className={styles.clearSearchButton}
-                  onClick={handleClearSearch}
-                  edge="end"
-                  size="small"
+      <Box className={styles.searchContainer}>
+        <TextField
+          className={styles.search}
+          value={searchInput}
+          onChange={(event) => setSearchInput(event.target.value)}
+          placeholder={translate("search")}
+          size="small"
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment
+                  position="start"
+                  className={styles.searchStartAdornment}
                 >
-                  <CloseIcon />
-                </IconButton>
-              </InputAdornment>
-            ) : undefined,
-          },
-        }}
-      />
-      <Box className={styles.toolbarActions}>
-        <Tooltip title={translate("changeView")}>
-          <Button startIcon={<ViewQuiltOutlinedIcon />}>
-            {translate("view")}
-          </Button>
-        </Tooltip>
-        <Tooltip title={translate("downloadRequirements")}>
-          <Button startIcon={<FileDownloadOutlinedIcon />}>
-            {translate("download")}
-          </Button>
-        </Tooltip>
-        <Tooltip title={translate("filterRequirements")}>
-          <Button startIcon={<FilterListIcon />}>
-            {translate("filters")}
-          </Button>
-        </Tooltip>
-        <Tooltip title={translate("tableSettings")}>
-          <IconButton
-            className={styles.toolbarIconButton}
-            onClick={onOpenSettings}
-          >
-            <SettingsOutlinedIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title={translate("moreActions")}>
-          <IconButton className={styles.toolbarIconButton}>
-            <MoreVertIcon />
-          </IconButton>
-        </Tooltip>
+                  <SearchIcon className={styles.searchIcon} />
+                </InputAdornment>
+              ),
+              endAdornment: searchInput ? (
+                <InputAdornment
+                  position="end"
+                  className={styles.searchEndAdornment}
+                >
+                  <IconButton
+                    aria-label={translate("clearSearch")}
+                    className={styles.clearSearchButton}
+                    onClick={handleClearSearch}
+                    edge="end"
+                    size="small"
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </InputAdornment>
+              ) : undefined,
+            },
+          }}
+        />
+      </Box>
+
+      <Box className={styles.actionsContainer}>
+        <Box className={styles.buttonActions}>
+          <Tooltip title={translate("changeView")}>
+            <Button
+              startIcon={<ViewQuiltOutlinedIcon />}
+              className={styles.viewButton}
+            >
+              {translate("view")}
+            </Button>
+          </Tooltip>
+          <Tooltip title={translate("downloadRequirements")}>
+            <Button
+              startIcon={<FileDownloadOutlinedIcon />}
+              className={styles.downloadButton}
+            >
+              {translate("download")}
+            </Button>
+          </Tooltip>
+          <Tooltip title={translate("filterRequirements")}>
+            <Button
+              startIcon={<FilterListIcon />}
+              className={styles.filterButton}
+            >
+              {translate("filters")}
+            </Button>
+          </Tooltip>
+        </Box>
+
+        <Box className={styles.iconActions}>
+          <Tooltip title={translate("tableSettings")}>
+            <IconButton
+              className={styles.toolbarIconButton}
+              onClick={onOpenSettings}
+              aria-label={translate("tableSettings")}
+            >
+              <SettingsOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={translate("moreActions")}>
+            <IconButton
+              className={styles.toolbarIconButton}
+              aria-label={translate("moreActions")}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
       </Box>
     </Box>
   );
