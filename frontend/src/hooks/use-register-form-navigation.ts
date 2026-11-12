@@ -12,6 +12,8 @@ export interface UseRegisterFormNavigationParameters {
   isSubmitting: boolean;
   getValues: UseFormGetValues<RequirementFormValues>;
   onForceClose: () => void;
+  minimized?: boolean;
+  onMinimizedChange?: (minimized: boolean) => void;
 }
 
 export interface UseRegisterFormNavigationReturn {
@@ -30,12 +32,17 @@ export const useRegisterFormNavigation = ({
   isSubmitting,
   getValues,
   onForceClose,
+  minimized: propMinimized,
+  onMinimizedChange,
 }: UseRegisterFormNavigationParameters): UseRegisterFormNavigationReturn => {
   const { showSnackbar } = useSnackbar();
   const { translate } = useLocalization();
 
-  const [minimized, setMinimized] = useState(false);
+  const [internalMinimized, setInternalMinimized] = useState(false);
   const [discardDialogOpen, setDiscardDialogOpen] = useState(false);
+
+  const isControlled = propMinimized !== undefined;
+  const minimized = isControlled ? propMinimized : internalMinimized;
 
   useEffect(() => {
     const handleBeforeUnload = (beforeUnloadEvent: BeforeUnloadEvent) => {
@@ -67,7 +74,10 @@ export const useRegisterFormNavigation = ({
   }, [open, isDirty, isSubmitting, getValues]);
 
   const resetNavigationState = () => {
-    setMinimized(false);
+    if (!isControlled) {
+      setInternalMinimized(false);
+    }
+    onMinimizedChange?.(false);
     setDiscardDialogOpen(false);
   };
 
@@ -89,7 +99,11 @@ export const useRegisterFormNavigation = ({
   };
 
   const handleToggleMinimize = () => {
-    setMinimized((isCurrentlyMinimized) => !isCurrentlyMinimized);
+    const nextVal = !minimized;
+    if (!isControlled) {
+      setInternalMinimized(nextVal);
+    }
+    onMinimizedChange?.(nextVal);
   };
 
   return {

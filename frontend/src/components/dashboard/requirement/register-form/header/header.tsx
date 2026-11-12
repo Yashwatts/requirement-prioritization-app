@@ -1,7 +1,6 @@
 "use client";
 
 import { Box, IconButton, Typography } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
@@ -19,7 +18,6 @@ export const Header = ({
   minimized,
   onToggleMinimize,
   onClose,
-  isSubmitting,
 }: HeaderProps) => {
   const { translate } = useLocalization();
 
@@ -28,14 +26,6 @@ export const Header = ({
       className={`${styles.header} ${minimized ? styles.minimizedHeader : ""}`}
     >
       <Box className={styles.titleGroup}>
-        <IconButton
-          aria-label={translate("close")}
-          size="small"
-          onClick={onClose}
-          className={styles.mobileCloseButton}
-        >
-          <CloseIcon />
-        </IconButton>
         <Typography className={styles.title}>
           {translate("newRequirement")}
         </Typography>
@@ -51,19 +41,10 @@ export const Header = ({
           {minimized ? <OpenInFullIcon /> : <RemoveIcon />}
         </IconButton>
         <IconButton
-          aria-label={translate("save")}
-          size="small"
-          type="submit"
-          disabled={isSubmitting}
-          className={styles.mobileSubmitButton}
-        >
-          <CheckIcon />
-        </IconButton>
-        <IconButton
           aria-label={translate("close")}
           size="small"
           onClick={onClose}
-          className={styles.desktopCloseButton}
+          className={styles.closeButton}
         >
           <CloseIcon />
         </IconButton>

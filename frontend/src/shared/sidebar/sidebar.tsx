@@ -3,6 +3,7 @@
 import Image from "next/image";
 import {
   Box,
+  Drawer,
   List,
   ListItemButton,
   ListItemIcon,
@@ -21,9 +22,10 @@ import styles from "./sidebar.module.css";
 
 interface SidebarProps {
   open: boolean;
+  onClose?: () => void;
 }
 
-export const Sidebar = ({ open }: SidebarProps) => {
+export const Sidebar = ({ open, onClose }: SidebarProps) => {
   const { translate } = useLocalization();
   const requirementsLabel = translate("requirements");
 
@@ -35,25 +37,13 @@ export const Sidebar = ({ open }: SidebarProps) => {
     { label: translate("settings"), icon: settingsIcon },
   ];
 
-  const handleBackdropClick = () => {
-    const menuButton = document.querySelector<HTMLButtonElement>(
-      'button[aria-label="Toggle navigation menu"]'
-    );
-    menuButton?.click();
-  };
-
   return (
     <>
-      {open && (
-        <Box
-          className={styles.backdrop}
-          onClick={handleBackdropClick}
-          aria-hidden="true"
-        />
-      )}
-      <Box
-        className={`${styles.sidebar} ${open ? styles.expanded : ""}`}
-        component="aside"
+      <Drawer
+        open={open}
+        onClose={onClose}
+        className={styles.mobileDrawer}
+        ModalProps={{ keepMounted: true }}
       >
         <Box className={styles.mobileHeader}>
           <Box className={styles.mobileHeaderContent}>
@@ -72,6 +62,28 @@ export const Sidebar = ({ open }: SidebarProps) => {
           </Box>
           <Box className={styles.mobileHeaderSpace} />
         </Box>
+        <List disablePadding className={styles.navList}>
+          <ListItemButton className={styles.expandedItem} selected>
+            <ListItemIcon className={styles.expandedIcon}>
+              <Image
+                src={requirementsIcon}
+                alt={requirementsLabel}
+                width={20}
+                height={20}
+              />
+            </ListItemIcon>
+            <ListItemText
+              primary={requirementsLabel}
+              classes={{ primary: styles.expandedItemText }}
+            />
+          </ListItemButton>
+        </List>
+      </Drawer>
+
+      <Box
+        className={`${styles.sidebar} ${open ? styles.expanded : ""}`}
+        component="aside"
+      >
         {open ? (
           <List disablePadding className={styles.navList}>
             <ListItemButton className={styles.expandedItem} selected>
@@ -93,7 +105,10 @@ export const Sidebar = ({ open }: SidebarProps) => {
           <List disablePadding className={styles.railList}>
             {railItems.map((item) => (
               <Tooltip key={item.label} title={item.label} placement="right">
-                <ListItemButton className={styles.railItem} selected={item.active}>
+                <ListItemButton
+                  className={styles.railItem}
+                  selected={item.active}
+                >
                   <ListItemIcon className={styles.railIcon}>
                     <Image
                       src={item.icon}

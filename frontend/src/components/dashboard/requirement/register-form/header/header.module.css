@@ -39,8 +39,7 @@
 }
 
 .actionButton,
-.desktopCloseButton,
-.mobileSubmitButton {
+.closeButton {
   width: 36px !important;
   height: 36px !important;
   padding: 8px !important;
@@ -52,22 +51,12 @@
 }
 
 .actionButton svg,
-.desktopCloseButton svg,
-.mobileCloseButton svg,
-.mobileSubmitButton svg {
+.closeButton svg {
   width: 20px !important;
   height: 20px !important;
   font-size: 20px !important;
   color: #424242 !important;
   fill: #424242 !important;
-}
-
-.mobileCloseButton {
-  display: none !important;
-}
-
-.mobileSubmitButton {
-  display: none !important;
 }
 
 @media (max-width: 600px) {
@@ -77,49 +66,28 @@
     max-height: 36px !important;
     padding: 0 16px !important;
     margin-top: 16px !important;
-    margin-bottom: 24px !important;
+    margin-bottom: 0 !important;
     background: transparent !important;
     border-bottom: none !important;
     box-sizing: border-box !important;
     width: 100% !important;
+    flex-shrink: 0 !important;
   }
 
   .titleGroup {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
     height: 32px !important;
   }
 
   .title {
+    font-family: var(--font-inter), "Inter", sans-serif !important;
     font-size: 22px !important;
     font-weight: 600 !important;
     line-height: 32px !important;
     color: #424242 !important;
     margin: 0 !important;
     padding: 0 !important;
-  }
-
-  .mobileCloseButton {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 20px !important;
-    height: 20px !important;
-    min-width: 20px !important;
-    max-width: 20px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    color: #424242 !important;
-    border-radius: 4px !important;
-  }
-
-  .mobileCloseButton svg {
-    width: 20px !important;
-    height: 20px !important;
-    font-size: 20px !important;
-    color: #424242 !important;
-    fill: #424242 !important;
   }
 
   .actions {
@@ -129,7 +97,8 @@
     height: 36px !important;
   }
 
-  .actionButton {
+  .actionButton,
+  .closeButton {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -141,19 +110,12 @@
     border-radius: 4px !important;
   }
 
-  .mobileSubmitButton {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    padding: 8px !important;
+  .actionButton svg,
+  .closeButton svg {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 20px !important;
     color: #424242 !important;
-    border-radius: 4px !important;
-  }
-
-  .desktopCloseButton {
-    display: none !important;
+    fill: #424242 !important;
   }
 }

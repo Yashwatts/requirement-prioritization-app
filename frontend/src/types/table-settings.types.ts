@@ -5,17 +5,6 @@ export interface ColumnConfigItem {
 
 export type ColumnListType = "visible" | "hidden";
 
-export interface DraggedItemState {
-  item: ColumnConfigItem;
-  sourceList: ColumnListType;
-  sourceIndex: number;
-}
-
-export interface DragOverTargetState {
-  listType: ColumnListType;
-  targetIndex: number;
-}
-
 export interface UserTableSettings {
   columnOrder: string[];
   columnVisibility: Record<string, boolean>;
@@ -32,4 +21,3 @@ export interface TableSettingsDialogProps {
     newColumnVisibility: Record<string, boolean>,
   ) => void;
 }
-

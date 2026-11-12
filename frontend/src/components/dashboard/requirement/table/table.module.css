@@ -595,6 +595,8 @@
     flex-direction: column !important;
     gap: 16px !important;
     width: 100% !important;
+    padding: 0 16px 96px 16px !important;
+    box-sizing: border-box !important;
   }
 
   .mobileSkeletonCard {

@@ -18,12 +18,16 @@ export interface RegisterFormProps {
   open: boolean;
   onClose: () => void;
   onCreated: () => void;
+  minimized?: boolean;
+  onMinimizedChange?: (minimized: boolean) => void;
 }
 
 export const RegisterForm = ({
   open,
   onClose,
   onCreated,
+  minimized: propMinimized,
+  onMinimizedChange,
 }: RegisterFormProps) => {
   const { translate } = useLocalization();
 
@@ -51,21 +55,20 @@ export const RegisterForm = ({
     open,
     onClose,
     onCreated,
+    minimized: propMinimized,
+    onMinimizedChange,
   });
 
   return (
     <>
       <Drawer
         anchor="right"
-        open={open}
+        open={open && !minimized}
         onClose={handleRequestClose}
-        hideBackdrop={minimized}
         ModalProps={{
           keepMounted: true,
-          disableAutoFocus: minimized,
-          disableEnforceFocus: minimized,
         }}
-        className={`${styles.drawer} ${minimized ? styles.minimized : ""}`}
+        className={styles.drawer}
       >
         <FormProvider {...methods}>
           <Box
@@ -74,7 +77,7 @@ export const RegisterForm = ({
             onSubmit={handleSubmitRequirementForm}
           >
             <Header
-              minimized={minimized}
+              minimized={false}
               onToggleMinimize={handleToggleMinimize}
               onClose={handleRequestClose}
               isSubmitting={isSubmitting}
@@ -113,6 +116,17 @@ export const RegisterForm = ({
           </Box>
         </FormProvider>
       </Drawer>
+
+      {open && minimized && (
+        <Box className={styles.desktopMinimizedBar}>
+          <Header
+            minimized={minimized}
+            onToggleMinimize={handleToggleMinimize}
+            onClose={handleRequestClose}
+            isSubmitting={isSubmitting}
+          />
+        </Box>
+      )}
 
       <ConfirmDialog
         open={discardDialogOpen}

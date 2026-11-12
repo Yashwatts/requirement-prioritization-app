@@ -1,4 +1,4 @@
-import { Open_Sans } from "next/font/google";
+import { Inter, Open_Sans } from "next/font/google";
 import { StoreProvider } from "@/store/store-provider";
 import { SnackbarProvider } from "@/shared/snackbar/snackbar-provider";
 import type { Metadata } from "next";
@@ -9,6 +9,13 @@ const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--font-open-sans",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -23,7 +30,7 @@ export default function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="en" className={openSans.variable}>
+    <html lang="en" className={`${openSans.variable} ${inter.variable}`}>
       <body className={openSans.className} suppressHydrationWarning>
         <StoreProvider>
           <SnackbarProvider>{children}</SnackbarProvider>

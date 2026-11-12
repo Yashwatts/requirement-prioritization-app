@@ -133,7 +133,7 @@ export const useRequirementOptions = ({
 
   const impactOptions = useMemo((): { label: string; value: number }[] => {
     const getDefaultOptionsForCurrentSelection = () => {
-      if (watchedImpactUsers && apiImpactUsers) {
+      if (watchedImpactUsers) {
         const levelName = getLevelNameFromImpactId(
           watchedImpactUsers,
           apiImpactUsers,

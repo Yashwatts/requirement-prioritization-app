@@ -50,6 +50,8 @@ export interface UseRegisterRequirementFormParameters {
   open: boolean;
   onClose: () => void;
   onCreated: () => void;
+  minimized?: boolean;
+  onMinimizedChange?: (minimized: boolean) => void;
 }
 
 export interface UseRegisterRequirementFormReturn {
@@ -80,6 +82,8 @@ export const useRegisterRequirementForm = ({
   open,
   onClose,
   onCreated,
+  minimized,
+  onMinimizedChange,
 }: UseRegisterRequirementFormParameters): UseRegisterRequirementFormReturn => {
   const dispatch = useAppDispatch();
   const { showSnackbar } = useSnackbar();
@@ -124,6 +128,8 @@ export const useRegisterRequirementForm = ({
     isSubmitting,
     getValues,
     onForceClose: forceClose,
+    minimized,
+    onMinimizedChange,
   });
 
   const watchedDomain = watch("domain");

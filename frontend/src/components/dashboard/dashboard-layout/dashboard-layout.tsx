@@ -31,7 +31,10 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           setSidebarOpen((isPreviouslyOpen) => !isPreviouslyOpen)
         }
       />
-      <Sidebar open={sidebarOpen} />
+      <Sidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
       <Box
         component="main"
         className={`${styles.content} ${sidebarOpen ? styles.contentExpanded : ""}`}

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Box } from "@mui/material";
+import { arrayMove } from "@dnd-kit/sortable";
 import type {
   ColumnConfigItem,
   TableSettingsDialogProps,
@@ -19,8 +20,6 @@ export const TableSettingsDrawer = ({
   columnVisibility,
   onSave,
 }: TableSettingsDialogProps) => {
-  const [minimized, setMinimized] = useState(false);
-
   const initialColumnLists = useMemo(() => {
     const visibleList: ColumnConfigItem[] = [];
     const hiddenList: ColumnConfigItem[] = [];
@@ -70,23 +69,24 @@ export const TableSettingsDrawer = ({
   }, [initialColumnLists]);
 
   useEffect(() => {
-    if (open && !minimized) {
+    if (open) {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       return () => {
         document.body.style.overflow = originalOverflow;
       };
     }
-  }, [open, minimized]);
+  }, [open]);
 
   const handleReorderColumns = (
-    sourceIndex: number,
-    targetIndex: number,
+    sourceColumnIndex: number,
+    targetColumnIndex: number,
   ) => {
-    const updatedVisibleColumns = [...visibleColumns];
-    const [movedColumn] = updatedVisibleColumns.splice(sourceIndex, 1);
-    updatedVisibleColumns.splice(targetIndex, 0, movedColumn);
-
+    const updatedVisibleColumns = arrayMove(
+      visibleColumns,
+      sourceColumnIndex,
+      targetColumnIndex,
+    );
     setVisibleColumns(updatedVisibleColumns);
 
     const newColumnOrder = [
@@ -136,46 +136,31 @@ export const TableSettingsDrawer = ({
     onSave(newColumnOrder, updatedVisibility);
   };
 
-  const handleToggleMinimize = () => {
-    setMinimized((isCurrentlyMinimized) => !isCurrentlyMinimized);
-  };
-
-  const handleClose = () => {
-    setMinimized(false);
-    onClose();
-  };
-
   if (!open) {
     return null;
   }
 
   return (
     <Box
-      className={`${styles.container} ${minimized ? styles.minimized : ""}`.trim()}
+      className={styles.container}
       role="dialog"
       aria-modal="true"
       aria-label="Table settings"
     >
-      <MobileSettingsHeader
-        minimized={minimized}
-        onToggleMinimize={handleToggleMinimize}
-        onClose={handleClose}
-      />
+      <MobileSettingsHeader onClose={onClose} />
 
-      {!minimized && (
-        <Box className={styles.scrollContent}>
-          <MobilePositionList
-            visibleColumns={visibleColumns}
-            onReorderColumns={handleReorderColumns}
-          />
+      <Box className={styles.scrollContent}>
+        <MobilePositionList
+          visibleColumns={visibleColumns}
+          onReorderColumns={handleReorderColumns}
+        />
 
-          <MobileViewList
-            allColumns={availableColumns}
-            columnVisibility={columnVisibility}
-            onToggleColumn={handleToggleColumn}
-          />
-        </Box>
-      )}
+        <MobileViewList
+          allColumns={availableColumns}
+          columnVisibility={columnVisibility}
+          onToggleColumn={handleToggleColumn}
+        />
+      </Box>
     </Box>
   );
 };

@@ -35,6 +35,14 @@
 
 @media (max-width: 600px) {
   .footer {
-    display: none !important;
+    display: flex !important;
+    height: 68px !important;
+    min-height: 68px !important;
+    max-height: 68px !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+    border-top: 1px solid #e0e0e0 !important;
+    background-color: #ffffff !important;
+    flex-shrink: 0 !important;
   }
 }

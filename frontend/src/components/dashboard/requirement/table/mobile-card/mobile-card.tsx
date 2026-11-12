@@ -3,6 +3,8 @@
 import { useMemo, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import {
   Box,
   Checkbox,
@@ -266,21 +268,34 @@ export const MobileCard = ({
         anchorEl={menuAnchor}
         open={Boolean(menuAnchor)}
         onClose={handleCloseMenu}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
         slotProps={{
           paper: {
-            sx: {
-              borderRadius: "8px",
-              boxShadow:
-                "0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)",
-            },
+            className: styles.menuPaper,
+          },
+          list: {
+            className: styles.menuList,
           },
         }}
       >
         <MenuItem onClick={handleView} className={styles.menuItem}>
-          {translate("viewRequirement")}
+          <VisibilityOutlinedIcon className={styles.menuIcon} />
+          <Typography className={styles.menuText}>
+            {translate("view")}
+          </Typography>
         </MenuItem>
         <MenuItem onClick={handleEdit} className={styles.menuItem}>
-          {translate("editRequirement")}
+          <EditOutlinedIcon className={styles.menuIcon} />
+          <Typography className={styles.menuText}>
+            {translate("edit")}
+          </Typography>
         </MenuItem>
       </Menu>
 

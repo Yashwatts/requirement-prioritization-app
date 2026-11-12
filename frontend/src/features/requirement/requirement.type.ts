@@ -1,7 +1,4 @@
 import {
-  ClientPriority,
-  Domain,
-  RequirementStatus,
   RequirementTableRow,
   SortOrder,
 } from "@/types/requirement.types";
@@ -12,9 +9,9 @@ export interface FetchImpactUsersParams {
 
 export interface ListRequirementsParams {
   search?: string;
-  domain?: Domain;
-  status?: RequirementStatus;
-  clientPriority?: ClientPriority;
+  domain?: string;
+  status?: string;
+  clientPriority?: string;
   sortBy?: string;
   sortOrder?: SortOrder;
   page?: number;

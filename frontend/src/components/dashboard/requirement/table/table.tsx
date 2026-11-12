@@ -36,11 +36,17 @@ import { useLocalization } from "@/localize";
 
 export interface TableProps {
   onCreateNew: () => void;
+  isFormMinimized?: boolean;
+  onRestoreForm?: () => void;
 }
 
 const SKELETON_ITEMS = [1, 2, 3];
 
-export const Table = ({ onCreateNew }: TableProps) => {
+export const Table = ({
+  onCreateNew,
+  isFormMinimized,
+  onRestoreForm,
+}: TableProps) => {
   const dispatch = useAppDispatch();
   const { showSnackbar } = useSnackbar();
   const { translate, locale } = useLocalization();
@@ -218,7 +224,11 @@ export const Table = ({ onCreateNew }: TableProps) => {
 
   return (
     <Box className={styles.root}>
-      <Header onCreateNew={onCreateNew} />
+      <Header
+        onCreateNew={onCreateNew}
+        isFormMinimized={isFormMinimized}
+        onRestoreForm={onRestoreForm}
+      />
 
       <Paper className={styles.workspace} elevation={0}>
         <Toolbar

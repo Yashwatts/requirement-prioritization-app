@@ -13,6 +13,8 @@
   touch-action: pan-y;
   cursor: pointer;
   transition: background-color 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .cardSelected {
@@ -28,7 +30,7 @@
 }
 
 .title {
-  font-family: "Inter", "Open Sans", sans-serif !important;
+  font-family: var(--font-inter), "Inter", "Open Sans", sans-serif !important;
   font-size: 16px !important;
   font-weight: 600 !important;
   line-height: 24px !important;
@@ -72,6 +74,8 @@
   border-radius: 4px !important;
   color: #424242 !important;
   box-sizing: border-box !important;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .moreButton svg {
@@ -88,7 +92,7 @@
 }
 
 .fieldRow {
-  font-family: "Inter", "Open Sans", sans-serif !important;
+  font-family: var(--font-inter), "Inter", "Open Sans", sans-serif !important;
   font-size: 12px !important;
   font-weight: 400 !important;
   line-height: 20px !important;
@@ -98,7 +102,7 @@
 }
 
 .fieldLabel {
-  font-family: "Inter", "Open Sans", sans-serif !important;
+  font-family: var(--font-inter), "Inter", "Open Sans", sans-serif !important;
   font-size: 12px !important;
   font-weight: 400 !important;
   line-height: 20px !important;
@@ -106,7 +110,7 @@
 }
 
 .fieldValue {
-  font-family: "Inter", "Open Sans", sans-serif !important;
+  font-family: var(--font-inter), "Inter", "Open Sans", sans-serif !important;
   font-size: 12px !important;
   font-weight: 700 !important;
   line-height: 20px !important;
@@ -195,11 +199,59 @@
   border: none;
 }
 
+.menuPaper {
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+  border-radius: 8px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.menuList {
+  padding: 8px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+}
+
 .menuItem {
+  width: 120px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 9px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-sizing: border-box !important;
+  background-color: transparent !important;
+  cursor: pointer !important;
+}
+
+.menuItem:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.menuIcon {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 20px !important;
+  color: #424242 !important;
+  flex-shrink: 0 !important;
+}
+
+.menuText {
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
   font-weight: 400 !important;
   line-height: 20px !important;
   color: #424242 !important;
-  min-height: 36px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
 }

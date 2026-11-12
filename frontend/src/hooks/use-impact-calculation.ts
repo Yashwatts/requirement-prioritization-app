@@ -25,6 +25,13 @@ export interface UseImpactCalculationReturn {
   watchedDomain?: string;
 }
 
+const DEFAULT_ID_TO_LEVEL_MAP: Record<number, string> = {
+  1: "LOW",
+  2: "MEDIUM",
+  3: "HIGH",
+  4: "VERY_HIGH",
+};
+
 export const getLevelNameFromImpactId = (
   selectedImpactUserId: string | number,
   allDomainImpactUsers: DomainImpactUsers[] | undefined,
@@ -32,22 +39,32 @@ export const getLevelNameFromImpactId = (
   if (
     selectedImpactUserId === "" ||
     selectedImpactUserId === undefined ||
-    selectedImpactUserId === null ||
-    !allDomainImpactUsers
+    selectedImpactUserId === null
   ) {
     return undefined;
   }
   const numericImpactUserId = Number(selectedImpactUserId);
 
-  for (const domainImpactGroup of allDomainImpactUsers) {
-    if (Array.isArray(domainImpactGroup.impact_users)) {
-      const matchedImpactUser = domainImpactGroup.impact_users.find(
-        (impactUserItem) => Number(impactUserItem.id) === numericImpactUserId,
-      );
-      if (matchedImpactUser) {
-        return matchedImpactUser.name.toUpperCase();
+  if (allDomainImpactUsers) {
+    for (const domainImpactGroup of allDomainImpactUsers) {
+      if (Array.isArray(domainImpactGroup.impact_users)) {
+        const matchedImpactUser = domainImpactGroup.impact_users.find(
+          (impactUserItem) => Number(impactUserItem.id) === numericImpactUserId,
+        );
+        if (matchedImpactUser) {
+          return matchedImpactUser.name.toUpperCase();
+        }
       }
     }
+  }
+
+  if (DEFAULT_ID_TO_LEVEL_MAP[numericImpactUserId]) {
+    return DEFAULT_ID_TO_LEVEL_MAP[numericImpactUserId];
+  }
+
+  const stringVal = String(selectedImpactUserId).toUpperCase().replace(" ", "_");
+  if (["LOW", "MEDIUM", "HIGH", "VERY_HIGH"].includes(stringVal)) {
+    return stringVal;
   }
 
   return undefined;
@@ -83,9 +100,6 @@ export const useImpactCalculation = ({
     }
 
     if (!watchedDomain) {
-      if (watchedImpactUsers) {
-        setValue("impactUsers", "", { shouldValidate: false });
-      }
       return;
     }
 

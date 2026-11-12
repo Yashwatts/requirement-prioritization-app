@@ -20,11 +20,7 @@
   height: 836px;
 }
 
-.backdrop {
-  display: none;
-}
-
-.mobileHeader {
+.mobileDrawer {
   display: none;
 }
 
@@ -117,37 +113,32 @@
 } */
 
 @media (max-width: 600px) {
-  .backdrop {
+  .mobileDrawer {
     display: block;
-    position: absolute;
-    top: 56px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    min-height: calc(100vh - 56px);
-    background: rgba(0, 0, 0, 0.25);
-    z-index: 1200;
+  }
+
+  .mobileDrawer :global(.MuiBackdrop-root) {
+    top: 56px !important;
+    background-color: rgba(0, 0, 0, 0.25) !important;
+  }
+
+  .mobileDrawer :global(.MuiDrawer-paper) {
+    top: 56px !important;
+    left: 0 !important;
+    width: 256px !important;
+    height: calc(100vh - 56px) !important;
+    max-height: calc(100vh - 56px) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
   }
 
   .sidebar {
     display: none !important;
-  }
-
-  .sidebar.expanded {
-    display: block !important;
-    position: absolute !important;
-    top: 56px !important;
-    left: 0 !important;
-    bottom: 0 !important;
-    width: 256px !important;
-    min-height: calc(100vh - 56px) !important;
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
-    background: #ffffff !important;
-    z-index: 1250 !important;
-    box-shadow: none !important;
-    border: none !important;
-    box-sizing: border-box !important;
   }
 
   .railList {

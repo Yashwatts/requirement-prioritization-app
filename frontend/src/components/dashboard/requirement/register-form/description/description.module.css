@@ -151,6 +151,10 @@
 }
 
 @media (max-width: 600px) {
+  .sectionTitle {
+    font-family: var(--font-inter), "Inter", sans-serif !important;
+  }
+
   .container {
     gap: 16px !important;
   }

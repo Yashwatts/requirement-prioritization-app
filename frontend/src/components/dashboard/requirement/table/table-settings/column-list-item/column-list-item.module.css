@@ -25,12 +25,11 @@
   cursor: grabbing;
 }
 
-.dragOverTop {
-  border-top: 2px solid #01579b;
-}
-
-.dragOverBottom {
-  border-bottom: 2px solid #01579b;
+.overlayItem {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: grabbing;
+  border-radius: 4px;
 }
 
 .dragHandle {
@@ -63,4 +62,3 @@
   white-space: nowrap;
   flex: 1;
 }
-

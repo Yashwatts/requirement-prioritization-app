@@ -4,26 +4,24 @@ import { Box, Typography } from "@mui/material";
 import {
   DndContext,
   closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useLocalization } from "@/localize";
 import type { ColumnConfigItem } from "@/types/table-settings.types";
+import { useTableSettingsDragAndDropSensors } from "@/hooks/use-table-settings-drag-and-drop";
 import { MobilePositionItem } from "./position-item";
 import styles from "./position-list.module.css";
 
 export interface MobilePositionListProps {
   visibleColumns: ColumnConfigItem[];
-  onReorderColumns: (sourceIndex: number, targetIndex: number) => void;
+  onReorderColumns: (
+    sourceColumnIndex: number,
+    targetColumnIndex: number,
+  ) => void;
 }
 
 export const MobilePositionList = ({
@@ -31,37 +29,21 @@ export const MobilePositionList = ({
   onReorderColumns,
 }: MobilePositionListProps) => {
   const { translate } = useLocalization();
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 4,
-      },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 150,
-        tolerance: 5,
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
+  const dragAndDropSensors = useTableSettingsDragAndDropSensors();
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const sourceIndex = visibleColumns.findIndex(
+      const sourceColumnIndex = visibleColumns.findIndex(
         (columnItem) => columnItem.id === active.id,
       );
-      const targetIndex = visibleColumns.findIndex(
+      const targetColumnIndex = visibleColumns.findIndex(
         (columnItem) => columnItem.id === over.id,
       );
 
-      if (sourceIndex !== -1 && targetIndex !== -1) {
-        onReorderColumns(sourceIndex, targetIndex);
+      if (sourceColumnIndex !== -1 && targetColumnIndex !== -1) {
+        onReorderColumns(sourceColumnIndex, targetColumnIndex);
       }
     }
   };
@@ -73,7 +55,7 @@ export const MobilePositionList = ({
       </Typography>
 
       <DndContext
-        sensors={sensors}
+        sensors={dragAndDropSensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >

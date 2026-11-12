@@ -11,14 +11,6 @@
   box-sizing: border-box;
 }
 
-.minimizedHeader {
-  height: 52px !important;
-  min-height: 52px !important;
-  max-height: 52px !important;
-  border-bottom: 1px solid #e0e0e0 !important;
-  border-radius: 8px 8px 0 0 !important;
-}
-
 .title {
   color: #424242 !important;
   font-family: "Open Sans", sans-serif !important;
@@ -46,6 +38,28 @@
 
 .actionButton:hover {
   background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.displayOnlyButton {
+  width: 36px !important;
+  height: 36px !important;
+  padding: 8px !important;
+  color: #424242 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+  background-color: transparent !important;
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+.displayOnlyButton:hover,
+.displayOnlyButton:focus,
+.displayOnlyButton:active,
+.displayOnlyButton:global(.Mui-focusVisible) {
+  background-color: transparent !important;
+  outline: none !important;
 }
 
 .actionIcon {

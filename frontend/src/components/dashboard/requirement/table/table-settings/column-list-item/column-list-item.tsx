@@ -1,8 +1,9 @@
 "use client";
 
-import type { DragEvent } from "react";
 import { Box, Typography } from "@mui/material";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type {
   ColumnConfigItem,
   ColumnListType,
@@ -10,69 +11,62 @@ import type {
 import styles from "./column-list-item.module.css";
 
 export interface ColumnListItemProps {
-  item: ColumnConfigItem;
-  index: number;
+  columnItem: ColumnConfigItem;
   listType: ColumnListType;
-  isDragging: boolean;
-  dropIndicator: "top" | "bottom" | null;
-  onDragStart: (
-    e: DragEvent<HTMLDivElement>,
-    item: ColumnConfigItem,
-    index: number,
-    listType: ColumnListType,
+  isOverlay?: boolean;
+  onDoubleClickItem?: (
+    clickedColumnItem: ColumnConfigItem,
+    targetListType: ColumnListType,
   ) => void;
-  onDragOver: (
-    e: DragEvent<HTMLDivElement>,
-    index: number,
-    listType: ColumnListType,
-  ) => void;
-  onDragLeave: (e: DragEvent<HTMLDivElement>) => void;
-  onDrop: (
-    e: DragEvent<HTMLDivElement>,
-    index: number,
-    listType: ColumnListType,
-  ) => void;
-  onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
-  onDoubleClick: (item: ColumnConfigItem, listType: ColumnListType) => void;
 }
 
 export const ColumnListItem = ({
-  item,
-  index,
+  columnItem,
   listType,
-  isDragging,
-  dropIndicator,
-  onDragStart,
-  onDragOver,
-  onDragLeave,
-  onDrop,
-  onDragEnd,
-  onDoubleClick,
+  isOverlay = false,
+  onDoubleClickItem,
 }: ColumnListItemProps) => {
-  const getIndicatorClassName = () => {
-    if (dropIndicator === "top") return styles.dragOverTop;
-    if (dropIndicator === "bottom") return styles.dragOverBottom;
-    return "";
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: columnItem.id,
+    disabled: isOverlay,
+  });
+
+  const transformStyle = isOverlay
+    ? undefined
+    : {
+        transform: CSS.Translate.toString(transform),
+        transition,
+      };
+
+  const handleItemDoubleClick = () => {
+    if (onDoubleClickItem) {
+      onDoubleClickItem(columnItem, listType);
+    }
   };
 
   return (
     <Box
-      className={`${styles.listItem} ${
-        isDragging ? styles.dragging : ""
-      } ${getIndicatorClassName()}`}
-      draggable
-      onDragStart={(e) => onDragStart(e, item, index, listType)}
-      onDragOver={(e) => onDragOver(e, index, listType)}
-      onDragLeave={onDragLeave}
-      onDrop={(e) => onDrop(e, index, listType)}
-      onDragEnd={onDragEnd}
-      onDoubleClick={() => onDoubleClick(item, listType)}
+      ref={isOverlay ? undefined : setNodeRef}
+      style={transformStyle}
+      className={`${styles.listItem} ${isDragging ? styles.dragging : ""} ${
+        isOverlay ? styles.overlayItem : ""
+      }`.trim()}
+      onDoubleClick={handleItemDoubleClick}
+      {...attributes}
+      {...listeners}
     >
       <Box className={styles.dragHandle}>
         <DragIndicatorIcon className={styles.dragIcon} />
       </Box>
-      <Typography className={styles.itemLabel} title={item.label}>
-        {item.label}
+      <Typography className={styles.itemLabel} title={columnItem.label}>
+        {columnItem.label}
       </Typography>
     </Box>
   );

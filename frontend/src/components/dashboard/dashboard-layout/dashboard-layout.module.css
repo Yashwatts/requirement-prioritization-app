@@ -21,7 +21,7 @@
   .content,
   .contentExpanded {
     margin-left: 0 !important;
-    padding: 16px !important;
+    padding: 0 !important;
     min-height: calc(100vh - 56px) !important;
   }
 }

@@ -1,56 +1,18 @@
-export type RequestingInstitution = string;
-
-export type BenefitedInstitution = string;
-
-export type Domain =
-  | "Financiero"
-  | "Reincorporaciones"
-  | "Ventas"
-  | "Marketing Digital"
-  | "Administración Académica"
-  | "Logística"
-  | "Maquetación"
-  | "Presencia Web"
-  | "Envíos Masivos"
-  | "Docencia Académica"
-  | "Catálogo Formativo"
-  | "Planificación Educativa"
-  | "Gestión Docente"
-  | "Acción Docente"
-  | "Calidad Universitaria"
-  | "Reportería"
-  | "ESEC"
-  | "Proyectos Europeos";
-
 export const STUDY_MODALITIES = [
   "Virtual",
   "Presencial",
   "Virtual/Presencial",
 ] as const;
-export type StudyModality = (typeof STUDY_MODALITIES)[number];
-
-export const USER_IMPACT_LEVELS = [
-  "Low",
-  "Medium",
-  "High",
-  "Very High",
-] as const;
-export type UserImpactLevel = (typeof USER_IMPACT_LEVELS)[number];
 
 export const COMPLEXITY_EFFORTS = ["XS", "S", "M", "L", "XL"] as const;
-export type ComplexityEffort = (typeof COMPLEXITY_EFFORTS)[number];
 
 export const CLIENT_PRIORITIES = ["Low", "Medium", "High"] as const;
-export type ClientPriority = (typeof CLIENT_PRIORITIES)[number];
 
 export const REQUIREMENT_STATUSES = ["Registered", "Flow"] as const;
-export type RequirementStatus = (typeof REQUIREMENT_STATUSES)[number];
 
 export const REQUIREMENT_TYPES = ["Internal", "External", "Client"] as const;
-export type RequirementType = (typeof REQUIREMENT_TYPES)[number];
 
 export const YES_NO_OPTIONS = ["Yes", "No"] as const;
-export type YesNoOption = (typeof YES_NO_OPTIONS)[number];
 
 export interface RequirementTableRow {
   id: string;
@@ -58,33 +20,33 @@ export interface RequirementTableRow {
   code: number;
   name: string;
   description: string;
-  requestingInstitution: RequestingInstitution;
+  requestingInstitution: string;
   requestingInstitutionId: number;
   requestedBy: string;
   requestedByList: string[];
-  domain: Domain;
+  domain: string;
   domainId: number;
-  collaboratorDomains: Domain[];
-  followerDomains: Domain[];
-  benefitedInstitutions: BenefitedInstitution[];
+  collaboratorDomains: string[];
+  followerDomains: string[];
+  benefitedInstitutions: string[];
   totalBenefitedInstitutions: number;
   isObligatory: boolean;
   hasAlternativeSolution: boolean;
-  studyModalities: StudyModality[];
-  studyModalityId?: StudyModality | number | string;
-  impactUsers: UserImpactLevel;
+  studyModalities: string[];
+  studyModalityId?: number | string;
+  impactUsers: string;
   impactUsersId: number;
   impact: number;
-  complexityEffort: ComplexityEffort;
-  complexityEffortId?: ComplexityEffort | number | string;
-  clientPriority: ClientPriority;
-  clientPriorityId?: ClientPriority | number | string;
-  status: RequirementStatus;
-  statusId?: RequirementStatus | number | string;
-  state?: RequirementStatus;
+  complexityEffort: string;
+  complexityEffortId?: number | string;
+  clientPriority: string;
+  clientPriorityId?: number | string;
+  status: string;
+  statusId?: number | string;
+  state?: string;
   stateId?: number;
-  type: RequirementType;
-  typeId?: RequirementType | number | string;
+  type: string;
+  typeId?: number | string;
   developmentTimeInSprints: number | null;
   startDate: string | null;
   finishDate: string | null;
@@ -100,19 +62,19 @@ export interface CreateRequirementPayload {
   requesting_institution_id: number;
   requested_by: string[];
   benefited_institutions: string[];
-  study_modality: StudyModality | number | string | string[];
+  study_modality: string | number | string[];
   impact_number_users_id: string | number;
   impact?: number;
   obligation: boolean;
   exist_solution_alternative: boolean;
-  complexity_and_effort: ComplexityEffort | number | string;
-  client_priority?: ClientPriority | number | string;
+  complexity_and_effort: string | number;
+  client_priority?: string | number;
   domain_in_charge_id: number;
   domains_collaborators?: string[];
   followers_domains?: string[];
   development_time_in_sprints?: number;
   start_date?: string;
   end_date?: string;
-  type: RequirementType | number | string;
-  status?: RequirementStatus | number | string;
+  type: string | number;
+  status?: string | number;
 }

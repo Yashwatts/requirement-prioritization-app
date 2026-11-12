@@ -91,5 +91,6 @@
   "insertLink": "Insertar enlace",
   "linkText": "Texto del enlace",
   "url": "URL",
-  "unlink": "Eliminar enlace"
+  "unlink": "Eliminar enlace",
+  "edit": "Editar"
 }

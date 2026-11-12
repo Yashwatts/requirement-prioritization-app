@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type DragEvent } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import {
   Box,
@@ -11,16 +11,27 @@ import {
   DialogTitle,
   useMediaQuery,
 } from "@mui/material";
+import {
+  DndContext,
+  DragOverlay,
+  type DragEndEvent,
+  type DragOverEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 import syncAltIcon from "@/assets/svg/sync-alt-icon.svg";
 import { useLocalization } from "@/localize";
 import type {
   ColumnConfigItem,
   ColumnListType,
-  DraggedItemState,
-  DragOverTargetState,
   TableSettingsDialogProps,
 } from "@/types/table-settings.types";
+import {
+  tableSettingsCollisionDetectionStrategy,
+  useTableSettingsDragAndDropSensors,
+} from "@/hooks/use-table-settings-drag-and-drop";
 import { ColumnListPanel } from "./column-list-panel/column-list-panel";
+import { ColumnListItem } from "./column-list-item/column-list-item";
 import { TableSettingsDrawer } from "./mobile/table-settings-drawer";
 import styles from "./table-settings-dialog.module.css";
 
@@ -43,37 +54,38 @@ const TableSettingsContent = ({
   onSave,
 }: TableSettingsContentProps) => {
   const { translate } = useLocalization();
+  const dragAndDropSensors = useTableSettingsDragAndDropSensors();
 
   const initialColumns = useMemo(() => {
     const visibleList: ColumnConfigItem[] = [];
     const hiddenList: ColumnConfigItem[] = [];
 
-    availableColumns.forEach((col) => {
-      const isVisible = columnVisibility[col.id] !== false;
+    availableColumns.forEach((columnItem) => {
+      const isVisible = columnVisibility[columnItem.id] !== false;
       if (isVisible) {
-        visibleList.push(col);
+        visibleList.push(columnItem);
       } else {
-        hiddenList.push(col);
+        hiddenList.push(columnItem);
       }
     });
 
     if (columnOrder && columnOrder.length > 0) {
-      visibleList.sort((a, b) => {
-        const aIndex = columnOrder.indexOf(a.id);
-        const bIndex = columnOrder.indexOf(b.id);
-        if (aIndex === -1 && bIndex === -1) return 0;
-        if (aIndex === -1) return 1;
-        if (bIndex === -1) return -1;
-        return aIndex - bIndex;
+      visibleList.sort((firstColumnItem, secondColumnItem) => {
+        const firstIndex = columnOrder.indexOf(firstColumnItem.id);
+        const secondIndex = columnOrder.indexOf(secondColumnItem.id);
+        if (firstIndex === -1 && secondIndex === -1) return 0;
+        if (firstIndex === -1) return 1;
+        if (secondIndex === -1) return -1;
+        return firstIndex - secondIndex;
       });
 
-      hiddenList.sort((a, b) => {
-        const aIndex = columnOrder.indexOf(a.id);
-        const bIndex = columnOrder.indexOf(b.id);
-        if (aIndex === -1 && bIndex === -1) return 0;
-        if (aIndex === -1) return 1;
-        if (bIndex === -1) return -1;
-        return aIndex - bIndex;
+      hiddenList.sort((firstColumnItem, secondColumnItem) => {
+        const firstIndex = columnOrder.indexOf(firstColumnItem.id);
+        const secondIndex = columnOrder.indexOf(secondColumnItem.id);
+        if (firstIndex === -1 && secondIndex === -1) return 0;
+        if (firstIndex === -1) return 1;
+        if (secondIndex === -1) return -1;
+        return firstIndex - secondIndex;
       });
     }
 
@@ -87,181 +99,272 @@ const TableSettingsContent = ({
     () => initialColumns.hiddenList,
   );
 
-  const [draggedState, setDraggedState] = useState<DraggedItemState | null>(null);
-  const [dragOverTarget, setDragOverTarget] = useState<DragOverTargetState | null>(
-    null,
-  );
-  const [dropPosition, setDropPosition] = useState<"top" | "bottom" | null>(null);
+  const [activeColumnItem, setActiveColumnItem] =
+    useState<ColumnConfigItem | null>(null);
+  const [clonedVisibleColumns, setClonedVisibleColumns] = useState<
+    ColumnConfigItem[] | null
+  >(null);
+  const [clonedHiddenColumns, setClonedHiddenColumns] = useState<
+    ColumnConfigItem[] | null
+  >(null);
 
-  const moveItem = (
-    sourceListType: ColumnListType,
-    sourceIndex: number,
-    targetListType: ColumnListType,
-    targetIndex: number,
-  ) => {
-    if (sourceListType === targetListType) {
-      const list =
-        sourceListType === "visible" ? [...visibleColumns] : [...hiddenColumns];
-      const [moved] = list.splice(sourceIndex, 1);
-      const adjustedTarget =
-        targetIndex > sourceIndex ? targetIndex - 1 : targetIndex;
-      const safeIndex = Math.max(0, Math.min(adjustedTarget, list.length));
-      list.splice(safeIndex, 0, moved);
+  const findContainerForIdentifier = (
+    targetIdentifier: string,
+  ): ColumnListType | null => {
+    if (targetIdentifier === "visible" || targetIdentifier === "hidden") {
+      return targetIdentifier;
+    }
+    if (
+      visibleColumns.some(
+        (columnItem) => columnItem.id === targetIdentifier,
+      )
+    ) {
+      return "visible";
+    }
+    if (
+      hiddenColumns.some(
+        (columnItem) => columnItem.id === targetIdentifier,
+      )
+    ) {
+      return "hidden";
+    }
+    return null;
+  };
 
-      if (sourceListType === "visible") {
-        setVisibleColumns(list);
-      } else {
-        setHiddenColumns(list);
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    const matchedColumnItem = [
+      ...visibleColumns,
+      ...hiddenColumns,
+    ].find((columnItem) => columnItem.id === active.id);
+
+    setActiveColumnItem(matchedColumnItem ?? null);
+    setClonedVisibleColumns(visibleColumns);
+    setClonedHiddenColumns(hiddenColumns);
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeIdentifier = String(active.id);
+    const overIdentifier = String(over.id);
+
+    const activeContainerType = findContainerForIdentifier(activeIdentifier);
+    const overContainerType = findContainerForIdentifier(overIdentifier);
+
+    if (
+      !activeContainerType ||
+      !overContainerType ||
+      activeContainerType === overContainerType
+    ) {
+      return;
+    }
+
+    const activeColumnItems =
+      activeContainerType === "visible" ? visibleColumns : hiddenColumns;
+    const overColumnItems =
+      overContainerType === "visible" ? visibleColumns : hiddenColumns;
+
+    const activeColumnIndex = activeColumnItems.findIndex(
+      (columnItem) => columnItem.id === activeIdentifier,
+    );
+    if (activeColumnIndex === -1) return;
+
+    const [movedColumnItem] = activeColumnItems.slice(
+      activeColumnIndex,
+      activeColumnIndex + 1,
+    );
+    if (!movedColumnItem) return;
+
+    let targetInsertionIndex = overColumnItems.length;
+    if (overIdentifier !== "visible" && overIdentifier !== "hidden") {
+      const overColumnIndex = overColumnItems.findIndex(
+        (columnItem) => columnItem.id === overIdentifier,
+      );
+      if (overColumnIndex !== -1) {
+        const isBelowOverItem =
+          active.rect.current.translated &&
+          active.rect.current.translated.top >
+            over.rect.top + over.rect.height / 2;
+        targetInsertionIndex = isBelowOverItem
+          ? overColumnIndex + 1
+          : overColumnIndex;
+      }
+    }
+
+    if (activeContainerType === "visible") {
+      setVisibleColumns((currentVisibleColumns) =>
+        currentVisibleColumns.filter(
+          (columnItem) => columnItem.id !== activeIdentifier,
+        ),
+      );
+      setHiddenColumns((currentHiddenColumns) => {
+        const updatedHiddenColumns = [...currentHiddenColumns];
+        updatedHiddenColumns.splice(targetInsertionIndex, 0, movedColumnItem);
+        return updatedHiddenColumns;
+      });
+    } else {
+      setHiddenColumns((currentHiddenColumns) =>
+        currentHiddenColumns.filter(
+          (columnItem) => columnItem.id !== activeIdentifier,
+        ),
+      );
+      setVisibleColumns((currentVisibleColumns) => {
+        const updatedVisibleColumns = [...currentVisibleColumns];
+        updatedVisibleColumns.splice(targetInsertionIndex, 0, movedColumnItem);
+        return updatedVisibleColumns;
+      });
+    }
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveColumnItem(null);
+    setClonedVisibleColumns(null);
+    setClonedHiddenColumns(null);
+
+    if (!over) return;
+
+    const activeIdentifier = String(active.id);
+    const overIdentifier = String(over.id);
+
+    const activeContainerType = findContainerForIdentifier(activeIdentifier);
+    const overContainerType = findContainerForIdentifier(overIdentifier);
+
+    if (!activeContainerType || !overContainerType) return;
+
+    if (activeContainerType === overContainerType) {
+      const columnItems =
+        activeContainerType === "visible" ? visibleColumns : hiddenColumns;
+      const activeColumnIndex = columnItems.findIndex(
+        (columnItem) => columnItem.id === activeIdentifier,
+      );
+      const overColumnIndex = columnItems.findIndex(
+        (columnItem) => columnItem.id === overIdentifier,
+      );
+
+      if (
+        activeColumnIndex !== -1 &&
+        overColumnIndex !== -1 &&
+        activeColumnIndex !== overColumnIndex
+      ) {
+        const reorderedColumnItems = arrayMove(
+          columnItems,
+          activeColumnIndex,
+          overColumnIndex,
+        );
+        if (activeContainerType === "visible") {
+          setVisibleColumns(reorderedColumnItems);
+        } else {
+          setHiddenColumns(reorderedColumnItems);
+        }
       }
     } else {
-      const source =
-        sourceListType === "visible" ? [...visibleColumns] : [...hiddenColumns];
-      const target =
-        targetListType === "visible" ? [...visibleColumns] : [...hiddenColumns];
-      const [moved] = source.splice(sourceIndex, 1);
-      const safeIndex = Math.max(0, Math.min(targetIndex, target.length));
-      target.splice(safeIndex, 0, moved);
+      const activeColumnItems =
+        activeContainerType === "visible" ? visibleColumns : hiddenColumns;
+      const overColumnItems =
+        overContainerType === "visible" ? visibleColumns : hiddenColumns;
 
-      if (sourceListType === "visible") {
-        setVisibleColumns(source);
-        setHiddenColumns(target);
+      const activeColumnIndex = activeColumnItems.findIndex(
+        (columnItem) => columnItem.id === activeIdentifier,
+      );
+      if (activeColumnIndex === -1) return;
+
+      const [movedColumnItem] = activeColumnItems.slice(
+        activeColumnIndex,
+        activeColumnIndex + 1,
+      );
+      if (!movedColumnItem) return;
+
+      const overColumnIndex =
+        overIdentifier === "visible" || overIdentifier === "hidden"
+          ? overColumnItems.length
+          : overColumnItems.findIndex(
+              (columnItem) => columnItem.id === overIdentifier,
+            );
+
+      const targetInsertionIndex =
+        overColumnIndex === -1 ? overColumnItems.length : overColumnIndex;
+
+      if (activeContainerType === "visible") {
+        setVisibleColumns((currentVisibleColumns) =>
+          currentVisibleColumns.filter(
+            (columnItem) => columnItem.id !== activeIdentifier,
+          ),
+        );
+        setHiddenColumns((currentHiddenColumns) => {
+          const updatedHiddenColumns = [...currentHiddenColumns];
+          updatedHiddenColumns.splice(targetInsertionIndex, 0, movedColumnItem);
+          return updatedHiddenColumns;
+        });
       } else {
-        setHiddenColumns(source);
-        setVisibleColumns(target);
+        setHiddenColumns((currentHiddenColumns) =>
+          currentHiddenColumns.filter(
+            (columnItem) => columnItem.id !== activeIdentifier,
+          ),
+        );
+        setVisibleColumns((currentVisibleColumns) => {
+          const updatedVisibleColumns = [...currentVisibleColumns];
+          updatedVisibleColumns.splice(targetInsertionIndex, 0, movedColumnItem);
+          return updatedVisibleColumns;
+        });
       }
     }
   };
 
-  const handleDragStart = (
-    e: DragEvent<HTMLDivElement>,
-    item: ColumnConfigItem,
-    index: number,
-    listType: ColumnListType,
-  ) => {
-    setDraggedState({ item, sourceIndex: index, sourceList: listType });
-    e.dataTransfer.setData(
-      "text/plain",
-      JSON.stringify({ id: item.id, listType, index }),
-    );
-    e.dataTransfer.effectAllowed = "move";
-  };
-
-  const handleDragOverItem = (
-    e: DragEvent<HTMLDivElement>,
-    index: number,
-    listType: ColumnListType,
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.dataTransfer.dropEffect = "move";
-
-    const targetRect = e.currentTarget.getBoundingClientRect();
-    const isTopHalf = e.clientY - targetRect.top < targetRect.height / 2;
-    setDropPosition(isTopHalf ? "top" : "bottom");
-    setDragOverTarget({ listType, targetIndex: index });
-  };
-
-  const handleDragLeaveItem = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-
-  const handleDragOverContainer = (
-    e: DragEvent<HTMLDivElement>,
-    listType: ColumnListType,
-  ) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    if (e.target === e.currentTarget) {
-      setDragOverTarget({ listType, targetIndex: -1 });
-      setDropPosition(null);
-    }
-  };
-
-  const handleDropOnItem = (
-    e: DragEvent<HTMLDivElement>,
-    index: number,
-    listType: ColumnListType,
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!draggedState) return;
-
-    const targetIndex = dropPosition === "bottom" ? index + 1 : index;
-    moveItem(
-      draggedState.sourceList,
-      draggedState.sourceIndex,
-      listType,
-      targetIndex,
-    );
-
-    setDraggedState(null);
-    setDragOverTarget(null);
-    setDropPosition(null);
-  };
-
-  const handleDropOnContainer = (
-    e: DragEvent<HTMLDivElement>,
-    listType: ColumnListType,
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!draggedState) return;
-
-    const targetList = listType === "visible" ? visibleColumns : hiddenColumns;
-    moveItem(
-      draggedState.sourceList,
-      draggedState.sourceIndex,
-      listType,
-      targetList.length,
-    );
-
-    setDraggedState(null);
-    setDragOverTarget(null);
-    setDropPosition(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggedState(null);
-    setDragOverTarget(null);
-    setDropPosition(null);
+  const handleDragCancel = () => {
+    if (clonedVisibleColumns) setVisibleColumns(clonedVisibleColumns);
+    if (clonedHiddenColumns) setHiddenColumns(clonedHiddenColumns);
+    setActiveColumnItem(null);
+    setClonedVisibleColumns(null);
+    setClonedHiddenColumns(null);
   };
 
   const handleDoubleClickItem = (
-    item: ColumnConfigItem,
-    listType: ColumnListType,
+    clickedColumnItem: ColumnConfigItem,
+    targetListType: ColumnListType,
   ) => {
-    if (listType === "visible") {
-      const sourceIndex = visibleColumns.findIndex((c) => c.id === item.id);
-      if (sourceIndex >= 0) {
-        moveItem("visible", sourceIndex, "hidden", hiddenColumns.length);
-      }
+    if (targetListType === "visible") {
+      setVisibleColumns((currentVisibleColumns) =>
+        currentVisibleColumns.filter(
+          (columnItem) => columnItem.id !== clickedColumnItem.id,
+        ),
+      );
+      setHiddenColumns((currentHiddenColumns) => [
+        ...currentHiddenColumns,
+        clickedColumnItem,
+      ]);
     } else {
-      const sourceIndex = hiddenColumns.findIndex((c) => c.id === item.id);
-      if (sourceIndex >= 0) {
-        moveItem("hidden", sourceIndex, "visible", visibleColumns.length);
-      }
+      setHiddenColumns((currentHiddenColumns) =>
+        currentHiddenColumns.filter(
+          (columnItem) => columnItem.id !== clickedColumnItem.id,
+        ),
+      );
+      setVisibleColumns((currentVisibleColumns) => [
+        ...currentVisibleColumns,
+        clickedColumnItem,
+      ]);
     }
   };
 
   const handleSave = () => {
-    const newColumnOrder = [
+    const newColumnOrderList = [
       "mrt-row-select",
-      ...visibleColumns.map((col) => col.id),
-      ...hiddenColumns.map((col) => col.id),
+      ...visibleColumns.map((columnItem) => columnItem.id),
+      ...hiddenColumns.map((columnItem) => columnItem.id),
       "mrt-row-actions",
     ];
 
-    const newColumnVisibility: Record<string, boolean> = {};
-    visibleColumns.forEach((col) => {
-      newColumnVisibility[col.id] = true;
+    const newColumnVisibilityRecord: Record<string, boolean> = {};
+    visibleColumns.forEach((columnItem) => {
+      newColumnVisibilityRecord[columnItem.id] = true;
     });
-    hiddenColumns.forEach((col) => {
-      newColumnVisibility[col.id] = false;
+    hiddenColumns.forEach((columnItem) => {
+      newColumnVisibilityRecord[columnItem.id] = false;
     });
 
-    onSave(newColumnOrder, newColumnVisibility);
+    onSave(newColumnOrderList, newColumnVisibilityRecord);
     onClose();
   };
 
@@ -271,51 +374,50 @@ const TableSettingsContent = ({
         {translate("tableSettings")}
       </DialogTitle>
 
-      <DialogContent className={styles.content}>
-        <ColumnListPanel
-          title={translate("visibleColumns")}
-          listType="visible"
-          items={visibleColumns}
-          draggedState={draggedState}
-          dragOverTarget={dragOverTarget}
-          dropPosition={dropPosition}
-          onDragStart={handleDragStart}
-          onDragOverItem={handleDragOverItem}
-          onDragLeaveItem={handleDragLeaveItem}
-          onDropOnItem={handleDropOnItem}
-          onDragOverContainer={handleDragOverContainer}
-          onDropOnContainer={handleDropOnContainer}
-          onDragEnd={handleDragEnd}
-          onDoubleClickItem={handleDoubleClickItem}
-        />
-
-        <Box className={styles.syncIconWrapper}>
-          <Image
-            src={syncAltIcon}
-            alt="Sync columns"
-            width={20}
-            height={20}
-            className={styles.syncIcon}
+      <DndContext
+        sensors={dragAndDropSensors}
+        collisionDetection={tableSettingsCollisionDetectionStrategy}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+      >
+        <DialogContent className={styles.content}>
+          <ColumnListPanel
+            panelTitle={translate("visibleColumns")}
+            listType="visible"
+            columnItems={visibleColumns}
+            onDoubleClickItem={handleDoubleClickItem}
           />
-        </Box>
 
-        <ColumnListPanel
-          title={translate("hiddenColumns")}
-          listType="hidden"
-          items={hiddenColumns}
-          draggedState={draggedState}
-          dragOverTarget={dragOverTarget}
-          dropPosition={dropPosition}
-          onDragStart={handleDragStart}
-          onDragOverItem={handleDragOverItem}
-          onDragLeaveItem={handleDragLeaveItem}
-          onDropOnItem={handleDropOnItem}
-          onDragOverContainer={handleDragOverContainer}
-          onDropOnContainer={handleDropOnContainer}
-          onDragEnd={handleDragEnd}
-          onDoubleClickItem={handleDoubleClickItem}
-        />
-      </DialogContent>
+          <Box className={styles.syncIconWrapper}>
+            <Image
+              src={syncAltIcon}
+              alt="Sync columns"
+              width={20}
+              height={20}
+              className={styles.syncIcon}
+            />
+          </Box>
+
+          <ColumnListPanel
+            panelTitle={translate("hiddenColumns")}
+            listType="hidden"
+            columnItems={hiddenColumns}
+            onDoubleClickItem={handleDoubleClickItem}
+          />
+        </DialogContent>
+
+        <DragOverlay>
+          {activeColumnItem ? (
+            <ColumnListItem
+              columnItem={activeColumnItem}
+              listType="visible"
+              isOverlay
+            />
+          ) : null}
+        </DragOverlay>
+      </DndContext>
 
       <DialogActions className={styles.actions}>
         <Button

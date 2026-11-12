@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { Box, Chip, Typography } from "@mui/material";
-import { Tooltip } from "@/shared/tooltip/tooltip";
+import { OverflowChip } from "./overflow-chip";
 import styles from "./chip-list.module.css";
 
 const useIsomorphicLayoutEffect =
@@ -174,14 +174,7 @@ export const ChipList = ({
             label={item}
           />
         ))}
-        {hasHidden && (
-          <Tooltip placement="bottom-start" title={hiddenItems.join(", ")}>
-            <Chip
-              className={styles.counterChip}
-              label={`+${hiddenItems.length}`}
-            />
-          </Tooltip>
-        )}
+        {hasHidden && <OverflowChip hiddenItems={hiddenItems} />}
       </Box>
 
       {validItems.length > 1 && (
