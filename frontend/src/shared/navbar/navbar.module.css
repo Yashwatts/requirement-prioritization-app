@@ -179,6 +179,8 @@
   margin: 0 !important;
   padding: 0 !important;
   width: 192px !important;
+  max-width: 192px !important;
+  min-width: 0 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -195,6 +197,8 @@
   margin: 0 !important;
   padding: 0 !important;
   width: 192px !important;
+  max-width: 192px !important;
+  min-width: 0 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -212,7 +216,28 @@
   line-height: 16px !important;
   color: #ffffff !important;
   box-shadow: none !important;
-  max-width: none !important;
+  max-width: 240px !important;
+  word-break: break-all !important;
+}
+
+.profilePopover {
+  background-color: rgba(48, 48, 48, 0.9) !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  max-width: 240px !important;
+  margin-top: 4px !important;
+  z-index: 1500 !important;
+}
+
+.popoverText {
+  padding: 4px 8px !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 16px !important;
+  color: #ffffff !important;
+  word-break: break-all !important;
+  margin: 0 !important;
 }
 
 .menuDivider {
@@ -328,5 +353,24 @@
 
   .arrowButton {
     display: none !important;
+  }
+
+  .profileMenu {
+    width: 240px !important;
+  }
+
+  .profileDetails {
+    width: 240px !important;
+  }
+
+  .profileDetailsName,
+  .profileDetailsEmail {
+    width: 192px !important;
+    max-width: 192px !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
   }
 }

@@ -15,6 +15,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Popover,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -35,12 +36,15 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
   const { translate } = useLocalization();
   const rightContentRef = useRef<HTMLDivElement>(null);
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
+  const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement | null>(null);
+  const [popoverContent, setPopoverContent] = useState("");
   const displayName = user?.displayName ?? user?.email ?? "User";
   const isMenuOpen = Boolean(anchorElement);
 
   const handleProfileClick = () => {
     if (isMenuOpen) {
       setAnchorElement(null);
+      setPopoverAnchor(null);
     } else {
       setAnchorElement(rightContentRef.current);
     }
@@ -48,6 +52,7 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
 
   const logout = async () => {
     setAnchorElement(null);
+    setPopoverAnchor(null);
     await authService.signOut();
     showSnackbar(translate("signedOutSuccessfully"), "success");
     router.replace("/login");
@@ -123,7 +128,10 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
       <Menu
         anchorEl={anchorElement}
         open={isMenuOpen}
-        onClose={() => setAnchorElement(null)}
+        onClose={() => {
+          setAnchorElement(null);
+          setPopoverAnchor(null);
+        }}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         autoFocus={false}
@@ -144,11 +152,19 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
             title={displayName}
             placement="bottom-start"
             arrow={false}
+            disableTouchListener
             slotProps={{
               tooltip: { className: styles.emailTooltip },
             }}
           >
-            <Typography className={styles.profileDetailsName}>
+            <Typography
+              className={styles.profileDetailsName}
+              onClick={(event) => {
+                event.stopPropagation();
+                setPopoverAnchor(event.currentTarget);
+                setPopoverContent(displayName);
+              }}
+            >
               {displayName}
             </Typography>
           </Tooltip>
@@ -156,11 +172,21 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
             title={user?.email ?? ""}
             placement="bottom-start"
             arrow={false}
+            disableTouchListener
             slotProps={{
               tooltip: { className: styles.emailTooltip },
             }}
           >
-            <Typography className={styles.profileDetailsEmail}>
+            <Typography
+              className={styles.profileDetailsEmail}
+              onClick={(event) => {
+                event.stopPropagation();
+                if (user?.email) {
+                  setPopoverAnchor(event.currentTarget);
+                  setPopoverContent(user.email);
+                }
+              }}
+            >
               {user?.email}
             </Typography>
           </Tooltip>
@@ -181,6 +207,24 @@ export const Navbar = ({ user, onMenuClick }: NavbarProps) => {
           </MenuItem>
         </Box>
       </Menu>
+
+      <Popover
+        open={Boolean(popoverAnchor)}
+        anchorEl={popoverAnchor}
+        onClose={() => setPopoverAnchor(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        slotProps={{
+          paper: {
+            className: styles.profilePopover,
+            elevation: 0,
+          },
+        }}
+      >
+        <Typography className={styles.popoverText}>
+          {popoverContent}
+        </Typography>
+      </Popover>
     </AppBar>
   );
 };

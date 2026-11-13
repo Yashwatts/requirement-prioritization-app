@@ -258,7 +258,24 @@
 .datePickerPopper :global(.MuiDateCalendar-root) {
   width: 320px !important;
   height: auto !important;
-  max-height: 360px !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+.datePickerPopper :global(.MuiDateCalendar-viewTransitionContainer),
+.datePickerPopper :global(.MuiPickersFadeTransitionGroup-root),
+.datePickerPopper :global(.MuiPickersLayout-root),
+.datePickerPopper :global(.MuiPickersLayout-contentWrapper),
+.datePickerPopper :global(.MuiDayCalendar-root) {
+  overflow: hidden !important;
+}
+
+.datePickerPopper :global(.MuiDayCalendar-slideTransition),
+.datePickerPopper :global(.MuiPickersSlideTransition-root) {
+  overflow: hidden !important;
+  overflow-y: hidden !important;
+  min-height: 240px !important;
+  height: auto !important;
 }
 
 .datePickerPopper :global(.MuiPickersCalendarHeader-root) {
@@ -313,6 +330,8 @@
 }
 
 .datePickerPopper :global(.MuiDayCalendar-monthContainer) {
+  overflow: hidden !important;
+  overflow-y: hidden !important;
   padding: 0 16px 12px 16px !important;
 }
 

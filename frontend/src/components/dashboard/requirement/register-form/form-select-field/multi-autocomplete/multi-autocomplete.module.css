@@ -54,16 +54,29 @@
 }
 
 .autocompleteWrapper :global(.MuiAutocomplete-clearIndicator) {
+  visibility: visible !important;
+  opacity: 1 !important;
   width: 20px !important;
   height: 20px !important;
   padding: 2px !important;
   color: #757575 !important;
   margin-right: 4px !important;
+  display: inline-flex !important;
 }
 
 .autocompleteWrapper :global(.MuiAutocomplete-clearIndicator:hover) {
   color: #424242 !important;
   background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.clearIcon {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.selectIcon {
+  width: 20px !important;
+  height: 20px !important;
 }
 
 .menuItemOption {

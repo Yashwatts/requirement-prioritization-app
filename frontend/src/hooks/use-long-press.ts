@@ -52,6 +52,7 @@ export const useLongPress = ({
       }
 
       startCoordinatesRef.current = null;
+      isLongPressTriggeredRef.current = false;
     },
     [onClick],
   );

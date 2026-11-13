@@ -116,8 +116,22 @@
 }
 
 .checkbox {
-  padding: 8px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  padding: 11px !important;
+  box-sizing: border-box !important;
   color: #424242 !important;
+}
+
+.checkbox svg,
+.checkbox :global(.MuiSvgIcon-root) {
+  width: 18px !important;
+  height: 18px !important;
+  font-size: 18px !important;
 }
 
 .checkbox:global(.Mui-checked),
@@ -602,5 +616,18 @@
   .mobileSkeletonCard {
     border-radius: 8px !important;
     background-color: #ffffff !important;
+  }
+
+  .mobileLoadingContainer {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 16px 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobileLoadingSpinner {
+    color: #01579b !important;
   }
 }

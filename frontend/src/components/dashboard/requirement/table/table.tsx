@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import InfiniteScroll from "infinite-scroll";
-import { Box, Checkbox, Paper, Skeleton } from "@mui/material";
+import { Box, Checkbox, CircularProgress, Paper, Skeleton } from "@mui/material";
 import MaterialReactTable, {
   type MRT_ColumnOrderState,
   type MRT_RowSelectionState,
@@ -399,13 +399,13 @@ export const Table = ({
                   />
                 );
               })}
-              {status === "loading" && (
-                <Skeleton
-                  variant="rectangular"
-                  height={260}
-                  animation="wave"
-                  className={styles.mobileSkeletonCard}
-                />
+              {status === "loading" && requirements.length > 0 && (
+                <Box className={styles.mobileLoadingContainer}>
+                  <CircularProgress
+                    size={32}
+                    className={styles.mobileLoadingSpinner}
+                  />
+                </Box>
               )}
             </Box>
           )}

@@ -246,6 +246,7 @@ export const MobileCard = ({
             checked={Boolean(isSelected)}
             onChange={() => onToggleSelect?.()}
             onPointerDown={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
             onClick={(event) => event.stopPropagation()}
             className={styles.checkbox}
             size="small"
@@ -255,6 +256,7 @@ export const MobileCard = ({
           <IconButton
             className={styles.moreButton}
             onPointerDown={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
             onClick={handleOpenMenu}
             aria-label={translate("moreActions")}
             size="small"
