@@ -43,8 +43,6 @@
 .iconWrapper {
   width: 16px;
   height: 16px;
-  min-width: 16px;
-  min-height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,8 +71,6 @@
 .closeButton {
   width: 28px !important;
   height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
   padding: 4px !important;
   border-radius: 4px !important;
   flex-shrink: 0;

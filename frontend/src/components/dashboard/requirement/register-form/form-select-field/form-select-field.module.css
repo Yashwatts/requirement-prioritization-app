@@ -6,14 +6,10 @@
 
 .collaboratorField {
   width: 278px !important;
-  min-width: 278px !important;
-  max-width: 278px !important;
 }
 
 .followerField {
   width: 268px !important;
-  min-width: 268px !important;
-  max-width: 268px !important;
 }
 
 .field :global(::selection),
@@ -22,13 +18,7 @@
   color: inherit !important;
 }
 
-.field :global(.MuiOutlinedInput-root),
-.field :global(.MuiOutlinedInput-root.Mui-focused),
-.field :global(.MuiOutlinedInput-root:hover),
-.field :global(.MuiInputBase-root),
-.field :global(.MuiInputBase-root.Mui-focused),
-.field :global(.MuiInputBase-input),
-.field :global(.MuiInputBase-input:focus) {
+.field :global(.MuiOutlinedInput-root) {
   min-height: 40px !important;
   border-radius: 8px !important;
   font-family: "Open Sans", sans-serif !important;
@@ -37,10 +27,9 @@
   outline: none !important;
   box-shadow: none !important;
   -webkit-tap-highlight-color: transparent !important;
-}
-
-.field :global(.MuiOutlinedInput-root) {
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 }
 
 .field :global(.MuiOutlinedInput-notchedOutline) {
@@ -57,16 +46,6 @@
 
 .field :global(.MuiInputLabel-root) {
   color: #9E9E9E !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-  font-style: normal !important;
-  font-weight: 400 !important;
-  line-height: 20px !important;
-}
-
-.field :global(.MuiInputLabel-root:not(.MuiInputLabel-shrink)) {
-  color: #9E9E9E !important;
-  font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
   font-style: normal !important;
   font-weight: 400 !important;
@@ -86,35 +65,19 @@
   font-weight: 400 !important;
 }
 
-.field :global(.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline),
-.field:global(.Mui-error) :global(.MuiOutlinedInput-notchedOutline),
 .field :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
   border-color: #e53935 !important;
 }
 
-.field :global(.MuiOutlinedInput-root.Mui-error:hover .MuiOutlinedInput-notchedOutline),
-.field:global(.Mui-error) :global(.MuiOutlinedInput-notchedOutline),
-.field :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
-  border-color: #e53935 !important;
-}
-
-.field :global(.MuiInputLabel-root.Mui-error),
-.field:global(.Mui-error) :global(.MuiInputLabel-root),
-.field :global(.Mui-error .MuiInputLabel-root),
-.field :global(.MuiInputLabel-root.Mui-error.Mui-focused),
-.field:global(.Mui-error) :global(.MuiInputLabel-root.Mui-focused) {
+.field :global(.MuiInputLabel-root.Mui-error) {
   color: #e53935 !important;
 }
 
-.field :global(.MuiOutlinedInput-root.Mui-error .MuiSelect-icon),
-.field:global(.Mui-error) :global(.MuiSelect-icon),
 .field :global(.Mui-error .MuiSelect-icon) {
   color: #e53935 !important;
 }
 
-.field :global(.MuiFormHelperText-root.Mui-error),
-.field:global(.Mui-error) :global(.MuiFormHelperText-root),
-.field :global(.Mui-error .MuiFormHelperText-root) {
+.field :global(.MuiFormHelperText-root.Mui-error) {
   color: #e53935 !important;
 }
 
@@ -123,6 +86,5 @@
   .followerField {
     width: 100% !important;
     min-width: 0 !important;
-    max-width: 100% !important;
   }
 }

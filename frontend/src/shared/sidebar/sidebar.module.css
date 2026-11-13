@@ -27,8 +27,6 @@
 .railItem {
   width: 72px !important;
   height: 72px !important;
-  min-height: 72px !important;
-  max-height: 72px !important;
   padding: 0 !important;
   border-radius: 0 !important;
   color: #424242 !important;
@@ -45,7 +43,6 @@
 }
 
 .railIcon {
-  min-width: 20px !important;
   width: 20px !important;
   height: 20px !important;
   margin: 0 !important;
@@ -80,7 +77,6 @@
 
 .expandedIcon {
   width: 40px !important;
-  min-width: 40px !important;
   color: #01579b !important;
   display: flex !important;
   align-items: center !important;
@@ -127,7 +123,6 @@
     left: 0 !important;
     width: 256px !important;
     height: calc(100vh - 56px) !important;
-    max-height: calc(100vh - 56px) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     background: #ffffff !important;
@@ -218,7 +213,6 @@
 
   .expandedIcon {
     width: 40px !important;
-    min-width: 40px !important;
     display: flex !important;
     align-items: center !important;
     margin: 0 !important;

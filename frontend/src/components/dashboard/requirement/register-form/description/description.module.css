@@ -18,8 +18,6 @@
   width: 562px;
   max-width: 100%;
   height: 280px;
-  min-height: 280px;
-  max-height: 280px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -162,8 +160,6 @@
   .editor {
     width: 100% !important;
     height: 400px !important;
-    min-height: 400px !important;
-    max-height: 400px !important;
     padding: 16px !important;
     border: 1px solid #e0e0e0 !important;
     border-radius: 4px !important;

@@ -24,7 +24,6 @@
 
 .textField :global(.MuiOutlinedInput-root) {
   height: 40px !important;
-  min-height: 40px !important;
   border-radius: 8px !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
@@ -115,30 +114,15 @@
   font-weight: 400 !important;
 }
 
-.textField :global(.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline),
-.textField:global(.Mui-error) :global(.MuiOutlinedInput-notchedOutline),
 .textField :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
   border-color: #e53935 !important;
 }
 
-.textField :global(.MuiOutlinedInput-root.Mui-error:hover .MuiOutlinedInput-notchedOutline),
-.textField:global(.Mui-error) :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline),
-.textField :global(.MuiOutlinedInput-root.Mui-error.Mui-focused .MuiOutlinedInput-notchedOutline),
-.textField:global(.Mui-error) :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
-  border-color: #e53935 !important;
-}
-
-.textField :global(.MuiInputLabel-root.Mui-error),
-.textField:global(.Mui-error) :global(.MuiInputLabel-root),
-.textField :global(.Mui-error .MuiInputLabel-root),
-.textField :global(.MuiInputLabel-root.Mui-error.Mui-focused),
-.textField:global(.Mui-error) :global(.MuiInputLabel-root.Mui-focused) {
+.textField :global(.MuiInputLabel-root.Mui-error) {
   color: #e53935 !important;
 }
 
-.textField :global(.MuiFormHelperText-root.Mui-error),
-.textField:global(.Mui-error) :global(.MuiFormHelperText-root),
-.textField :global(.Mui-error .MuiFormHelperText-root) {
+.textField :global(.MuiFormHelperText-root.Mui-error) {
   color: #e53935 !important;
 }
 

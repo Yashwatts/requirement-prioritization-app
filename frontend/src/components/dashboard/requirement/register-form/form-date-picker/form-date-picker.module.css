@@ -8,14 +8,9 @@
   width: 273px !important;
 }
 
-.datePickerTextField :global(.MuiPickersOutlinedInput-root),
-.datePickerTextField :global(.MuiPickersInputBase-root),
-.datePickerTextField :global(.MuiOutlinedInput-root),
-.datePickerTextField :global(.MuiInputBase-root) {
+.datePickerTextField :global([class*="OutlinedInput-root"]) {
   width: 273px !important;
   height: 40px !important;
-  min-height: 40px !important;
-  max-height: 40px !important;
   box-sizing: border-box !important;
   border-radius: 8px !important;
   font-family: "Open Sans", sans-serif !important;
@@ -27,53 +22,26 @@
     box-shadow 0.15s ease-in-out;
 }
 
-.datePickerTextField :global(.MuiPickersOutlinedInput-notchedOutline),
-.datePickerTextField :global(.MuiPickersInputBase-notchedOutline),
-.datePickerTextField :global(.MuiOutlinedInput-notchedOutline) {
+.datePickerTextField :global([class*="notchedOutline"]) {
   border: 1px solid #9E9E9E !important;
   border-radius: 8px !important;
   transition: border-color 0.15s ease-in-out;
 }
 
-.datePickerTextField:hover :global(.MuiPickersOutlinedInput-notchedOutline),
-.datePickerTextField:hover :global(.MuiPickersInputBase-notchedOutline),
-.datePickerTextField:hover :global(.MuiOutlinedInput-notchedOutline),
-.datePickerTextField
-  :global(.MuiPickersOutlinedInput-root:hover:not(.Mui-focused):not(.Mui-error) .MuiPickersOutlinedInput-notchedOutline),
-.datePickerTextField
-  :global(.MuiPickersInputBase-root:hover:not(.Mui-focused):not(.Mui-error) .MuiPickersInputBase-notchedOutline),
-.datePickerTextField
-  :global(.MuiOutlinedInput-root:hover:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline) {
+.datePickerTextField:hover :global([class*="notchedOutline"]) {
   border-color: #9E9E9E !important;
 }
 
-.datePickerTextField
-  :global(.MuiPickersOutlinedInput-root.Mui-focused .MuiPickersOutlinedInput-notchedOutline),
-.datePickerTextField
-  :global(.MuiPickersInputBase-root.Mui-focused .MuiPickersInputBase-notchedOutline),
-.datePickerTextField
-  :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline),
-.datePickerTextField :global(.Mui-focused .MuiPickersOutlinedInput-notchedOutline),
-.datePickerTextField :global(.Mui-focused .MuiPickersInputBase-notchedOutline),
-.datePickerTextField :global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+.datePickerTextField :global(.Mui-focused [class*="notchedOutline"]) {
   border-color: #01579b !important;
   border-width: 1px !important;
 }
 
-.datePickerTextField
-  :global(.MuiPickersOutlinedInput-root.Mui-error .MuiPickersOutlinedInput-notchedOutline),
-.datePickerTextField
-  :global(.MuiPickersInputBase-root.Mui-error .MuiPickersInputBase-notchedOutline),
-.datePickerTextField
-  :global(.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline),
-.datePickerTextField :global(.Mui-error .MuiPickersOutlinedInput-notchedOutline),
-.datePickerTextField :global(.Mui-error .MuiPickersInputBase-notchedOutline),
-.datePickerTextField :global(.Mui-error .MuiOutlinedInput-notchedOutline) {
+.datePickerTextField :global(.Mui-error [class*="notchedOutline"]) {
   border-color: #e53935 !important;
 }
 
-.datePickerTextField :global(.MuiInputLabel-root),
-.datePickerTextField :global(.MuiFormLabel-root) {
+.datePickerTextField :global(.MuiInputLabel-root) {
   color: #9E9E9E !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;
@@ -86,29 +54,16 @@
   pointer-events: none !important;
 }
 
-.datePickerTextField :global(.MuiInputLabel-root:not(.MuiInputLabel-shrink)),
-.datePickerTextField :global(.MuiFormLabel-root:not(.MuiInputLabel-shrink)) {
-  color: #9E9E9E !important;
-  font-family: "Open Sans", sans-serif !important;
-  font-size: 14px !important;
-  font-style: normal !important;
-  font-weight: 400 !important;
-  line-height: 20px !important;
-}
-
-.datePickerTextField :global(.MuiInputLabel-root.MuiInputLabel-shrink),
-.datePickerTextField :global(.MuiFormLabel-root.MuiInputLabel-shrink) {
+.datePickerTextField :global(.MuiInputLabel-root.MuiInputLabel-shrink) {
   transform: translate(14px, -9px) scale(0.75) !important;
   font-size: 12px !important;
 }
 
-.datePickerTextField :global(.MuiInputLabel-root.Mui-focused),
-.datePickerTextField :global(.MuiFormLabel-root.Mui-focused) {
+.datePickerTextField :global(.MuiInputLabel-root.Mui-focused) {
   color: #01579b !important;
 }
 
-.datePickerTextField :global(.MuiInputLabel-root.Mui-error),
-.datePickerTextField :global(.MuiFormLabel-root.Mui-error) {
+.datePickerTextField :global(.MuiInputLabel-root.Mui-error) {
   color: #e53935 !important;
 }
 
@@ -131,9 +86,7 @@
   color: #424242 !important;
 }
 
-.datePickerTextField :global(.MuiPickersInputBase-input),
-.datePickerTextField :global(.MuiPickersOutlinedInput-input),
-.datePickerTextField :global(.MuiOutlinedInput-input) {
+.datePickerTextField :global([class*="Input-input"]) {
   padding: 0 0 0 16px !important;
   height: 40px !important;
   box-sizing: border-box !important;
@@ -159,7 +112,6 @@
   padding: 0 !important;
   margin-right: 12px !important;
   height: 20px !important;
-  max-height: 20px !important;
   display: flex !important;
   align-items: center !important;
   gap: 4px !important;
@@ -174,7 +126,6 @@
   visibility: visible !important;
   width: 20px !important;
   height: 20px !important;
-  min-width: 20px !important;
   padding: 2px !important;
   margin: 0 !important;
   color: #757575 !important;
@@ -206,7 +157,6 @@
   margin: 0 !important;
   width: 20px !important;
   height: 20px !important;
-  min-width: 20px !important;
   color: #757575 !important;
   background-color: transparent !important;
 }
@@ -233,7 +183,6 @@
   line-height: 16px !important;
   font-weight: 400 !important;
   height: 16px !important;
-  min-height: 16px !important;
 }
 
 .errorHelperText {
@@ -390,10 +339,7 @@
     width: 100% !important;
   }
 
-  .datePickerTextField :global(.MuiPickersOutlinedInput-root),
-  .datePickerTextField :global(.MuiPickersInputBase-root),
-  .datePickerTextField :global(.MuiOutlinedInput-root),
-  .datePickerTextField :global(.MuiInputBase-root) {
+  .datePickerTextField :global([class*="OutlinedInput-root"]) {
     width: 100% !important;
   }
 }

@@ -1,8 +1,6 @@
 .toolbar {
   width: 100%;
   height: 44px;
-  min-height: 44px;
-  max-height: 44px;
   margin: 0;
   padding: 8px;
   display: flex;
@@ -15,12 +13,8 @@
 }
 
 .fontDropdownButton {
-  min-width: 85px !important;
-  max-width: 85px !important;
   width: 85px !important;
   height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
   padding: 0 4px 0 8px !important;
   color: #424242 !important;
   border-radius: 4px !important;
@@ -42,12 +36,8 @@
 }
 
 .headingDropdownButton {
-  min-width: 50px !important;
-  max-width: 50px !important;
   width: 50px !important;
   height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
   padding: 0 4px 0 8px !important;
   color: #424242 !important;
   border-radius: 4px !important;
@@ -95,8 +85,6 @@
 
 .toolbarDivider {
   width: 1px !important;
-  min-width: 1px !important;
-  max-width: 1px !important;
   height: 25px !important;
   background-color: #eeeeee !important;
   margin: 0 !important;
@@ -132,12 +120,8 @@
 }
 
 .iconButton {
-  min-width: 28px !important;
-  max-width: 28px !important;
   width: 28px !important;
   height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
   padding: 4px !important;
   color: #424242 !important;
   border-radius: 4px !important;
@@ -150,12 +134,8 @@
 }
 
 .linkCodeButton {
-  min-width: 28.67px !important;
-  max-width: 28.67px !important;
   width: 28.67px !important;
   height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
   padding: 0 !important;
   color: #424242 !important;
   border-radius: 4px !important;
@@ -209,8 +189,6 @@
   .toolbar {
     width: 100% !important;
     height: 44px !important;
-    min-height: 44px !important;
-    max-height: 44px !important;
     padding: 8px !important;
     display: flex !important;
     align-items: center !important;

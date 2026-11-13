@@ -109,10 +109,7 @@
 
   .dialogPaper {
     width: 358px !important;
-    max-width: 358px !important;
     height: 196px !important;
-    min-height: 196px !important;
-    max-height: 196px !important;
     margin: 0 auto !important;
     padding: 0 !important;
     border-radius: 8px !important;

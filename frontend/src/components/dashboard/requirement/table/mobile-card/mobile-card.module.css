@@ -48,9 +48,6 @@
 .checkbox {
   width: 38px !important;
   height: 38px !important;
-  min-width: 38px !important;
-  max-width: 38px !important;
-  padding: 9px !important;
   box-sizing: border-box !important;
   color: #424242 !important;
 }
@@ -69,7 +66,6 @@
 .moreButton {
   width: 36px !important;
   height: 36px !important;
-  min-width: 36px !important;
   padding: 8px !important;
   border-radius: 4px !important;
   color: #424242 !important;
@@ -201,8 +197,6 @@
 
 .menuPaper {
   width: 120px !important;
-  min-width: 120px !important;
-  max-width: 120px !important;
   border-radius: 8px !important;
   background-color: #ffffff !important;
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
@@ -222,8 +216,6 @@
 .menuItem {
   width: 120px !important;
   height: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
   padding: 9px 16px !important;
   display: flex !important;
   align-items: center !important;

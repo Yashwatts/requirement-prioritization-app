@@ -80,7 +80,6 @@
 .arrowButton {
   width: 20px !important;
   height: 20px !important;
-  min-width: 20px !important;
   padding: 0 !important;
   border-radius: 50% !important;
   color: #ffffff !important;
@@ -178,7 +177,6 @@
   color: #424242 !important;
   margin: 0 !important;
   padding: 0 !important;
-  width: 192px !important;
   max-width: 192px !important;
   min-width: 0 !important;
   white-space: nowrap !important;
@@ -196,7 +194,6 @@
   color: #757575 !important;
   margin: 0 !important;
   padding: 0 !important;
-  width: 192px !important;
   max-width: 192px !important;
   min-width: 0 !important;
   white-space: nowrap !important;
@@ -335,7 +332,6 @@
   .profileButton {
     width: 20px !important;
     height: 20px !important;
-    min-width: 20px !important;
     padding: 0 !important;
     margin: 0 !important;
     border-radius: 50% !important;
@@ -365,7 +361,6 @@
 
   .profileDetailsName,
   .profileDetailsEmail {
-    width: 192px !important;
     max-width: 192px !important;
     min-width: 0 !important;
     white-space: nowrap !important;

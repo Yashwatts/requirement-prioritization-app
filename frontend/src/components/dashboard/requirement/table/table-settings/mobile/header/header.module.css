@@ -1,7 +1,5 @@
 .header {
   height: 52px;
-  min-height: 52px;
-  max-height: 52px;
   padding: 8px 16px 8px 24px;
   display: flex;
   align-items: center;

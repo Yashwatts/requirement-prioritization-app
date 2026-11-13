@@ -55,8 +55,7 @@
   color: #01579b !important;
 }
 
-.iconActions :global(.MuiIconButton-root),
-.toolbarActions :global(.MuiIconButton-root) {
+.iconActions :global(.MuiIconButton-root) {
   width: 36px !important;
   height: 36px !important;
   padding: 8px !important;
@@ -64,8 +63,7 @@
   color: #424242 !important;
 }
 
-.iconActions :global(.MuiIconButton-root) svg,
-.toolbarActions :global(.MuiIconButton-root) svg {
+.iconActions :global(.MuiIconButton-root) svg {
   width: 20px;
   height: 20px;
   color: #424242 !important;
@@ -90,8 +88,6 @@
 .search :global(.MuiOutlinedInput-root) {
   width: 300px !important;
   height: 40px !important;
-  min-height: 40px !important;
-  max-height: 40px !important;
   padding-left: 16px !important;
   padding-right: 12px !important;
   padding-top: 0 !important;
@@ -214,7 +210,6 @@
     row-gap: 8px !important;
     column-gap: 8px !important;
     height: 116px !important;
-    min-height: 116px !important;
     width: 100% !important;
     margin-bottom: 0 !important;
     padding: 16px 16px 16px 16px !important;
@@ -236,8 +231,6 @@
   .search :global(.MuiOutlinedInput-root) {
     width: 100% !important;
     height: 40px !important;
-    min-height: 40px !important;
-    max-height: 40px !important;
   }
 
   .actionsContainer {

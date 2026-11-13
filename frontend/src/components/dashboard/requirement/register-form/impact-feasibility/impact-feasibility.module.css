@@ -27,7 +27,6 @@
 
 .readOnlyField :global(.MuiOutlinedInput-root) {
   height: 40px !important;
-  min-height: 40px !important;
   border-radius: 8px !important;
   font-family: "Open Sans", sans-serif !important;
   font-size: 14px !important;

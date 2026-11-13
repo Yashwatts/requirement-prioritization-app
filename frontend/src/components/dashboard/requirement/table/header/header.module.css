@@ -48,7 +48,6 @@
     z-index: 100 !important;
     background-color: #f5f5f5 !important;
     height: 52px !important;
-    min-height: 52px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
@@ -88,8 +87,6 @@
     justify-content: center !important;
     width: 40px !important;
     height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
     border-radius: 50% !important;
     background-color: #ffffff !important;
     color: #424242 !important;
@@ -117,8 +114,6 @@
     position: static !important;
     width: 56px !important;
     height: 56px !important;
-    min-width: 56px !important;
-    min-height: 56px !important;
     border-radius: 50% !important;
     background-color: #01579b !important;
     color: #ffffff !important;

@@ -1,7 +1,5 @@
 .header {
   height: 52px;
-  min-height: 52px;
-  max-height: 52px;
   padding: 8px 16px 8px 24px;
   display: flex;
   align-items: center;
@@ -13,8 +11,6 @@
 
 .minimizedHeader {
   height: 52px !important;
-  min-height: 52px !important;
-  max-height: 52px !important;
   border-bottom: #e0e0e0 !important;
   border-radius: 8px 8px 0 0 !important;
 }
@@ -62,8 +58,6 @@
 @media (max-width: 600px) {
   .header {
     height: 36px !important;
-    min-height: 36px !important;
-    max-height: 36px !important;
     padding: 0 16px !important;
     margin-top: 16px !important;
     margin-bottom: 0 !important;
@@ -104,7 +98,6 @@
     justify-content: center !important;
     width: 36px !important;
     height: 36px !important;
-    min-width: 36px !important;
     padding: 8px !important;
     color: #424242 !important;
     border-radius: 4px !important;
